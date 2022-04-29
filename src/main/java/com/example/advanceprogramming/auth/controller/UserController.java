@@ -54,10 +54,4 @@ public class UserController {
     }
 
 
-    @GetMapping("/test")
-    String test(Model model){
-        model.addAttribute("something","testtttt");
-        return "test";
-    }
-
 }
