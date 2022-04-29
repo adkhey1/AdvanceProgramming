@@ -1,10 +1,9 @@
 package com.example.advanceprogramming.auth.controller;
 
-import com.example.advanceprogramming.auth.model.UserModel;
 
+
+import com.example.advanceprogramming.auth.model.User;
 import com.example.advanceprogramming.auth.repository.UserRepository;
-import com.example.advanceprogramming.auth.service.LoginService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,10 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
-
 
 @Controller
 public class UserController {
@@ -24,23 +19,21 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    /*
     //Start Page
     @GetMapping({"/home","/",""})
     public String viewHomePage(){
         return "index";
     }
-    */
 
     //Register page
-    @GetMapping("/register1")
+    @GetMapping("/register")
     public String registerPage(Model model){
-        model.addAttribute("user", new UserModel());
+        model.addAttribute("user", new User());
         return "register_page";
     }
 
     @PostMapping("/registering")
-    public String registerUser(UserModel user){
+    public String registerUser(User user){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
@@ -68,4 +61,3 @@ public class UserController {
     }
 
 }
-

@@ -1,6 +1,6 @@
 package com.example.advanceprogramming.auth.security;
 
-import com.example.advanceprogramming.auth.model.UserModel;
+import com.example.advanceprogramming.auth.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class UserSecurity implements UserDetails {
 
-    private UserModel user;
+    private User user;
 
 
     @Override
@@ -24,8 +24,8 @@ public class UserSecurity implements UserDetails {
         return user.getPassword();
     }
 
-    public String getFullName() {
-        return user.getFirstName() + " " + user.getLastName();
+    public String getFullName(){
+        return user.getFirstName()+" "+user.getLastName();
     }
 
     //Überprüfen Login (Login mit email und passwort)
@@ -41,16 +41,16 @@ public class UserSecurity implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

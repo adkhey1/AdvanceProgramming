@@ -1,5 +1,6 @@
 package com.example.advanceprogramming.auth.model;
 
+
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "users")
-public class UserModel {
+public class User {
 
     //Model for User
     @Id
@@ -27,31 +28,19 @@ public class UserModel {
 
     @Column(name="lastName",nullable = false)
     private String lastName;
-
-    public UserModel(long id, String firstName, String lastName,String email, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email= email;
-        this.password = password;
-    }
-
-    public UserModel() {
-    }
-
     /*
 
 
-                //ignore
-                @OneToMany
-                @CollectionTable(name = "active_surveys ", joinColumns = @JoinColumn(name = "id"))
-                @Column(name = "actSurv", nullable = false)
-                private List<Survey> activeSurveys = new ArrayList<>();
+        //ignore
+        @OneToMany
+        @CollectionTable(name = "active_surveys ", joinColumns = @JoinColumn(name = "id"))
+        @Column(name = "actSurv", nullable = false)
+        private List<Survey> activeSurveys = new ArrayList<>();
 
-                public void addSurvey(Survey survey){
-                    activeSurveys.add(survey);
-                }
-            */
+        public void addSurvey(Survey survey){
+            activeSurveys.add(survey);
+        }
+    */
     @Override
     public String toString() {
         return "User{" +
@@ -64,4 +53,3 @@ public class UserModel {
                 '}';
     }
 }
-
