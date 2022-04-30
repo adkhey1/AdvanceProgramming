@@ -45,8 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //Configuration of the allowed Mappings after Login
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests().antMatchers("/user_dashboard").authenticated().anyRequest().permitAll().and()
+        http.authorizeRequests().antMatchers("/js/**","/css/**").permitAll().antMatchers("/user_dashboard").authenticated().anyRequest().permitAll().and()
                 .formLogin().usernameParameter("email").defaultSuccessUrl("/user_dashboard").permitAll()
-                .and().logout().logoutSuccessUrl("/logout").permitAll().and().csrf().disable();
+                .and().logout().logoutSuccessUrl("/logout").permitAll().and().csrf().disable().cors().disable();
     }
 }
