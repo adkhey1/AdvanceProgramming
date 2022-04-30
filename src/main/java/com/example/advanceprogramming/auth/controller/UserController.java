@@ -53,5 +53,9 @@ public class UserController {
         return"user_dashboard";
     }
 
+    @GetMapping("/map")
+    public String getMap(){
+        return "gmaps";
+    }
 
 }
