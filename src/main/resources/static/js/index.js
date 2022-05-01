@@ -26,17 +26,27 @@ function initMap() {
     }
 
 
-    function addWindow() {
-
-    }
-
     addMarker({lat: 50.1109, lng: 8.6821});
     addMarker({lat: 52.5200, lng: 13.4050});
     addMarker({lat: 51.5072, lng: 0.1276});
+    addMarker({lat: 50.16026, lng: 8.52174});
 
 
 }
 window.initMap = initMap;
+
+
+
+
+
+//TODO Gracjan Filter
+// document.getElementById("map")
+
+
+
+
+
+
 
 /*
 // Initialize and add the map
