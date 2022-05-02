@@ -30,19 +30,19 @@ public class Business {
     private String postal_code;
 
     @Column(name = "latitude")
-    private String latitude;
+    private double latitude;
 
     @Column(name = "longitude")
-    private String longitude;
+    private double longitude;
 
     @Column(name = "stars")
-    private String stars;
+    private double stars;
 
     @Column(name = "review_count")
-    private String review_count;
+    private int review_count;
 
     @Column(name = "is_open")
-    private String is_open;
+    private int is_open;
 
     @Column(name = "attributes")
     private String attributes;

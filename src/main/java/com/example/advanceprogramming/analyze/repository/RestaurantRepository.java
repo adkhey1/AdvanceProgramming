@@ -3,9 +3,10 @@ package com.example.advanceprogramming.analyze.repository;
 import com.example.advanceprogramming.analyze.model.Business;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
-
+@Repository
 public interface RestaurantRepository extends JpaRepository<Business, Long> {
 
     @Query("SELECT b FROM Business b WHERE b.business_id = ?1")
