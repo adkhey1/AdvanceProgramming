@@ -11,6 +11,9 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
     @Query("SELECT b FROM Business b WHERE b.business_id = ?1")
     Business findByBusiness_id(String business_id);
 
+    @Query("SELECT b FROM Business b WHERE b.name = ?1")
+    Business findByName(String name);
+
 
     @Query("SELECT b.name , count(b.name) FROM Business b " +
             "GROUP BY b.name  ORDER BY count(b.name)DESC")

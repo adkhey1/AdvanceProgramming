@@ -19,9 +19,10 @@ public class AnalyzeController {
     public String getMarkedRestaurant(/*String business_id*/){
 
         String business_id = "Pns2l4eNsfO8kk83dixA6A";
-        Business business = restaurantRepository.findByBusiness_id(business_id);
+        Business businessByBusinessID = restaurantRepository.findByBusiness_id(business_id);
 
-        String ausgabe = business.getName();
+        String name = "Dio Modern Mediteranean";
+        Business businessByName = restaurantRepository.findByName(name);
 
         HashMap<String, Integer> ketten = restaurantRepository.findBiggest();
 
