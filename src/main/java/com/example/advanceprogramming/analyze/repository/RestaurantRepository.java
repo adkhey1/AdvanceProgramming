@@ -16,8 +16,8 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
     Business findByName(String name);
 
 
-    @Query("SELECT b.name , count(b.name) FROM Business b " +
-            "GROUP BY b.name  ORDER BY count(b.name)DESC")
-    HashMap<String, Integer> findBiggest();
+    @Query("SELECT b.name as franchise , count(b.name) as number FROM Business b WHERE number > 296" +
+            "GROUP BY franchise  ORDER BY number DESC")
+    HashMap<String, Integer> findBiggestFranchises();
 
 }

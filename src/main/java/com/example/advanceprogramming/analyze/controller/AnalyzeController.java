@@ -38,7 +38,7 @@ public class AnalyzeController {
         String name = "Dio Modern Mediteranean";
         Business businessByName = restaurantRepository.findByName(name);
 
-        HashMap<String, Integer> ketten = restaurantRepository.findBiggest();
+        HashMap<String, Integer> ketten = restaurantRepository.findBiggestFranchises();
 
 
         MarkerDTO markerDTO = analyzeService.parseBusinessToMarkerDTO(businessByBusinessID);
@@ -53,7 +53,12 @@ public class AnalyzeController {
         List<MarkerDTO> businesses = analyzeService.getMarkerFromFilter(input);
         MarkerDTO[] output = businesses.toArray(new MarkerDTO[0]);
 
-        return ResponseEntity.status(HttpStatus.OK).body(output);
+        MarkerDTO output1 = new MarkerDTO();
+        output1.setLongitude(200);
+        output1.setLatitude(211);
+        output1.setBusinessID("hahah23");
+
+        return ResponseEntity.status(HttpStatus.OK).body(output1);
     }
 
 }
