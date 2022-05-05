@@ -5,19 +5,18 @@
 
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script type="module" th:src="@{/js/index.js}"></script>
+    <script type="module" th:src="@{/js/chart1.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<!--The div element for the map -->
+
 <div id="map"></div>
 <div id="test"></div>
 <div id="filter"></div>
+<canvas id="chart1" width="50%" height="50%"></canvas>
+<canvas id="chart2" width="50%" height="50%"></canvas>
 
-<!--
- The `defer` attribute causes the callback to execute after the full HTML
- document has been parsed. For non-blocking uses, avoiding race conditions,
- and consistent behavior across browsers, consider loading using Promises
- with https://www.npmjs.com/package/@googlemaps/js-api-loader.
--->
+
 <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA40cGYwJwf8sG2QdRAWO0eTzACUsnJYpc&callback=initMap&v=weekly"
         async
