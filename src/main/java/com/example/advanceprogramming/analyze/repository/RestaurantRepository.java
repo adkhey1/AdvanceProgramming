@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Business, Long> {
@@ -19,5 +20,9 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
     @Query("SELECT b.name as franchise , count(b.name) as number FROM Business b WHERE number > 296" +
             "GROUP BY franchise  ORDER BY number DESC")
     HashMap<String, Integer> findBiggestFranchises();
+
+    @Query("SELECT b.business_id as id, b.attributes as attributes FROM Business b WHERE b.stars = 1")
+    ArrayList<String> selectAllFromBusiness();
+
 
 }
