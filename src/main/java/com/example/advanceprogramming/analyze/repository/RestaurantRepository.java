@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 @Repository
 public interface RestaurantRepository extends JpaRepository<Business, Long> {
 
@@ -14,8 +16,7 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
     Business findByBusiness_id(String business_id);
 
     @Query("SELECT b FROM Business b WHERE b.name = ?1")
-    Business findByName(String name);
-
+    List<Business> findByName(String name);
 
     @Query("SELECT b.name as franchise , count(b.name) as number FROM Business b WHERE number > 296" +
             "GROUP BY franchise  ORDER BY number DESC")
