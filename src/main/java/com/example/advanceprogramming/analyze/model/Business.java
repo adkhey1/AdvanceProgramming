@@ -2,6 +2,7 @@ package com.example.advanceprogramming.analyze.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "business")
+@ToString
 public class Business {
 
     @Id
