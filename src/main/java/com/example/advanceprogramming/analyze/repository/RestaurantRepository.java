@@ -1,5 +1,6 @@
 package com.example.advanceprogramming.analyze.repository;
 
+import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,6 +27,10 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
             value = "SELECT b.business_id as id, b.attributes as attributes FROM Business b  LIMIT 10",
             nativeQuery = true)
     ArrayList<String> selectAllFromBusiness();
+
+    @Query(value = "SELECT * FROM Business b  LIMIT 10",
+            nativeQuery = true)
+    ArrayList<Business> selectLatitudeLongtitudeID();
 
 
 }

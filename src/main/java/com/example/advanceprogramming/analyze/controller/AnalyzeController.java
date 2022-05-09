@@ -66,11 +66,25 @@ public class AnalyzeController {
         return null;
     }
 
-    @PostMapping(value = "/restaurant/filtered/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> listRestaurants(@RequestBody FilterDTO input) {
+    @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> listRestaurants(){ //@RequestBody FilterDTO input) {
 
-        List<MarkerDTO> businesses = analyzeService.getMarkerFromFilter(input);
-        MarkerDTO[] output = businesses.toArray(new MarkerDTO[0]);
+        List<Business> businesses = restaurantRepository.selectLatitudeLongtitudeID();
+
+        List<MarkerDTO> markerList = new ArrayList<>();
+        MarkerDTO temp;
+        for(Business b: businesses){
+            temp = new MarkerDTO();
+
+            temp.setLatitude(b.getLatitude());
+            temp.setLongitude(b.getLongitude());
+            temp.setBusinessID(b.getBusiness_id());
+
+            markerList.add(temp);
+        }
+
+
+        MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);
 
 
 
