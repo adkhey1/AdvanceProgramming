@@ -72,12 +72,10 @@ public class AnalyzeController {
         List<MarkerDTO> businesses = analyzeService.getMarkerFromFilter(input);
         MarkerDTO[] output = businesses.toArray(new MarkerDTO[0]);
 
-        MarkerDTO output1 = new MarkerDTO();
-        output1.setLongitude(200);
-        output1.setLatitude(211);
-        output1.setBusinessID("hahah23");
 
-        return ResponseEntity.status(HttpStatus.OK).body(output1);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
     @RequestMapping("/transfromdb")
@@ -87,7 +85,7 @@ public class AnalyzeController {
         log.debug("Start transfrom with " + listRaw.size() + " entries");
 
 
-        ArrayList<String> keyValue = new ArrayList<>();
+        /*ArrayList<String> keyValue = new ArrayList<>();
         Attributes attribute;
 
         String businessID;
@@ -148,7 +146,7 @@ public class AnalyzeController {
 
         }
 
-
+*/
         return "transformingDB";
     }
 
