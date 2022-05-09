@@ -22,7 +22,9 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
             "GROUP BY franchise  ORDER BY number DESC")
     HashMap<String, Integer> findBiggestFranchises();
 
-    @Query("SELECT b.business_id as id, b.attributes as attributes FROM Business b WHERE b.stars = 1")
+    @Query(
+            value = "SELECT b.business_id as id, b.attributes as attributes FROM Business b  LIMIT 10",
+            nativeQuery = true)
     ArrayList<String> selectAllFromBusiness();
 
 
