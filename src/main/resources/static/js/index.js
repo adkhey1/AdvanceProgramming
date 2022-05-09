@@ -35,9 +35,23 @@ function initMap() {
 }
 window.initMap = initMap;
 
+var json_data = "test";
+loadMapMarkers()
+
+function loadMapMarkers() {
 
 
 
+    return $.ajax({
+        type: "GET",
+        url: "/restaurant/filtered/",
+        data: json_data,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8"
+    });
+}
+
+document.getElementById("input").innerHTML = json_data;
 
 //TODO Gracjan Filter
 // document.getElementById("map")
