@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MarkerDTO {
-    private String businessID;
+    private String business_id;
     private double latitude, longitude;
 
 
