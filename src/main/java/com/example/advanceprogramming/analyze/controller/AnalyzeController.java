@@ -75,7 +75,7 @@ public class AnalyzeController {
 
             temp.setLatitude(b.getLatitude());
             temp.setLongitude(b.getLongitude());
-            temp.setBusinessID(b.getBusiness_id());
+            temp.setBusiness_id(b.getBusiness_id());
 
             markerList.add(temp);
         }
