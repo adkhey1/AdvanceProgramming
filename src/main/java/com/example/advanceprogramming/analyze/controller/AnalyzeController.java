@@ -31,7 +31,7 @@ public class AnalyzeController {
     @Autowired
     private AnalyzeService analyzeService;
 
-    @PostMapping(value = "/map/viewMarker/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/map/viewMarker/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input) {
 
         Business businessByBusinessID = restaurantRepository.findByBusiness_id(input.getBusiness_id());
