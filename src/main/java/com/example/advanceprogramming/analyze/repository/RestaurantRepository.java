@@ -28,7 +28,7 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
             nativeQuery = true)
     ArrayList<String> selectAllFromBusiness();
 
-    @Query(value = "SELECT * FROM Business b  LIMIT 10",
+    @Query(value = "SELECT * FROM Business b  LIMIT 1000",
             nativeQuery = true)
     ArrayList<Business> selectLatitudeLongtitudeID();
 
