@@ -22,7 +22,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         MarkerDTO dto = new MarkerDTO();
 
         if (input != null) {
-            dto.setBusinessID(input.getBusiness_id());
+            dto.setBusiness_id(input.getBusiness_id());
             dto.setLatitude(input.getLatitude());
             dto.setLongitude(input.getLongitude());
         }

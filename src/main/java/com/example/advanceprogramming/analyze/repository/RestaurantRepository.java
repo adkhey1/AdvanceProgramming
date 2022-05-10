@@ -24,11 +24,11 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
     HashMap<String, Integer> findBiggestFranchises();
 
     @Query(
-            value = "SELECT b.business_id as id, b.attributes as attributes FROM Business b  LIMIT 10",
+            value = "SELECT b.business_id as id, b.attributes as attributes FROM Business b  LIMIT 1000",
             nativeQuery = true)
     ArrayList<String> selectAllFromBusiness();
 
-    @Query(value = "SELECT * FROM Business b  LIMIT 10",
+    @Query(value = "SELECT * FROM Business b  LIMIT 1000",
             nativeQuery = true)
     ArrayList<Business> selectLatitudeLongtitudeID();
 
