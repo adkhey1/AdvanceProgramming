@@ -7,6 +7,7 @@ import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.RestaurantRepository;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
+import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,9 @@ public class AnalyzeController {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private AnalyzeServiceImpl analyzeServiceImpl;
 
     @Autowired
     private AnalyzeService analyzeService;
@@ -160,20 +164,12 @@ public class AnalyzeController {
      * needs categories from filter
      */
     @GetMapping("/test/test/1")
-    public void splitCategorie(/*String filterInput*/) {
+    public void getBusinessByFilter(/*filterInput*/) {
 
         //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
         List<Business> allBusiness = restaurantRepository.selectByCategorie("Food", "Philadelphia");
-        HashMap<String, List<String>> splitCategorie = new HashMap<>();
-        //Set<String> allCategories = new HashSet<>(); -> to list all different categories
 
-        for (Business b : allBusiness) {
-            String businessID = b.getBusiness_id();
-            List<String> categories = Arrays.asList(b.getCategories().split(","));
-
-            splitCategorie.put(businessID, categories);
-            //allCategories.addAll(categories);
-        }
+        HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
 
     }
 
