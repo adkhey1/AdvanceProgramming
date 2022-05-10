@@ -167,7 +167,8 @@ public class AnalyzeController {
     public void getBusinessByFilter(/*filterInput*/) {
 
         //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
-        List<Business> allBusiness = restaurantRepository.selectByCategorie("Food", "Philadelphia");
+        //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
+        List<Business> allBusiness = restaurantRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
 
         HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
 

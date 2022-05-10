@@ -32,7 +32,9 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
             nativeQuery = true)
     ArrayList<Business> selectFirst10();
 
-    @Query("SELECT b FROM Business b WHERE b.categories LIKE %?1% AND b.city LIKE ?2")
-    List<Business> selectByCategorie(String categories, String city);
+    @Query("SELECT b FROM Business b WHERE b.categories LIKE %?1% AND b.city LIKE %?2% " +
+            "AND b.stars >= ?3 AND b.postal_code LIKE %?4% AND b.is_open = ?5 AND b.review_count >= ?6")
+    List<Business> selectByFilter(String categories, String city, double stars,
+                                  String postal_code, int is_open, int review_count);
 
 }
