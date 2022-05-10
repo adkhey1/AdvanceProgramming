@@ -31,15 +31,15 @@ public class AnalyzeController {
     @Autowired
     private AnalyzeService analyzeService;
 
-    @PostMapping("/map/viewMarker/")
-    public JSONObject getBusinessById(@RequestBody IdDTO input) {
+    @PostMapping(value = "/map/viewMarker/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input) {
 
         Business businessByBusinessID = restaurantRepository.findByBusiness_id(input.getBusiness_id());
 
         JSONObject Business = new JSONObject();
         Business.put("Business", businessByBusinessID);
 
-        return Business;
+        return ResponseEntity.status(HttpStatus.OK).body(businessByBusinessID);
     }
 
     @GetMapping("/search/{name}/")
