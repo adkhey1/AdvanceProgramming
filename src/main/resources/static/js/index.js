@@ -23,7 +23,7 @@ function initMap() {
         marker.addListener("click",()=>{
             detailWindow.open(map, marker);
             $.ajax({
-                'async': false,
+                'async': "true",
                 'type': "POST",
                 'global': false,
                 'url': "/map/viewMarker/",
