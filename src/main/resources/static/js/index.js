@@ -7,29 +7,51 @@ function initMap() {
     })
 
 
-    function addMarker(positionLatLong) {
+    function addMarker(latLongPos,businessID) {
         const marker = new google.maps.Marker({
-            position: positionLatLong,
+            position: latLongPos,
+
             map: map
 
 
         });
 
         const detailWindow = new google.maps.InfoWindow({
-            content: "Test"
+            content: businessID
         });
 
         marker.addListener("click",()=>{
             detailWindow.open(map, marker);
+            $.ajax({
+                'async': "true",
+                'type': "POST",
+                'global': false,
+                'url': "/map/viewMarker/",
+                //'contentType': "text",
+                //'data':businessID.toString(),
+                'contentType': "application/json; charset=utf-8",
+                'data': JSON.stringify({business_id: businessID}),
+                //dataType: "json",
+                'success': function (data) {
+                    console.log("test")
+                    console.log(data)
+                    console.log(businessID)
+                }
+            });
         })
 
     }
+    var myLatlng=0;
+    for (let i = 0; i < json_data_LatLongArray.length; i++) {
+         myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].latitude);
+        addMarker(myLatlng,json_data_LatLongArray[i].business_id)
+    }
 
-
-    addMarker({lat: 50.1109, lng: 8.6821});
-    addMarker({lat: 52.5200, lng: 13.4050});
-    addMarker({lat: 51.5072, lng: 0.1276});
-    addMarker({lat: 50.16026, lng: 8.52174});
+    //var myLatlng = new google.maps.LatLng(json_data_LatLongArray[1].latitude, json_data_LatLongArray[1].latitude);
+    //addMarker(myLatlng);
+    //addMarker({lat: 52.5200, lng: 13.4050});
+    //addMarker({lat: 51.5072, lng: 0.1276});
+    //addMarker({lat: 50.16026, lng: 8.52174});
 
 
 }
@@ -39,18 +61,81 @@ window.initMap = initMap;
 
 
 
+//get Markers
+var json_data_LatLongArray;
+
+
+function loadMapMarkers() {
+
+
+
+
+    $.ajax({
+        'async': false,
+        'type': "POST",
+        'global': false,
+        'url': "/restaurant/filtered/",
+        'success': function (data) {
+            json_data_LatLongArray = data;
+        }
+    });
+
+    /*
+    $.ajax({
+        type: 'POST',
+        url: "/restaurant/filtered/",
+        //force to handle it as text
+        dataType: "JSON",
+        success: function(data) {
+
+            //data downloaded so we call parseJSON function
+            //and pass downloaded data
+
+            //var json = $.parseJSON(data);
+            //now json variable contains data in json format
+            //let's display a few items
+           console.log(data)
+            //json_data_LatLongArray=data;
+          // console.log(json_data_LatLongArray)
+        }
+    });
+*/
+
+}
+
+loadMapMarkers();
+
+console.log(json_data_LatLongArray)
+
+
+
+
+/*
+function prepJsonForMarker(){
+    for (let i = 0; i < 20; i++) {
+        console.log(json_data_LatLongArray[i].latitude)
+        console.log(json_data_LatLongArray[i].longitude)
+    }
+
+
+}
+prepJsonForMarker()
+
+*/
+
 //TODO Gracjan Filter
 // document.getElementById("map")
 
+var $items = $('#firstName, #lastName,#phoneNumber,#address ')
+var obj = {}
+$items.each(function() {
+    obj[this.id] = $(this).val();
+})
 
-$(document).ready(function() {
-    $.ajax({
-        url: "http://rest-service.guides.spring.io/greeting"
-    }).then(function(data) {
-        $('.greeting-id').append(data.id);
-        $('.greeting-content').append(data.content);
-    });
-});
+var json= JSON.stringify( obj);
+
+
+
 
 
 /*

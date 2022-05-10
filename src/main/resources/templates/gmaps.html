@@ -2,240 +2,27 @@
 <head>
     <title>Add Map</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script type="module" th:src="@{/js/index.js}"></script>
-
-
-
-
-
-    <meta charset="ISO-8859-1">
-    <title>List Users</title>
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
-
-
-
-
-    <style>
-        #tableEditor {
-            position: absolute;
-            left: 20px;
-            top: 20px;
-            padding: 5px;
-            border: 1px solid #000;
-            background: #fff;
-        }
-
-        table {
-            border-collapse: collapse
-        }
-
-        th, td {
-            padding: 10px
-        }
-
-        .popup {
-            display: none;
-            position: absolute;
-            background: #ccc;
-            border-radius: 6px;
-            padding: 8px;
-        }
-
-    </style>
-
-
-
-
-
-
-
-
-
-
+    <script type="module" th:src="@{/js/chart1.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<!--The div element for the map -->
+
 <div id="map"></div>
 <div id="test"></div>
 <div id="filter"></div>
-
-<!--
- The `defer` attribute causes the callback to execute after the full HTML
- document has been parsed. For non-blocking uses, avoiding race conditions,
- and consistent behavior across browsers, consider loading using Promises
- with https://www.npmjs.com/package/@googlemaps/js-api-loader.
-
-
-<input type="button" onclick="prijsvraagknop()" value="Prijsvraag"></button>
--->
-
-<input type="button" id="popupbutton" onclick="popup(this)"/>
-<ul id="checkBundle">
-    <li><label> Anzahl der Sterne <input type="text" /></label>
-    <li><label> Etwas <input type="checkbox" />test1</label>
-    <li><label> Etwas 2<input type="checkbox" />test2</label>
-    <li><label> Land <input type="text" /></label>
-    <li> <label for="Star">Choose a car:</label>
-    <select name="Star" id="Star">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="4">5</option>
-    </select>
-    <li><label><input type="checkbox" />test4</label>
-    <button type="button" onclick="alert('Hello world!')">Click Me!</button>
-</ul>
-
-
-
-
-<a href="edit" id=edit>Edit table</a>
-<table class="table table-striped table-bordered" id="table">
-    <thead class="thead-dark">
-    <tr>
-        <th>Article ID</th>
-        <th>Article Name</th>
-        <th>Number in Repository</th>
-        <th>Description</th>
-        <th>Add Time</th>
-        <th>Add by</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="test1">Article ID</td>
-        <td th:text="test2">Article Name</td>
-        <td th:text="test3">Number in Repository</td>
-        <td th:text="test4">Description</td>
-        <td th:text="test5">Add Time</td>
-        <td th:text="test6">Add by</td>
-    </tr>
-    </tbody>
-</table>
-
-
-<input type="submit" value="click me daddy" id="btnClick">
+<div id="input"></div>
+<canvas id="chart1" width="50%" height="50%"></canvas>
+<canvas id="chart2" width="50%" height="50%"></canvas>
 
 
 <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA40cGYwJwf8sG2QdRAWO0eTzACUsnJYpc&callback=initMap&v=weekly"
         async
->
-</script>
-
-
-<script type="text/javascript">
-
-
-    $.ajax({
-        type: "POST",
-        //contentType : 'application/json; charset=utf-8',
-        //dataType : 'json',
-        url: "/gDirecotry/" + id,
-        data: JSON.stringify(test),
-        success: function (result) {
-            console.log(result);
-        }
-    });
-
-</script>
-}
-
-
-
-<script type="text/javascript">
-
-
-    function popup() {
-        var popwindow = document.getElementById("checkBundle");
-        if (popwindow.style.display === "none") {
-            popwindow.style.display = "block";
-        } else {
-            popwindow.style.display = "none";
-        }
-    };
-
-
-//----------------------------------------------------------------------
-
-    //edit table
-    var table = document.getElementById("table"), sumVal = 0;
-    for (var i = 1; i < table.rows.length; i++) {
-        sumVal = sumVal + parseInt(table.rows[i].cells[2].innerHTML);
-    }
-    document.getElementById("allItems").innerHTML = sumVal;
-
-
-    var table = document.getElementById("table"), sumVal = (table.rows.length) - 1;
-    document.getElementById("allArticle").innerHTML = sumVal;
-
-    //Funktion to get table Descripton
-    $(document).ready(function () {
-        $(document).on('mouseover', 'td', function () {
-            var offset = $(this).offset();
-
-            var html = '<div class="popup">' + $(this).closest('table').find('th').eq($(this).index()).text() + '</div>';
-
-            $('.popup').remove();
-            $(html).insertBefore('table');
-            $('.popup').css({'top': offset.top, 'left': offset.left}).fadeIn();
-        });
-    });
-
-
-    $('#edit').click(function () {
-        var headers = $('#table th').map(function () {
-            var th = $(this);
-            return {
-                text: th.text(),
-                shown: th.css('display') != 'none'
-            };
-        });
-//edit table
-        var h = ['<div id=tableEditor><button id=done>Done</button><table><thead><tr>'];
-        $.each(headers, function () {
-            h.push('<th><input type=checkbox',
-                (this.shown ? ' checked ' : ' '),
-                '/> ',
-                this.text,
-                '</th>');
-        });
-        h.push('</tr></thead></table></div>');
-        $('body').append(h.join(''));
-
-        $('#done').click(function () {
-            var showHeaders = $('#tableEditor input').map(function () {
-                return this.checked;
-            });
-            $.each(showHeaders, function (i, show) {
-                var cssIndex = i + 1;
-                var tags = $('#table th:nth-child(' + cssIndex + '), #table td:nth-child(' + cssIndex + ')');
-                if (show)
-                    tags.show();
-                else
-                    tags.hide();
-            });
-
-            $('#tableEditor').remove();
-            return false;
-        });
-
-        return false;
-    });
-
-
-</script>
+></script>
 
 
 </body>

@@ -1,11 +1,9 @@
 package com.example.advanceprogramming.auth.controller;
 
 
-
 import com.example.advanceprogramming.auth.model.User;
 import com.example.advanceprogramming.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,11 +12,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class UserController {
+
+
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public void posted(Search search) {
+        System.out.println("Post");
+        System.out.println(search.toString());
+    }
+
 
     @Autowired
     private UserRepository userRepository;
@@ -27,11 +31,6 @@ public class UserController {
     @GetMapping({"/home", "/", ""})
     public String viewHomePage() {
         return "index";
-    }
-
-    @GetMapping({"/test"})
-    public String test() {
-        return "test";
     }
 
     //Register page
@@ -68,31 +67,24 @@ public class UserController {
     }
 
 
-
-
-
-
-
-
-    @RequestMapping(value="/restaurant/filtered",method=RequestMethod.POST)
-    public  @ResponseBody String  getSearchUserProfiles(@RequestBody String search, HttpServletRequest request) {
-        String pName = search.toString();
-        //String lName = search.getLName();
-        System.out.println(search.toString());
-      //  System.out.println(lName);
-
-        System.out.println(pName);
-        System.out.println("XD");
-        // your logic next
-        return pName;
+    @GetMapping({"/test",})
+    public String testGracjan() {
+        return "test";
     }
 
 
+    @RequestMapping(value="/restaurant/filtered", method=RequestMethod.POST)
 
-
-
-
-
+    public @ResponseBody String getSearchUserProfiles(@RequestBody String search, HttpServletRequest request) {
+        //String pName = search.getPName();
+        //String lName = search.getLName();
+        System.out.println(search);
+        return search;
+        // your logic next
+    }
 
 
 }
+
+
+
