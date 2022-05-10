@@ -31,6 +31,7 @@ function initMap() {
                 //'data':businessID.toString(),
                 'contentType': "application/json; charset=utf-8",
                 'data': JSON.stringify({businessID: businessID}),
+                dataType: "json",
                 'success': function (data) {
                     console.log(data)
                     console.log(businessID)
