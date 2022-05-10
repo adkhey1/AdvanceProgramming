@@ -22,6 +22,11 @@ public class UserController {
         System.out.println("Post");
     }
 
+    @RequestMapping("/map")
+    private String getMap(){
+        return "gmaps";
+    }
+
 
     @Autowired
     private UserRepository userRepository;
