@@ -114,7 +114,6 @@
 
 
 
-
             <form action="/action_page.php">
                 <label for="stars">Stars:</label>
                 <select name="stars" id="stars">
@@ -145,24 +144,18 @@
             </div>
 
             <div>
-            <input type="password" id="info1" placeholder="Info1" name="psw" required>
+            <input type="text" id="info1" placeholder="Restaurant Name" name="psw" required>
             </div>
             <div>
-            <input type="password" id="info2" placeholder="Info2" name="psw" required>
+            <input type="text" id="info2" placeholder="Info2" name="psw" required>
             </div>
 
             <br><br>
             <input type="button" onclick="funktionZwei()" value="Submit Star">
+            <button type="button" onclick="searchText()">Send to Controller </button>
         </form>
     </div>
 </div>
-
-
-
-<button type="button" onclick="funktionZwei()">Click Me! </button>
-
-<button type="button" onclick="searchText()">Send to Controller </button>
-
 
 
 
@@ -183,11 +176,14 @@
 
 
     function searchText() {
+
         var search = {
-            vegan : document.getElementById("vegan").spellcheck,
-            halal : document.getElementById("halal").spellcheck,
-            lName :"prasad",
+            vegan : document.getElementById('vegan').checked,
+            halal : document.getElementById("halal").checked,
+            lName : document.getElementById("info1").value,
             star : document.getElementById("stars").value
+
+
         }
 
         $.ajax({
