@@ -30,9 +30,10 @@ function initMap() {
                 //'contentType': "text",
                 //'data':businessID.toString(),
                 'contentType': "application/json; charset=utf-8",
-                'data': JSON.stringify({businessID: businessID}),
+                'data': JSON.stringify({business_id: businessID}),
                 dataType: "json",
                 'success': function (data) {
+                    console.log("test")
                     console.log(data)
                     console.log(businessID)
                 }
@@ -43,7 +44,7 @@ function initMap() {
     var myLatlng=0;
     for (let i = 0; i < json_data_LatLongArray.length; i++) {
          myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].latitude);
-        addMarker(myLatlng,json_data_LatLongArray[i].businessID)
+        addMarker(myLatlng,json_data_LatLongArray[i].business_id)
     }
 
     //var myLatlng = new google.maps.LatLng(json_data_LatLongArray[1].latitude, json_data_LatLongArray[1].latitude);
