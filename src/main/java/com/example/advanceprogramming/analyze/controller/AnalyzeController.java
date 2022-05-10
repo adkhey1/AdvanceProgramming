@@ -1,6 +1,7 @@
 package com.example.advanceprogramming.analyze.controller;
 
 
+import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
 import com.example.advanceprogramming.analyze.DTO.IdDTO;
 import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
@@ -36,10 +37,9 @@ public class AnalyzeController {
 
         Business businessByBusinessID = restaurantRepository.findByBusiness_id(input.getBusiness_id());
 
-        JSONObject Business = new JSONObject();
-        Business.put("Business", businessByBusinessID);
+        BusinessDTO output = analyzeService.parseBusinessToDTO(businessByBusinessID);
 
-        return ResponseEntity.status(HttpStatus.OK).body(Business);
+        return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
     @GetMapping("/search/{name}/")
