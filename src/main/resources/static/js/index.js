@@ -24,10 +24,13 @@ function initMap() {
             detailWindow.open(map, marker);
             $.ajax({
                 'async': false,
-                'type': "GET",
+                'type': "POST",
                 'global': false,
-                'url': "/marker/id/",
-                'data': businessID,
+                'url': "/map/viewMarker/",
+                //'contentType': "text",
+                //'data':businessID.toString(),
+                'contentType': "application/json; charset=utf-8",
+                'data': JSON.stringify({businessID: businessID}),
                 'success': function (data) {
                     console.log(data)
                     console.log(businessID)
