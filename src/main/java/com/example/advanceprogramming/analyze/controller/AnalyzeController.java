@@ -1,9 +1,8 @@
 package com.example.advanceprogramming.analyze.controller;
 
 
-import com.example.advanceprogramming.analyze.DTO.FilterDTO;
+import com.example.advanceprogramming.analyze.DTO.IdDTO;
 import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
-import com.example.advanceprogramming.analyze.model.Attributes;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.RestaurantRepository;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
@@ -18,9 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -34,10 +31,10 @@ public class AnalyzeController {
     @Autowired
     private AnalyzeService analyzeService;
 
-    @GetMapping("/marker/id/")
-    public JSONObject getRestaurantByMarked(@PathVariable String id) {
+    @PostMapping("/map/viewMarker/")
+    public JSONObject getBusinessById(@RequestBody IdDTO input) {
 
-        Business businessByBusinessID = restaurantRepository.findByBusiness_id(id);
+        Business businessByBusinessID = restaurantRepository.findByBusiness_id(input.getBusiness_id());
 
         JSONObject Business = new JSONObject();
         Business.put("Business", businessByBusinessID);
@@ -67,13 +64,13 @@ public class AnalyzeController {
     }
 
     @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> listRestaurants(){ //@RequestBody FilterDTO input) {
+    public ResponseEntity<?> listRestaurants() { //@RequestBody FilterDTO input) {
 
         List<Business> businesses = restaurantRepository.selectLatitudeLongtitudeID();
 
         List<MarkerDTO> markerList = new ArrayList<>();
         MarkerDTO temp;
-        for(Business b: businesses){
+        for (Business b : businesses) {
             temp = new MarkerDTO();
 
             temp.setLatitude(b.getLatitude());
@@ -83,11 +80,7 @@ public class AnalyzeController {
             markerList.add(temp);
         }
 
-
         MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);
-
-
-
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
