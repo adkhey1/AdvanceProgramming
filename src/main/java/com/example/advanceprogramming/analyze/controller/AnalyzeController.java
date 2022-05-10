@@ -39,7 +39,7 @@ public class AnalyzeController {
         JSONObject Business = new JSONObject();
         Business.put("Business", businessByBusinessID);
 
-        return ResponseEntity.status(HttpStatus.OK).body(businessByBusinessID);
+        return ResponseEntity.status(HttpStatus.OK).body(Business);
     }
 
     @GetMapping("/search/{name}/")
