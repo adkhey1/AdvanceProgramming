@@ -41,10 +41,12 @@ function initMap() {
         })
 
     }
-    var myLatlng=0;
+    var myLatlng;
     for (let i = 0; i < json_data_LatLongArray.length; i++) {
-         myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].latitude);
+         myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].longitude);
         addMarker(myLatlng,json_data_LatLongArray[i].business_id)
+        console.log(json_data_LatLongArray[i].latitude)
+        console.log(json_data_LatLongArray[i].latitude)
     }
 
     //var myLatlng = new google.maps.LatLng(json_data_LatLongArray[1].latitude, json_data_LatLongArray[1].latitude);
