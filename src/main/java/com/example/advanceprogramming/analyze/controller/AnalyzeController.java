@@ -34,7 +34,7 @@ public class AnalyzeController {
     @Autowired
     private AnalyzeService analyzeService;
 
-    @GetMapping("/marker/{id}/")
+    @GetMapping("/marker/id/")
     public JSONObject getRestaurantByMarked(@PathVariable String id) {
 
         Business businessByBusinessID = restaurantRepository.findByBusiness_id(id);

@@ -7,51 +7,116 @@ function initMap() {
     })
 
 
-    function addMarker(positionLatLong) {
+    function addMarker(latLongPos,businessID) {
         const marker = new google.maps.Marker({
-            position: positionLatLong,
+            position: latLongPos,
+
             map: map
 
 
         });
 
         const detailWindow = new google.maps.InfoWindow({
-            content: "Test"
+            content: businessID
         });
 
         marker.addListener("click",()=>{
             detailWindow.open(map, marker);
+            $.ajax({
+                'async': false,
+                'type': "GET",
+                'global': false,
+                'url': "/marker/id/",
+                'data': businessID,
+                'success': function (data) {
+                    console.log(data)
+                    console.log(businessID)
+                }
+            });
         })
 
     }
+    var myLatlng=0;
+    for (let i = 0; i < json_data_LatLongArray.length; i++) {
+         myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].latitude);
+        addMarker(myLatlng,json_data_LatLongArray[i].businessID)
+    }
 
-
-    addMarker({lat: 50.1109, lng: 8.6821});
-    addMarker({lat: 52.5200, lng: 13.4050});
-    addMarker({lat: 51.5072, lng: 0.1276});
-    addMarker({lat: 50.16026, lng: 8.52174});
+    //var myLatlng = new google.maps.LatLng(json_data_LatLongArray[1].latitude, json_data_LatLongArray[1].latitude);
+    //addMarker(myLatlng);
+    //addMarker({lat: 52.5200, lng: 13.4050});
+    //addMarker({lat: 51.5072, lng: 0.1276});
+    //addMarker({lat: 50.16026, lng: 8.52174});
 
 
 }
 window.initMap = initMap;
 
-var json_data = "test";
-loadMapMarkers()
+
+
+
+
+//get Markers
+var json_data_LatLongArray;
+
 
 function loadMapMarkers() {
 
 
 
-    return $.ajax({
-        type: "GET",
-        url: "/restaurant/filtered/",
-        data: json_data,
-        dataType: "json",
-        contentType: "application/json; charset=utf-8"
+
+    $.ajax({
+        'async': false,
+        'type': "POST",
+        'global': false,
+        'url': "/restaurant/filtered/",
+        'success': function (data) {
+            json_data_LatLongArray = data;
+        }
     });
+
+    /*
+    $.ajax({
+        type: 'POST',
+        url: "/restaurant/filtered/",
+        //force to handle it as text
+        dataType: "JSON",
+        success: function(data) {
+
+            //data downloaded so we call parseJSON function
+            //and pass downloaded data
+
+            //var json = $.parseJSON(data);
+            //now json variable contains data in json format
+            //let's display a few items
+           console.log(data)
+            //json_data_LatLongArray=data;
+          // console.log(json_data_LatLongArray)
+        }
+    });
+*/
+
 }
 
-document.getElementById("input").innerHTML = json_data;
+loadMapMarkers();
+
+console.log(json_data_LatLongArray)
+
+
+
+
+/*
+function prepJsonForMarker(){
+    for (let i = 0; i < 20; i++) {
+        console.log(json_data_LatLongArray[i].latitude)
+        console.log(json_data_LatLongArray[i].longitude)
+    }
+
+
+}
+prepJsonForMarker()
+
+*/
 
 //TODO Gracjan Filter
 // document.getElementById("map")
