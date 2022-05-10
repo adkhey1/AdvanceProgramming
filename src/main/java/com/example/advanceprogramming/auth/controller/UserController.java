@@ -1,7 +1,6 @@
 package com.example.advanceprogramming.auth.controller;
 
 
-
 import com.example.advanceprogramming.auth.model.User;
 import com.example.advanceprogramming.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,30 +9,39 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController {
+
+
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public void posted(Search search) {
+        System.out.println("Post");
+        System.out.println(search.toString());
+    }
+
 
     @Autowired
     private UserRepository userRepository;
 
     //Start Page
-    @GetMapping({"/home","/",""})
-    public String viewHomePage(){
+    @GetMapping({"/home", "/", ""})
+    public String viewHomePage() {
         return "index";
     }
 
     //Register page
     @GetMapping("/register")
-    public String registerPage(Model model){
+    public String registerPage(Model model) {
         model.addAttribute("user", new User());
         return "register_page";
     }
 
     @PostMapping("/registering")
-    public String registerUser(User user){
+    public String registerUser(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
@@ -45,17 +53,38 @@ public class UserController {
     }
 
     @GetMapping("/user_dashboard")
-    public String userDashboard (Model model){
+    public String userDashboard(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName(); //only for testing porpoise
-        model.addAttribute("test",currentPrincipalName); //only for testing porpoise
+        model.addAttribute("test", currentPrincipalName); //only for testing porpoise
 
-        return"user_dashboard";
+        return "user_dashboard";
     }
 
     @GetMapping("/map")
-    public String getMap(){
+    public String getMap() {
         return "gmaps";
     }
 
+
+    @GetMapping({"/test",})
+    public String testGracjan() {
+        return "test";
+    }
+
+
+    @RequestMapping(value="/restaurant/filtered", method=RequestMethod.POST)
+
+    public @ResponseBody String getSearchUserProfiles(@RequestBody String search, HttpServletRequest request) {
+        //String pName = search.getPName();
+        //String lName = search.getLName();
+        System.out.println(search);
+        return search;
+        // your logic next
+    }
+
+
 }
+
+
+

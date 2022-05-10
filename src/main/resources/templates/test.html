@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        .openBtn {
+            display: flex;
+            justify-content: left;
+        }
+        .openButton {
+            border: none;
+            border-radius: 5px;
+            background-color: #1c87c9;
+            color: white;
+            padding: 14px 20px;
+            cursor: pointer;
+            position: fixed;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .loginPopup {
+            position: relative;
+            text-align: center;
+            width: 100%;
+        }
+        .formPopup {
+            display: none;
+            position: fixed;
+            left: 45%;
+            top: 5%;
+            transform: translate(-50%, 5%);
+            border: 3px solid #999999;
+            z-index: 9;
+        }
+        .formContainer {
+            max-width: 300px;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .formContainer input[type=text],
+        .formContainer input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 20px 0;
+            border: none;
+            background: #eee;
+        }
+        .formContainer input[type=text]:focus,
+        .formContainer input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+        .formContainer .btn {
+            padding: 12px 20px;
+            border: none;
+            background-color: #8ebf42;
+            color: #fff;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+        .formContainer .cancel {
+            background-color: #cc0000;
+        }
+        .formContainer .btn:hover,
+        .openButton:hover {
+            opacity: 1;
+        }
+    </style>
+
+
+
+</head>
+<body>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<button class="openButton" onclick="openForm()"><strong>Open Form</strong></button>
+
+
+
+<div class="loginPopup">
+    <div class="formPopup" id="popupForm">
+        <a class="close" onclick="closeForm()">&times;</a>
+        <form action="/action_page.php" class="formContainer">
+            <h2>Filter</h2>
+            <label>
+                <strong>E-mail</strong>
+            </label>
+
+
+
+
+            <form action="/action_page.php">
+                <label for="stars">Stars:</label>
+                <select name="stars" id="stars">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+
+                </select>
+
+            </form>
+
+
+            <div>
+                <input type="checkbox" id="vegan" name="Vegan">
+                <label for="Vegan">Vegan</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="halal" name="Halal">
+                <label for="Halal">Halal</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="horns" name="horns">
+                <label for="horns">Horns</label>
+            </div>
+
+            <div>
+            <input type="password" id="info1" placeholder="Info1" name="psw" required>
+            </div>
+            <div>
+            <input type="password" id="info2" placeholder="Info2" name="psw" required>
+            </div>
+
+            <br><br>
+            <input type="button" onclick="funktionZwei()" value="Submit Star">
+        </form>
+    </div>
+</div>
+
+
+
+<button type="button" onclick="funktionZwei()">Click Me! </button>
+
+<button type="button" onclick="searchText()">Send to Controller </button>
+
+
+
+
+<p id="demo"></p>
+
+
+<script >
+
+
+    function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+    }
+    function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+    }
+
+
+
+
+    function searchText() {
+        var search = {
+            vegan : document.getElementById("vegan").spellcheck,
+            halal : document.getElementById("halal").spellcheck,
+            lName :"prasad",
+            star : document.getElementById("stars").value
+        }
+
+        $.ajax({
+            type: "POST",
+            contentType : 'application/json; charset=utf-8',
+            dataType : 'json',
+            url: "http://localhost:8080/restaurant/filtered",
+            data: JSON.stringify(search), // Note it is important
+            success :function(result) {
+                // do what ever you want with data
+            }
+        });
+    }
+
+
+
+
+function funktionZwei(){
+
+    var stars = document.getElementById("stars").value;
+    var vegan = document.getElementById("vegan").innerHTML;
+
+    var data = {
+
+        test: "bla",
+        //textInput: textInput,
+        stars: stars,
+        vegan: vegan,
+    }
+
+    var obj = new Object();
+    obj.stars = data.stars;
+    obj.vegan = data.vegan;
+    //obj.input = data.textInput;
+    var jsonString= JSON.stringify(obj);
+
+
+    console.log(jsonString + "1");
+
+
+}
+
+    function myFunction() {
+        var x = document.getElementById("myInput").value;
+        document.getElementById("demo").innerHTML = "You wrote: " + x;
+        console.log(data.stars);
+        console.log(x+"test1");
+        console.log(x+"test1");
+        console.log(data.test2);
+        console.log(data);
+
+
+    }
+
+</script>
+
+</body>
+</html>

@@ -42,7 +42,13 @@ window.initMap = initMap;
 //TODO Gracjan Filter
 // document.getElementById("map")
 
+var $items = $('#firstName, #lastName,#phoneNumber,#address ')
+var obj = {}
+$items.each(function() {
+    obj[this.id] = $(this).val();
+})
 
+var json= JSON.stringify( obj);
 
 
 
