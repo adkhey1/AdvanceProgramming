@@ -18,9 +18,13 @@ public class UserController {
 
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public void posted(Search search) {
+    public void posted() {
         System.out.println("Post");
-        System.out.println(search.toString());
+    }
+
+    @RequestMapping("/map")
+    private String getMap(){
+        return "gmaps";
     }
 
 
@@ -61,10 +65,7 @@ public class UserController {
         return "user_dashboard";
     }
 
-    @GetMapping("/map")
-    public String getMap() {
-        return "gmaps";
-    }
+
 
 
     @GetMapping({"/test",})
@@ -72,16 +73,6 @@ public class UserController {
         return "test";
     }
 
-
-    @RequestMapping(value="/restaurant/filtered", method=RequestMethod.POST)
-
-    public @ResponseBody String getSearchUserProfiles(@RequestBody String search, HttpServletRequest request) {
-        //String pName = search.getPName();
-        //String lName = search.getLName();
-        System.out.println(search);
-        return search;
-        // your logic next
-    }
 
 
 }
