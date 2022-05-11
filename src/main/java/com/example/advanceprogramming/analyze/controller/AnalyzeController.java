@@ -163,8 +163,9 @@ public class AnalyzeController {
     /**
      * needs categories from filter
      */
-    @GetMapping("/test/test/1")
-    public void getBusinessByFilter(/*filterInput*/) {
+    @RequestMapping(value = "/test/test/1")
+    public void getBusinessByFilter(/* @RequestBody FilterDTO filterInput*/) {
+
 
         //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
         //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
@@ -173,5 +174,6 @@ public class AnalyzeController {
         HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
 
     }
+
 
 }
