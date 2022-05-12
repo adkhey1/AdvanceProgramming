@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.error.Mark;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -62,4 +64,28 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         //Todo implementieren
         return null;
     }
+
+    /**
+     * split categories in a list of Strings
+     *
+     * @param allBusiness all filtered business from Controller
+     * @return HashMap with BusinessID as Key and all categories as List of Strings as value
+     */
+    public HashMap<String, List<String>> splitCategorie(List<Business> allBusiness){
+        //Todo Split all tuples and insert into table "categories"
+
+        HashMap<String, List<String>> business = new HashMap<>();
+        //Set<String> allCategories = new HashSet<>(); -> to list all different categories
+
+        for (Business b : allBusiness) {
+            String businessID = b.getBusiness_id();
+            List<String> categories = Arrays.asList(b.getCategories().split(","));
+
+            business.put(businessID, categories);
+            //allCategories.addAll(categories);
+        }
+
+        return business;
+    }
+
 }

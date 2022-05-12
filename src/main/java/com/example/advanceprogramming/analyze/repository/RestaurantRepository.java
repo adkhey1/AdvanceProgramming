@@ -19,8 +19,8 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
     @Query("SELECT b FROM Business b WHERE b.name = ?1")
     List<Business> findByName(String name);
 
-    @Query("SELECT b.name as franchise , count(b.name) as number FROM Business b WHERE number > 296" +
-            "GROUP BY franchise  ORDER BY number DESC")
+    @Query(value = "SELECT b.name as franchise , count(b.name) as number FROM Business b" +
+            "GROUP BY franchise  ORDER BY number DESC LIMIT 10", nativeQuery = true)
     HashMap<String, Integer> findBiggestFranchises();
 
     @Query(
@@ -30,7 +30,11 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
 
     @Query(value = "SELECT * FROM Business b  LIMIT 100",
             nativeQuery = true)
-    ArrayList<Business> selectLatitudeLongtitudeID();
+    ArrayList<Business> selectFirst10();
 
+    @Query("SELECT b FROM Business b WHERE b.categories LIKE %?1% AND b.city LIKE %?2% " +
+            "AND b.stars >= ?3 AND b.postal_code LIKE %?4% AND b.is_open = ?5 AND b.review_count >= ?6")
+    List<Business> selectByFilter(String categories, String city, double stars,
+                                  String postal_code, int is_open, int review_count);
 
 }

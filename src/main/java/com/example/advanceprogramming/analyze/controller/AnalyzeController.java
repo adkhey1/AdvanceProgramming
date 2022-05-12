@@ -7,6 +7,7 @@ import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.RestaurantRepository;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
+import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class AnalyzeController {
@@ -28,6 +28,9 @@ public class AnalyzeController {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private AnalyzeServiceImpl analyzeServiceImpl;
 
     @Autowired
     private AnalyzeService analyzeService;
@@ -42,8 +45,8 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
-    @GetMapping("/search/{name}/")
-    public List<JSONObject> getRestaurantByName(@PathVariable String name, Model model) {
+    @PostMapping("/map/searchName/")
+    public List<JSONObject> getRestaurantByName(@RequestBody String name, Model model) {
 
         List<Business> businessByName = restaurantRepository.findByName(name);
 
@@ -66,7 +69,7 @@ public class AnalyzeController {
     @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurants() { //@RequestBody FilterDTO input) {
 
-        List<Business> businesses = restaurantRepository.selectLatitudeLongtitudeID();
+        List<Business> businesses = restaurantRepository.selectFirst10();
 
         List<MarkerDTO> markerList = new ArrayList<>();
         MarkerDTO temp;
@@ -155,6 +158,21 @@ public class AnalyzeController {
 
 */
         return "transformingDB";
+    }
+
+    /**
+     * needs categories from filter
+     */
+    @RequestMapping(value = "/test/test/1")
+    public void getBusinessByFilter(/* @RequestBody FilterDTO filterInput*/) {
+
+
+        //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
+        //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
+        List<Business> allBusiness = restaurantRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
+
+        HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
+
     }
 
 
