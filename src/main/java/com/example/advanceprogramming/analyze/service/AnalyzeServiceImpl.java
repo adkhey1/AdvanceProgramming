@@ -4,20 +4,26 @@ import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
 import com.example.advanceprogramming.analyze.DTO.FilterDTO;
 import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
-import com.example.advanceprogramming.analyze.repository.RestaurantRepository;
+import com.example.advanceprogramming.analyze.repository.BusinessRepository;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.error.Mark;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Autowired
-    private RestaurantRepository restaurantRepo;
+    private BusinessRepository restaurantRepo;
+
+
 
 
     @Override
@@ -86,6 +92,63 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
 
         return business;
+    }
+
+    public void splitCategoriesToCSV (List<Business> input){
+
+        File categoriesCSV = new File(System.getenv("USERPROFILE")+"\\Downloads\\" + "Categories.csv");
+
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(categoriesCSV));
+            writer.write("business_id,category");
+            writer.newLine();
+
+            String line;
+            String[] splitted;
+            for(Business b : input){
+                splitted = b.getCategories().split(",");
+
+                for (String s : splitted){
+                    line = b.getBusiness_id() + "," + s;
+                    writer.write(line);
+                    writer.newLine();
+                }
+            }
+            writer.close();
+            System.out.println("CSV erstellt");
+        }
+        catch (IOException e){
+            System.out.println("Ein Fehler ist aufgetreten");
+        }
+    }
+
+    public void splitAttributesToCSV (List<Business> input){
+        //if (attributes.length() > 2) {//Attribute sind vorhanden
+        File attributesCSV = new File(System.getenv("USERPROFILE")+"\\Downloads\\" + "Attributes.csv");
+        BufferedWriter writer;
+
+        JsonFactory factory = new JsonFactory();
+        factory.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
+        ObjectMapper objectMapper = new ObjectMapper(factory);
+        Map<String, Object> jsonMap;
+
+        String bId;
+        String attributeLine;
+        try {
+            writer = new BufferedWriter(new FileWriter(attributesCSV));
+            writer.write("business_id,aName,value,value_is_table");
+            for (Business b : input){
+                bId = b.getBusiness_id();
+                jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {});
+                //Todo über alle Keys iterieren, pro key eine Zeile in der CSV schreiben
+                System.out.println("id-" + bId + " | attributes-> \n \t" + jsonMap.toString());
+            }
+
+            writer.close();
+        }
+        catch (IOException e){
+            System.out.println("Ein Fehler ist aufgetreten und wurde gecatcht!");
+        }
     }
 
 }

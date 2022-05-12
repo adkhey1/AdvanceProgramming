@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @RequestMapping("/map")
-    private String getMap(){
+    private String getMap() {
         return "gmaps";
     }
 
@@ -66,13 +66,10 @@ public class UserController {
     }
 
 
-
-
     @GetMapping({"/test",})
     public String testGracjan() {
         return "test";
     }
-
 
 
 }

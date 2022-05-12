@@ -5,7 +5,9 @@ import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
 import com.example.advanceprogramming.analyze.DTO.IdDTO;
 import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
-import com.example.advanceprogramming.analyze.repository.RestaurantRepository;
+import com.example.advanceprogramming.analyze.model.Categories;
+import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
+import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
 import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
 import org.json.JSONObject;
@@ -27,7 +29,10 @@ public class AnalyzeController {
     private static final Logger log = LoggerFactory.getLogger(AnalyzeController.class);
 
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private BusinessRepository businessRepository;
+
+    @Autowired
+    private CategoriesRepository categoriesRepository;
 
     @Autowired
     private AnalyzeServiceImpl analyzeServiceImpl;
@@ -38,7 +43,7 @@ public class AnalyzeController {
     @PostMapping(value = "/map/viewMarker/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input) {
 
-        Business businessByBusinessID = restaurantRepository.findByBusiness_id(input.getBusiness_id());
+        Business businessByBusinessID = businessRepository.findByBusiness_id(input.getBusiness_id());
 
         BusinessDTO output = analyzeService.parseBusinessToDTO(businessByBusinessID);
 
@@ -48,7 +53,7 @@ public class AnalyzeController {
     @PostMapping("/map/searchName/")
     public List<JSONObject> getRestaurantByName(@RequestBody String name, Model model) {
 
-        List<Business> businessByName = restaurantRepository.findByName(name);
+        List<Business> businessByName = businessRepository.findByName(name);
 
         if (!businessByName.isEmpty()) {
 
@@ -69,7 +74,7 @@ public class AnalyzeController {
     @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurants() { //@RequestBody FilterDTO input) {
 
-        List<Business> businesses = restaurantRepository.selectFirst10();
+        List<Business> businesses = businessRepository.selectFirst10();
 
         List<MarkerDTO> markerList = new ArrayList<>();
         MarkerDTO temp;
@@ -89,10 +94,12 @@ public class AnalyzeController {
     }
 
     @RequestMapping("/transfromdb")
-    public String transfromDB() {
-        ArrayList<String> listRaw = restaurantRepository.selectAllFromBusiness();
+    public String splitAttributesToDB() {
+        ArrayList<Business> listRaw = businessRepository.selectAll();
 
-        log.debug("Start transfrom with " + listRaw.size() + " entries");
+        analyzeServiceImpl.splitAttributesToCSV(listRaw);
+
+        //log.debug("Start transfrom with " + listRaw.size() + " entries");
 
 
         /*ArrayList<String> keyValue = new ArrayList<>();
@@ -160,6 +167,40 @@ public class AnalyzeController {
         return "transformingDB";
     }
 
+    @RequestMapping(value = "/splitCategories")
+    public String splitCategoriesToTable(){
+
+        //List<Categories> categories;
+        List<Business> listBusiness = businessRepository.selectAll();
+        analyzeServiceImpl.splitCategoriesToCSV(listBusiness);
+
+        /*
+        int counter = 0;
+        String[] categoriesSplit;
+
+        Categories newTuple;
+        for (Business b : listBusiness){
+            categories = new ArrayList<>();
+            categoriesSplit = b.getCategories().split(",");
+            counter++;
+
+            for (String s : categoriesSplit){
+                newTuple = new Categories();
+
+                newTuple.setBusiness_id(b.getBusiness_id());
+                newTuple.setCategory(s);
+                categories.add(newTuple);
+                //categoriesRepository.save(newTuple);
+            }
+            categoriesRepository.saveAll(categories);
+            System.out.println("new tuple no. "+ counter +" saved!");
+        }
+
+        System.out.println("categories saved!");*/
+        return "splittedCategories";
+    }
+
+
     /**
      * needs categories from filter
      */
@@ -169,7 +210,7 @@ public class AnalyzeController {
 
         //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
         //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
-        List<Business> allBusiness = restaurantRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
+        List<Business> allBusiness = businessRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
 
         HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
 

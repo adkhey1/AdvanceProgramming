@@ -1,6 +1,5 @@
 package com.example.advanceprogramming.analyze.repository;
 
-import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-public interface RestaurantRepository extends JpaRepository<Business, Long> {
+public interface BusinessRepository extends JpaRepository<Business, Long> {
 
     @Query("SELECT b FROM Business b WHERE b.business_id = ?1")
     Business findByBusiness_id(String business_id);
@@ -24,9 +23,10 @@ public interface RestaurantRepository extends JpaRepository<Business, Long> {
     HashMap<String, Integer> findBiggestFranchises();
 
     @Query(
-            value = "SELECT b.business_id as id, b.attributes as attributes FROM Business b  LIMIT 1000",
+            value = "SELECT * FROM Business b LIMIT 4",
             nativeQuery = true)
-    ArrayList<String> selectAllFromBusiness();
+    ArrayList<Business> selectAll();
+
 
     @Query(value = "SELECT * FROM Business b  LIMIT 100",
             nativeQuery = true)
