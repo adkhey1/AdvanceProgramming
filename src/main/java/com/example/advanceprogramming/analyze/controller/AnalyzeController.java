@@ -44,8 +44,9 @@ public class AnalyzeController {
     public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input) {
 
         Business businessByBusinessID = businessRepository.findByBusiness_id(input.getBusiness_id());
-
         BusinessDTO output = analyzeService.parseBusinessToDTO(businessByBusinessID);
+
+        HashMap<String, Integer> countCategorie = analyzeServiceImpl.getCategorieInPostCode();
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
@@ -168,7 +169,7 @@ public class AnalyzeController {
     }
 
     @RequestMapping(value = "/splitCategories")
-    public String splitCategoriesToTable(){
+    public String splitCategoriesToTable() {
 
         //List<Categories> categories;
         List<Business> listBusiness = businessRepository.selectAll();
@@ -199,7 +200,6 @@ public class AnalyzeController {
         System.out.println("categories saved!");*/
         return "splittedCategories";
     }
-
 
     /**
      * needs categories from filter

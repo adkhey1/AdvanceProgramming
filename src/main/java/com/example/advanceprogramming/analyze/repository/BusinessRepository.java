@@ -37,4 +37,8 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     List<Business> selectByFilter(String categories, String city, double stars,
                                   String postal_code, int is_open, int review_count);
 
+    @Query("SELECT b.business_id FROM Business b WHERE  b.postal_code LIKE %?1% ")
+    List<String> selectByPostalCode(String postal_code);
+
+
 }

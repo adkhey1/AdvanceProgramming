@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashMap;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -17,8 +19,10 @@ public class BasicAnalysisDTO {
 
     //analysis
 
+
+    //ob es in der Umgebung mehrere Restaurants von der categorie gibt mit postcode schauen
+    private HashMap<String, Integer> countCategorie;
     //categorie und wie gut es in dieser ist (mit sternen schauen)
-    //ob es in der Umgebung mehrere Restaurants von der Categorie gibt
 
 
 }

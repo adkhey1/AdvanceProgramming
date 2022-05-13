@@ -5,12 +5,14 @@ import com.example.advanceprogramming.analyze.DTO.FilterDTO;
 import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
+import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -23,7 +25,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     @Autowired
     private BusinessRepository restaurantRepo;
 
-
+    @Autowired
+    private CategoriesRepository categoriesRepository;
 
 
     @Override
@@ -77,7 +80,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      * @param allBusiness all filtered business from Controller
      * @return HashMap with BusinessID as Key and all categories as List of Strings as value
      */
-    public HashMap<String, List<String>> splitCategorie(List<Business> allBusiness){
+    public HashMap<String, List<String>> splitCategorie(List<Business> allBusiness) {
         //Todo Split all tuples and insert into table "categories"
 
         HashMap<String, List<String>> business = new HashMap<>();
@@ -94,21 +97,36 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return business;
     }
 
-    public void splitCategoriesToCSV (List<Business> input){
+    public HashMap<String, Integer> getCategorieInPostCode(/* @RequestBody FilterDTO filterInput*/) {
 
-        File categoriesCSV = new File(System.getenv("USERPROFILE")+"\\Downloads\\" + "Categories.csv");
+        //Testing categorie by PostCode
+        String[] categories = {"Dentists", "Coffee & Tea", "Pizza"};
+        HashMap<String, Integer> countCategorie = new HashMap<>();
 
-        try{
+        for (String x : categories) {
+
+            int i = categoriesRepository.selectAllCategories(x, "19146");
+            countCategorie.put(x, i);
+
+        }
+        return countCategorie;
+    }
+
+    public void splitCategoriesToCSV(List<Business> input) {
+
+        File categoriesCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Categories.csv");
+
+        try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(categoriesCSV));
             writer.write("business_id,category");
             writer.newLine();
 
             String line;
             String[] splitted;
-            for(Business b : input){
+            for (Business b : input) {
                 splitted = b.getCategories().split(",");
 
-                for (String s : splitted){
+                for (String s : splitted) {
                     line = b.getBusiness_id() + "," + s;
                     writer.write(line);
                     writer.newLine();
@@ -116,15 +134,14 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
             writer.close();
             System.out.println("CSV erstellt");
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Ein Fehler ist aufgetreten");
         }
     }
 
-    public void splitAttributesToCSV (List<Business> input){
+    public void splitAttributesToCSV(List<Business> input) {
         //if (attributes.length() > 2) {//Attribute sind vorhanden
-        File attributesCSV = new File(System.getenv("USERPROFILE")+"\\Downloads\\" + "Attributes.csv");
+        File attributesCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Attributes.csv");
         BufferedWriter writer;
 
         JsonFactory factory = new JsonFactory();
@@ -137,16 +154,16 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         try {
             writer = new BufferedWriter(new FileWriter(attributesCSV));
             writer.write("business_id,aName,value,value_is_table");
-            for (Business b : input){
+            for (Business b : input) {
                 bId = b.getBusiness_id();
-                jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {});
+                jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {
+                });
                 //Todo über alle Keys iterieren, pro key eine Zeile in der CSV schreiben
                 System.out.println("id-" + bId + " | attributes-> \n \t" + jsonMap.toString());
             }
 
             writer.close();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Ein Fehler ist aufgetreten und wurde gecatcht!");
         }
     }
