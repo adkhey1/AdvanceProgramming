@@ -23,7 +23,7 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     HashMap<String, Integer> findBiggestFranchises();
 
     @Query(
-            value = "SELECT * FROM Business b LIMIT 4",
+            value = "SELECT * FROM Business b",
             nativeQuery = true)
     ArrayList<Business> selectAll();
 

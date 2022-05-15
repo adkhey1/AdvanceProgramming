@@ -153,15 +153,28 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         String attributeLine;
         try {
             writer = new BufferedWriter(new FileWriter(attributesCSV));
-            writer.write("business_id,aName,value,value_is_table");
+            writer.write("bId,aName,content,content_is_table");
+            writer.newLine();
+            String content;
             for (Business b : input) {
-                bId = b.getBusiness_id();
-                jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {
-                });
-                //Todo über alle Keys iterieren, pro key eine Zeile in der CSV schreiben
-                System.out.println("id-" + bId + " | attributes-> \n \t" + jsonMap.toString());
-            }
+                if (b.getAttributes().length() > 2) {
+                    bId = b.getBusiness_id();
+                    jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {
+                    });
+                    //Todo über alle Keys iterieren, pro key eine Zeile in der CSV schreiben
+                    for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
+                        content = entry.getValue().toString().replace(",","+");
 
+                        if (entry.getValue().toString().contains(":")){
+                            writer.write(bId + "," + entry.getKey()+","+content+",true");
+                        }else {
+                            writer.write(bId + "," + entry.getKey()+","+content+",false");
+                        }
+                        writer.newLine();
+                    }
+                    System.out.println("id-" + bId + " | attributes-> \n \t" + jsonMap.toString());
+                }
+            }
             writer.close();
         } catch (IOException e) {
             System.out.println("Ein Fehler ist aufgetreten und wurde gecatcht!");
