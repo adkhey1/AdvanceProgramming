@@ -5,11 +5,40 @@
  */
 /* Set the size of the div element that contains the map */
 #map {
-    height: 700px;
-    /* The height is 400 pixels */
-    width: 700px;
-    /* The width is the width of the web page */
+    height: 600px;
+    width: 600px;
 }
+
+#sideWindow1 {
+    height: 600px;
+    width: 600px;
+}
+
+#sideWindow2 {
+    height: 600px;
+    width: 600px;
+}
+
+#sideWindow3 {
+    height: 600px;
+    width: 600px;
+}
+
+#chartWindow1 {
+    height: 100px;
+    width: 100px;
+}
+
+#chartWindow2 {
+    height: 100px;
+    width: 100px;
+}
+
+#chartWindow3 {
+    height: 100px;
+    width: 100px;
+}
+
 #TopRest {
     font-family: "Agency FB";
     font-size: 1.8rem;

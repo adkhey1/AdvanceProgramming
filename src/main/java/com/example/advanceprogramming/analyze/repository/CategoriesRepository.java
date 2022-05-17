@@ -19,7 +19,7 @@ public interface CategoriesRepository extends JpaRepository<Categories, Categori
     @Query( value = "SELECT count(*) FROM Categories c WHERE c.category LIKE %?1% " +
             "and c.business_id IN (SELECT b.business_id FROM Business b WHERE  b.postal_code LIKE %?2%)",
             nativeQuery = true)
-    Integer selectAllCategories( String categorie, String Postal_code);
+    Integer selectAllCategories(String categorie, String Postal_code);
 
     //List<Categories> findByBusiness_idIn(List<String> business_ids);
 

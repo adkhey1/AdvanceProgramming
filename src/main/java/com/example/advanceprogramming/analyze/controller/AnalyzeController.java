@@ -1,6 +1,7 @@
 package com.example.advanceprogramming.analyze.controller;
 
 
+import com.example.advanceprogramming.analyze.DTO.BasicAnalysisDTO;
 import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
 import com.example.advanceprogramming.analyze.DTO.IdDTO;
 import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
@@ -44,9 +45,10 @@ public class AnalyzeController {
     public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input) {
 
         Business businessByBusinessID = businessRepository.findByBusiness_id(input.getBusiness_id());
-        BusinessDTO output = analyzeService.parseBusinessToDTO(businessByBusinessID);
+        HashMap<String, Integer> countCategorie = analyzeServiceImpl.getCategorieInPostCode(businessByBusinessID);
 
-        HashMap<String, Integer> countCategorie = analyzeServiceImpl.getCategorieInPostCode();
+        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
+
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
@@ -102,6 +104,69 @@ public class AnalyzeController {
 
         //log.debug("Start transfrom with " + listRaw.size() + " entries");
 
+
+        /*ArrayList<String> keyValue = new ArrayList<>();
+        Attributes attribute;
+
+        String businessID;
+        String attributes;
+        String name;
+        String content;
+
+
+        int firstComma = 0;
+        int nextComma = 0;
+        int openBracket;
+        int closeBracket;
+
+        boolean looper = true;
+        String temp;
+        for (String s : listRaw) {
+            String[] splitted = s.split(",", 2);
+            businessID = splitted[0];
+            attributes = splitted[1];
+
+            if (attributes.length() > 2) {//Attribute sind vorhanden
+                attributes = attributes.replace("'", "");
+                System.out.println("Attributes exist- " + attributes);
+
+                if (!attributes.contains(",")) { //Nur ein Attribut vorhanden
+                    openBracket = attributes.indexOf("{");
+                    closeBracket = attributes.indexOf("}");
+
+                    temp = attributes.substring(openBracket + 1, closeBracket);
+                    String[] split = temp.split(": ");
+
+                    name = split[0];
+                    content = split[1];
+
+                    System.out.println("\t" + name);
+                    System.out.println("\t" + content);
+                } else {
+
+                    while (looper) {
+                        firstComma = attributes.indexOf(",", nextComma + 1);
+                        nextComma = attributes.indexOf(",", firstComma + 1);
+
+                        if (attributes.indexOf("{", firstComma) == -1)
+
+                            attribute = new Attributes();
+
+                        if (nextComma == -1) {
+                            looper = false;
+                        }
+                    }
+                }
+
+            } else {//Attribute sind leer
+                System.out.println("No Attributes: " + attributes);
+
+            }
+
+
+        }
+
+*/
         return "transformingDB";
     }
 
@@ -112,6 +177,29 @@ public class AnalyzeController {
         List<Business> listBusiness = businessRepository.selectAll();
         analyzeServiceImpl.splitCategoriesToCSV(listBusiness);
 
+        /*
+        int counter = 0;
+        String[] categoriesSplit;
+
+        Categories newTuple;
+        for (Business b : listBusiness){
+            categories = new ArrayList<>();
+            categoriesSplit = b.getCategories().split(",");
+            counter++;
+
+            for (String s : categoriesSplit){
+                newTuple = new Categories();
+
+                newTuple.setBusiness_id(b.getBusiness_id());
+                newTuple.setCategory(s);
+                categories.add(newTuple);
+                //categoriesRepository.save(newTuple);
+            }
+            categoriesRepository.saveAll(categories);
+            System.out.println("new tuple no. "+ counter +" saved!");
+        }
+
+        System.out.println("categories saved!");*/
         return "splittedCategories";
     }
 
@@ -124,9 +212,10 @@ public class AnalyzeController {
 
         //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
         //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
-        List<Business> allBusiness = businessRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
+        //List<Business> allBusiness = businessRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
 
-        HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
+        //HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
+
 
     }
 

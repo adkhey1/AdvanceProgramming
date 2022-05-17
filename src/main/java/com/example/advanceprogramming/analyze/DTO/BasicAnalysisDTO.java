@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class BasicAnalysisDTO {
 
     //attributes
-    private String name, address, city, state, attributes, categories, hours;
+    private String business_id, name, address, city, state, attributes, categories, hours, postal_code;
     private double stars;
     private int review_count, is_open;
 
