@@ -133,6 +133,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
 
             writer.write("review_id,user_id,business_id,stars,useful,funny,cool,text,date");
+            writer.newLine();
 
             while ((line= reader.readLine()) != null) {
                 tempReview = objectMapper.readValue(line,ReviewMapping.class);
@@ -140,6 +141,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 replaceLineBreaks = tempReview.getText();
                 replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
                 replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
 
                 writer.write(tempReview.getReview_id()+",");
                 writer.write(tempReview.getBusiness_id()+",");
