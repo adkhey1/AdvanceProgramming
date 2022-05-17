@@ -98,38 +98,21 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return null;
     }
 
-    /**
-     * split categories in a list of Strings
-     *
-     * @param allBusiness all filtered business from Controller
-     * @return HashMap with BusinessID as Key and all categories as List of Strings as value
-     */
-    public HashMap<String, List<String>> splitCategorie(List<Business> allBusiness) {
+    public String[] splitCategorie(Business input) {
         //Todo Split all tuples and insert into table "categories"
-
-        HashMap<String, List<String>> business = new HashMap<>();
-        //Set<String> allCategories = new HashSet<>(); -> to list all different categories
-
-        for (Business b : allBusiness) {
-            String businessID = b.getBusiness_id();
-            List<String> categories = Arrays.asList(b.getCategories().split(","));
-
-            business.put(businessID, categories);
-            //allCategories.addAll(categories);
-        }
-
-        return business;
+            String[] categories = input.getCategories().split(",");
+        return categories;
     }
 
-    public HashMap<String, Integer> getCategorieInPostCode(/* @RequestBody FilterDTO filterInput*/) {
+    public HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/) {
 
         //Testing categorie by PostCode
-        String[] categories = {"Dentists", "Coffee & Tea", "Pizza"};
+        String[] categories = splitCategorie(business);
         HashMap<String, Integer> countCategorie = new HashMap<>();
 
         for (String x : categories) {
 
-            int i = categoriesRepository.selectAllCategories(x, "19146");
+            int i = categoriesRepository.selectAllCategories(x, business.getPostal_code());
             countCategorie.put(x, i);
 
         }
@@ -204,5 +187,4 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             System.out.println("Ein Fehler ist aufgetreten und wurde gecatcht!");
         }
     }
-
 }

@@ -45,7 +45,7 @@ public class AnalyzeController {
     public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input) {
 
         Business businessByBusinessID = businessRepository.findByBusiness_id(input.getBusiness_id());
-        HashMap<String, Integer> countCategorie = analyzeServiceImpl.getCategorieInPostCode();
+        HashMap<String, Integer> countCategorie = analyzeServiceImpl.getCategorieInPostCode(businessByBusinessID);
 
         BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
 
@@ -212,9 +212,10 @@ public class AnalyzeController {
 
         //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
         //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
-        List<Business> allBusiness = businessRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
+        //List<Business> allBusiness = businessRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
 
-        HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
+        //HashMap<String, List<String>> business = (analyzeServiceImpl.splitCategorie(allBusiness));
+
 
     }
 
