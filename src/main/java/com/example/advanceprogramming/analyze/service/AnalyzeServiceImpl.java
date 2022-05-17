@@ -7,6 +7,7 @@ import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
+import com.example.advanceprogramming.analyze.temp.ReviewMapping;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -14,10 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @Service
@@ -87,7 +85,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             dto.setReview_count(input.getReview_count());
         }
 
-
         return dto;
     }
 
@@ -119,7 +116,55 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return countCategorie;
     }
 
-    public void splitCategoriesToCSV(List<Business> input) {
+    public void splitReviewsToCSV(){
+
+        File reviewsCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Reviews.csv");
+
+        JsonFactory factory = new JsonFactory();
+        factory.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
+        ObjectMapper objectMapper = new ObjectMapper(factory);
+        ReviewMapping tempReview;
+
+        String replaceLineBreaks;
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE")+"\\Downloads\\yelp_dataset\\yelp_academic_dataset_review.json"));
+            String line;
+            BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
+
+            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,text,date");
+
+            while ((line= reader.readLine()) != null) {
+                tempReview = objectMapper.readValue(line,ReviewMapping.class);
+
+                replaceLineBreaks = tempReview.getText();
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
+
+                writer.write(tempReview.getReview_id()+",");
+                writer.write(tempReview.getBusiness_id()+",");
+                writer.write(tempReview.getUser_id()+",");
+                writer.write(String.valueOf(tempReview.getStars())+",");
+                writer.write(tempReview.getUseful()+",");
+                writer.write(tempReview.getFunny()+",");
+                writer.write(tempReview.getCool()+",");
+                writer.write(replaceLineBreaks+",");
+                writer.write(tempReview.getDate()+",");
+                writer.newLine();
+
+            }
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    /*public void splitCategoriesToCSV(List<Business> input) {
 
         File categoriesCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Categories.csv");
 
@@ -144,9 +189,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         } catch (IOException e) {
             System.out.println("Ein Fehler ist aufgetreten");
         }
-    }
+    }*/
 
-    public void splitAttributesToCSV(List<Business> input) {
+    /*public void splitAttributesToCSV(List<Business> input) {
         //if (attributes.length() > 2) {//Attribute sind vorhanden
         File attributesCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Attributes.csv");
         BufferedWriter writer;
@@ -186,5 +231,5 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         } catch (IOException e) {
             System.out.println("Ein Fehler ist aufgetreten und wurde gecatcht!");
         }
-    }
+    }*/
 }

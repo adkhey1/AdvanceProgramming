@@ -96,7 +96,7 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
-    @RequestMapping("/transfromdb")
+    /*@RequestMapping("/transfromdb")
     public String splitAttributesToDB() {
         ArrayList<Business> listRaw = businessRepository.selectAll();
 
@@ -166,10 +166,11 @@ public class AnalyzeController {
 
         }
 
-*/
-        return "transformingDB";
-    }
 
+        return "transformingDB";
+    }*/
+
+    /*
     @RequestMapping(value = "/splitCategories")
     public String splitCategoriesToTable() {
 
@@ -177,7 +178,7 @@ public class AnalyzeController {
         List<Business> listBusiness = businessRepository.selectAll();
         analyzeServiceImpl.splitCategoriesToCSV(listBusiness);
 
-        /*
+
         int counter = 0;
         String[] categoriesSplit;
 
@@ -199,8 +200,15 @@ public class AnalyzeController {
             System.out.println("new tuple no. "+ counter +" saved!");
         }
 
-        System.out.println("categories saved!");*/
+        System.out.println("categories saved!");
         return "splittedCategories";
+    }*/
+
+    @RequestMapping(value = "/split/reviews")
+    public String splitReviews(){
+        analyzeServiceImpl.splitReviewsToCSV();
+
+        return "splitReviews";
     }
 
     /**
