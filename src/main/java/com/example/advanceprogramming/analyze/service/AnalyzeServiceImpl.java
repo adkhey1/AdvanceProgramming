@@ -1,5 +1,6 @@
 package com.example.advanceprogramming.analyze.service;
 
+import com.example.advanceprogramming.analyze.DTO.BasicAnalysisDTO;
 import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
 import com.example.advanceprogramming.analyze.DTO.FilterDTO;
 import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
@@ -37,6 +38,29 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             dto.setBusiness_id(input.getBusiness_id());
             dto.setLatitude(input.getLatitude());
             dto.setLongitude(input.getLongitude());
+        }
+
+        return dto;
+    }
+
+    @Override
+    public BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2) {
+        BasicAnalysisDTO dto = new BasicAnalysisDTO();
+
+        if (input != null) {
+            dto.setBusiness_id(input.getBusiness_id());
+            dto.setName(input.getName());
+            dto.setAddress(input.getAddress());
+            dto.setHours(input.getHours());
+            dto.setCity(input.getCity());
+            dto.setState(input.getState());
+            dto.setPostal_code(input.getPostal_code());
+            dto.setCategories(input.getCategories());
+            dto.setAttributes(input.getAttributes());
+            dto.setIs_open(input.getIs_open());
+            dto.setStars(input.getStars());
+            dto.setReview_count(input.getReview_count());
+            dto.setCountCategorie(input2);
         }
 
         return dto;
