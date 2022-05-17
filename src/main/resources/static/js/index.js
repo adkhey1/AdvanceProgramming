@@ -43,7 +43,7 @@ function initMap() {
 
                 sideView();
 
-            }, 4000);
+            }, 5000);
 
         })
 
@@ -254,6 +254,59 @@ function exampleChart3(div){
 
 
 
+
+}
+
+
+
+comparisonChart()
+
+
+function comparisonChart(){
+
+
+
+
+
+
+    const labels = [
+        'Long',
+        'Lat',
+
+    ];
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: '1',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [20,30],
+        },
+            {
+                label: '2',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0,50],
+            },
+            {
+                label: '3',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [30,50],
+            }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {}
+    };
+
+    const compChart = new Chart(
+        document.getElementById('testChart'),
+        config
+    );
 
 }
 
