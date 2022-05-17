@@ -107,7 +107,7 @@ function sideView() {
         json_return_markerArrTemp.unshift(json_return_marker)
     }
 
-
+    console.log(json_return_markerArrTemp[0])
     //Window1
     document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
     exampleChart1('chartWindow1');
