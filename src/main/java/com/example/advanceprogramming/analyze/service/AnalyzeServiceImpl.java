@@ -7,6 +7,7 @@ import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
+import com.example.advanceprogramming.analyze.temp.BusinessMapping;
 import com.example.advanceprogramming.analyze.temp.ReviewMapping;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -132,16 +133,16 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String line;
             BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
 
-            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,text,date");
+            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,date");
             writer.newLine();
 
             while ((line= reader.readLine()) != null) {
                 tempReview = objectMapper.readValue(line,ReviewMapping.class);
 
-                replaceLineBreaks = tempReview.getText();
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
+                //replaceLineBreaks = tempReview.getText();
+                //replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
+                //replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
+                //replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
 
                 writer.write(tempReview.getReview_id()+",");
                 writer.write(tempReview.getBusiness_id()+",");
@@ -150,8 +151,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 writer.write(tempReview.getUseful()+",");
                 writer.write(tempReview.getFunny()+",");
                 writer.write(tempReview.getCool()+",");
-                writer.write(replaceLineBreaks+",");
-                writer.write(tempReview.getDate()+",");
+                //writer.write(replaceLineBreaks+",");
+                writer.write(tempReview.getDate());
                 writer.newLine();
 
             }
@@ -166,7 +167,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     }
 
-    /*public void splitCategoriesToCSV(List<Business> input) {
+    public void splitCategoriesToCSV(List<Business> input) {
 
         File categoriesCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Categories.csv");
 
@@ -175,10 +176,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             writer.write("business_id,category");
             writer.newLine();
 
-            String line;
+            String line, categories;
             String[] splitted;
             for (Business b : input) {
-                splitted = b.getCategories().split(",");
+                categories = b.getCategories().replaceAll("§",",");
+                splitted = categories.split(",");
 
                 for (String s : splitted) {
                     line = b.getBusiness_id() + "," + s;
@@ -189,11 +191,83 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             writer.close();
             System.out.println("CSV erstellt");
         } catch (IOException e) {
-            System.out.println("Ein Fehler ist aufgetreten");
+            System.out.println("Ein Fehler ist aufgetreten" + e);
         }
-    }*/
+    }
 
-    /*public void splitAttributesToCSV(List<Business> input) {
+    public void splitBusinessToCSV(){
+        String userpath = System.getenv("USERPROFILE");
+
+        File businessCSV = new File(userpath + "\\Downloads\\" + "Business.csv");
+        BufferedWriter writer;
+
+        JsonFactory factory = new JsonFactory();
+        factory.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
+        ObjectMapper objectMapper = new ObjectMapper(factory);
+        BusinessMapping mapping;
+
+        String line;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(userpath+"\\Downloads\\yelp_dataset\\yelp_academic_dataset_business.json"));
+
+            writer = new BufferedWriter(new FileWriter(businessCSV));
+            writer.write("business_id,name,address,city,state,postal_code,latitude,longitude,stars,review_count,is_open,attributes,categories,hours,");
+            writer.newLine();
+
+            String attributes;
+            String hours;
+            String categories;
+            String name;
+            String address, city, state;
+            while ((line= reader.readLine()) != null) {
+                mapping = objectMapper.readValue(line,BusinessMapping.class);
+
+                writer.write(mapping.getBusiness_id()+",");
+                name = mapping.getName().replaceAll(",","");
+                writer.write(name+",");
+                address = mapping.getAddress().replaceAll(",","");
+                writer.write(address+",");
+                city = mapping.getCity().replaceAll(",","");
+                writer.write(city+",");
+                state = mapping.getState().replaceAll(",","");
+                writer.write(state+",");
+                writer.write(mapping.getPostal_code()+",");
+                writer.write(mapping.getLatitude()+",");
+                writer.write(mapping.getLongitude()+",");
+                writer.write(mapping.getStars()+",");
+                writer.write(mapping.getReview_count()+",");
+                writer.write(mapping.getIs_open()+",");
+                if (mapping.getAttributes() != null){
+                    attributes = mapping.getAttributes().toString().replaceAll(",","§");
+                } else {
+                    attributes = "nan";
+                }
+                writer.write(attributes+",");
+                if(mapping.getCategories() != null){
+                    categories = mapping.getCategories().replaceAll(",","§");
+                }else {
+                    categories = "nan";
+                }
+                writer.write(categories+",");
+                if(mapping.getHours() != null){
+                    hours = mapping.getHours().toString().replaceAll(",","§");
+                } else {
+                    hours = "nan";
+                }
+                writer.write(hours+",");
+                writer.newLine();
+
+            }
+            writer.close();
+
+        } catch (FileNotFoundException e){
+            System.out.println("File nicht gefunden + \n " + e);
+        } catch (IOException e){
+            System.out.println("Ein Fehler ist aufgetreten +\n" +e);
+        }
+    }
+
+    public void splitAttributesToCSV(List<Business> input) {
         //if (attributes.length() > 2) {//Attribute sind vorhanden
         File attributesCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Attributes.csv");
         BufferedWriter writer;
@@ -203,7 +277,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         ObjectMapper objectMapper = new ObjectMapper(factory);
         Map<String, Object> jsonMap;
 
-        String bId;
+        String bId, attributes;
         String attributeLine;
         try {
             writer = new BufferedWriter(new FileWriter(attributesCSV));
@@ -213,6 +287,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             for (Business b : input) {
                 if (b.getAttributes().length() > 2) {
                     bId = b.getBusiness_id();
+
+                    attributes = b.getAttributes().replaceAll("§",",");
                     jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {
                     });
                     //Todo über alle Keys iterieren, pro key eine Zeile in der CSV schreiben
@@ -231,7 +307,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
             writer.close();
         } catch (IOException e) {
-            System.out.println("Ein Fehler ist aufgetreten und wurde gecatcht!");
+            System.out.println("Ein Fehler ist aufgetreten und wurde gecatcht!" + e);
         }
-    }*/
+    }
 }
