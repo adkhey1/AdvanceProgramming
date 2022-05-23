@@ -40,10 +40,26 @@
 }
 
 #TopRest {
-    font-family: "Agency FB";
-    font-size: 1.8rem;
+    color: #cc0000;
 
 }
+
 #Formular {
 
+}
+
+
+.image {
+    width: 100vw;
+    height: 70vh;
+    background-position: center;
+    background-size: cover;
+}
+
+#carouselExampleDark {
+    color: #cc0000;
+}
+
+.carousel {
+    color: #cc0000;
 }
