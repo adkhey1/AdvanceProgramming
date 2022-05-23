@@ -12,9 +12,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class FilterDTO {
-    private String state, name, city;
-    private double zipCode, stars;
-    private boolean is_open;
-    private Franchise franchise;
-
+    private String star, name, vegan, city, state, plz, kategorie;
 }

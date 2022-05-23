@@ -1,10 +1,7 @@
 package com.example.advanceprogramming.analyze.controller;
 
 
-import com.example.advanceprogramming.analyze.DTO.BasicAnalysisDTO;
-import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
-import com.example.advanceprogramming.analyze.DTO.IdDTO;
-import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
+import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.model.Categories;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
@@ -84,7 +81,7 @@ public class AnalyzeController {
     }
 
     @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> listRestaurants() { //@RequestBody FilterDTO input) {
+    public ResponseEntity<?> listRestaurants( @RequestBody FilterDTO input) {
 
         List<Business> businesses = businessRepository.selectFirst10();
 
@@ -99,6 +96,8 @@ public class AnalyzeController {
 
             markerList.add(temp);
         }
+
+        log.debug(input.toString());
 
         MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);
 
