@@ -17,5 +17,7 @@ public interface AnalyzeService {
 
     List<MarkerDTO> getMarkerFromFilter(FilterDTO input);
 
+    HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/);
+
     BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2);
 }

@@ -43,13 +43,22 @@ public class AnalyzeController {
 
     @PostMapping(value = "/map/viewMarker/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input) {
+        log.debug(">>>> Anfrage 'viewMarker' angefangen");
 
+        log.debug(">>>> Anfrage an DB per Repo gestartet");
         Business businessByBusinessID = businessRepository.findByBusiness_id(input.getBusiness_id());
-        HashMap<String, Integer> countCategorie = analyzeServiceImpl.getCategorieInPostCode(businessByBusinessID);
+        log.debug(">>>> Anfrage an DB fertig! ");
 
+        log.debug(">>>> Service 'Categories in Postcode started");
+        HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
+        log.debug(">>>> Service 'Categories in Postcode finished");
+
+        log.debug(">>>> Service -> parsing started");
         BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
+        log.debug(">>>> Service -> parsing finished");
 
 
+        log.debug(">>>> Anfrage 'viewMarker' beendet");
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 

@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 public interface BusinessRepository extends JpaRepository<Business, Long> {
 
-    @Query("SELECT b FROM Business b WHERE b.business_id = ?1")
+    @Query(value = "SELECT * FROM Business b WHERE b.business_id = ?1",
+    nativeQuery = true)
     Business findByBusiness_id(String business_id);
 
     @Query("SELECT b FROM Business b WHERE b.name = ?1")

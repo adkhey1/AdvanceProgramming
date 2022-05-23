@@ -133,25 +133,25 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String line;
             BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
 
-            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,date");
+            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,text,date");
             writer.newLine();
 
             while ((line= reader.readLine()) != null) {
                 tempReview = objectMapper.readValue(line,ReviewMapping.class);
 
-                //replaceLineBreaks = tempReview.getText();
-                //replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
-                //replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
-                //replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
+                replaceLineBreaks = tempReview.getText();
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
 
                 writer.write(tempReview.getReview_id()+",");
                 writer.write(tempReview.getBusiness_id()+",");
                 writer.write(tempReview.getUser_id()+",");
-                writer.write(String.valueOf(tempReview.getStars())+",");
+                writer.write(tempReview.getStars()+",");
                 writer.write(tempReview.getUseful()+",");
                 writer.write(tempReview.getFunny()+",");
                 writer.write(tempReview.getCool()+",");
-                //writer.write(replaceLineBreaks+",");
+                writer.write(replaceLineBreaks+",");
                 writer.write(tempReview.getDate());
                 writer.newLine();
 
