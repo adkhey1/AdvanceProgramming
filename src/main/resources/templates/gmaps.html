@@ -7,7 +7,10 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script type="module" th:src="@{/js/index.js}"></script>
     <script type="module" th:src="@{/js/chart1.js}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
 </head>
 <body>
 
@@ -16,10 +19,13 @@
 <div id="filter"></div>
 <div id="input"></div>
 <canvas id="testChart"></canvas>
+<canvas id="testBar"></canvas>
 
 <div id="sideWindow1">
     <div id="sideWindow1inner"></div>
     <canvas id="chartWindow1"></canvas>
+
+
 </div>
 
 <div id="sideWindow2">

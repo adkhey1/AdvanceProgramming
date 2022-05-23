@@ -1,5 +1,9 @@
 var json_return_marker;
 
+
+
+
+// map
 function initMap() {
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 4,
@@ -49,6 +53,7 @@ function initMap() {
 
     }
 
+    //add all marker
     var myLatlng;
     for (let i = 0; i < json_data_LatLongArray.length; i++) {
         myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].longitude);
@@ -72,6 +77,7 @@ window.initMap = initMap;
 var json_data_LatLongArray;
 
 
+//ajax call um marker zu laden
 function loadMapMarkers() {
 
 
@@ -92,11 +98,12 @@ loadMapMarkers();
 
 
 
-console.log(json_return_marker)
+
 
 
 var json_return_markerArrTemp = []
 
+//konzept für 3 Fenster
 function sideView() {
 
     //fill the Array
@@ -110,19 +117,35 @@ function sideView() {
     console.log(json_return_markerArrTemp[0])
     //Window1
     document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
-    exampleChart1('chartWindow1');
+
+    //transform to hashmap and get keys and values
+    var hsMap = new Map( Object.entries(json_return_markerArrTemp[0].countCategorie) )
+    var values = Array.from(hsMap.values());
+    var keys = Array.from(hsMap.keys());
+    console.log(values) //33,33,2
+    console.log(keys) //chinese etc.
     //console.log(chart);
+
+    exampleChart1('chartWindow1',values,keys);
 
     //Window2
     if(json_return_markerArrTemp[1]!=null){
         document.getElementById('sideWindow2inner').innerText = JSON.stringify(json_return_markerArrTemp[1]);
-        exampleChart2('chartWindow2');
+         hsMap = new Map( Object.entries(json_return_markerArrTemp[1].countCategorie) )
+         values = Array.from(hsMap.values());
+         keys = Array.from(hsMap.keys());
+
+        exampleChart2('chartWindow2',values,keys);
     }
 
     //window3
     if(json_return_markerArrTemp[2]!=null){
         document.getElementById('sideWindow3inner').innerText = JSON.stringify(json_return_markerArrTemp[2]);
-        exampleChart3('chartWindow3');
+        hsMap = new Map( Object.entries(json_return_markerArrTemp[2].countCategorie) )
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+
+        exampleChart3('chartWindow3',values,keys);
     }
     console.log(json_return_markerArrTemp)
 
@@ -134,40 +157,36 @@ let myChart1 = null;
 let myChart2 = null;
 let myChart3 = null;
 
-function exampleChart1(div){
+
+function exampleChart1(div,values,keys){
 
 
-    const labels = [
-        'Janua',
-        'Februa',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
+    var config={
+        type:"bar",
+        data:{
 
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    };
+            labels:keys,
+            datasets:[{
+                label: 'count',
+                data:values,
+                backgroundColor: [getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor()],
+                datalabels:{
+                    color: 'blue',
+                    anchor: 'end',
+                    align: 'top'
+                }
+            }]},
+    plugins:[ChartDataLabels]
 
-    const config = {
-        type: 'line',
-        data: data,
-        options: {}
-    };
+
+    }
 
     if(myChart1!=null){
         myChart1.destroy();
     }
     myChart1=new Chart(
         document.getElementById(div),
-        config
+        config,
     );
 
 
@@ -175,33 +194,28 @@ function exampleChart1(div){
 
 }
 
-function exampleChart2(div){
+function exampleChart2(div,values,keys){
 
 
-    const labels = [
-        'Janua',
-        'Februa',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
+    var config={
+        type:"bar",
+        data:{
 
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    };
+            labels:keys,
+            datasets:[{
+                label: 'count',
+                data:values,
+                backgroundColor: [getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor()],
+                datalabels:{
+                    color: 'blue',
+                    anchor: 'end',
+                    align: 'top'
+                }
+            }]},
+        plugins:[ChartDataLabels]
 
-    const config = {
-        type: 'line',
-        data: data,
-        options: {}
-    };
+
+    }
 
     if(myChart2!=null){
         myChart2.destroy();
@@ -216,56 +230,44 @@ function exampleChart2(div){
 
 }
 
-function exampleChart3(div){
+function exampleChart3(div,values,keys) {
+
+    var config={
+        type:"bar",
+        data:{
+
+            labels:keys,
+            datasets:[{
+                label: 'count',
+                data:values,
+                backgroundColor: [getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor(),getRandomColor()],
+                datalabels:{
+                    color: 'blue',
+                    anchor: 'end',
+                    align: 'top'
+                }
+            }]},
+        plugins:[ChartDataLabels]
 
 
-    const labels = [
-        'Janua',
-        'Februa',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
+    }
 
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    };
 
-    const config = {
-        type: 'line',
-        data: data,
-        options: {}
-    };
-
-    if(myChart3!=null){
+    if (myChart3 != null) {
         myChart3.destroy();
     }
-    myChart3=new Chart(
+    myChart3 = new Chart(
         document.getElementById(div),
         config
     );
 
-
-
-
 }
-
 
 
 comparisonChart()
 
 
 function comparisonChart(){
-
-
-
 
 
 
@@ -310,6 +312,48 @@ function comparisonChart(){
 
 }
 
+
+
+
+
+/*
+barChartcountCategorie()
+
+function barChartcountCategorie(){
+
+    var config={
+        type:"bar",
+        data:{
+            labels:["test1","test2","test3"],
+            datasets:[{
+                label: "testing",
+                data:[10,20,30],
+                backgroundColor: [getRandomColor(),getRandomColor(),getRandomColor()]
+
+
+
+            }]},
+
+
+
+
+    }
+
+    const barChart=new Chart(
+        document.getElementById("testBar"),
+        config);
+}
+
+ */
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 ///////////////////////////////////////////////////////
 
