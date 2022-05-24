@@ -71,6 +71,32 @@ public class UserController {
         return "test";
     }
 
+    @GetMapping({"/signin",})
+    public String signin() {
+        return "SignIn";
+    }
+
+    @GetMapping({"/signup",})
+    public String signup() {
+        return "SignUp";
+    }
+
+    @GetMapping({"/search",})
+    public String search() {
+        return "Search";
+    }
+
+    @GetMapping({"/about",})
+    public String about() {
+        return "About";
+    }
+
+    @GetMapping({"/index",})
+    public String index() {
+        return "index";
+    }
+
+
 
 }
 
