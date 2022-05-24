@@ -54,6 +54,10 @@ public class AnalyzeController {
         log.debug(">>>> Service -> parsing finished");
 
 
+        output = analyzeService.getAverageScorePerSeason(output, input.getBusiness_id());
+
+
+
         log.debug(">>>> Anfrage 'viewMarker' beendet");
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
@@ -126,7 +130,7 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
-    @RequestMapping("/analyze/averageReviews/")
+    /*@RequestMapping("/analyze/averageReviews/")
     public ResponseEntity<?> averageScores(@RequestBody String input) {
 
         log.debug(input);
@@ -135,7 +139,7 @@ public class AnalyzeController {
         System.out.println(reviewAnalyDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(reviewAnalyDTO);
-    }
+    }*/
 
     @RequestMapping("/split/attributes")
     public String splitAttributesToDB() {
