@@ -4,6 +4,7 @@ import com.example.advanceprogramming.analyze.DTO.BasicAnalysisDTO;
 import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
 import com.example.advanceprogramming.analyze.DTO.FilterDTO;
 import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
+import com.example.advanceprogramming.analyze.controller.AnalyzeController;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
@@ -13,6 +14,8 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,8 @@ import java.util.*;
 
 @Service
 public class AnalyzeServiceImpl implements AnalyzeService {
+
+    private static final Logger log = LoggerFactory.getLogger(AnalyzeServiceImpl.class);
 
     @Autowired
     private BusinessRepository restaurantRepo;
@@ -108,12 +113,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         String[] categories = splitCategorie(business);
         HashMap<String, Integer> countCategorie = new HashMap<>();
 
+        log.debug(">>>>>>> for Schleife in Service!");
         for (String x : categories) {
 
             int i = categoriesRepository.selectAllCategories(x, business.getPostal_code());
             countCategorie.put(x, i);
 
         }
+        log.debug(">>>>>>> for Schleife in Service finish!");
+
         return countCategorie;
     }
 
@@ -133,25 +141,25 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String line;
             BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
 
-            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,date");
+            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,text,date");
             writer.newLine();
 
             while ((line= reader.readLine()) != null) {
                 tempReview = objectMapper.readValue(line,ReviewMapping.class);
 
-                //replaceLineBreaks = tempReview.getText();
-                //replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
-                //replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
-                //replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
+                replaceLineBreaks = tempReview.getText();
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
 
                 writer.write(tempReview.getReview_id()+",");
                 writer.write(tempReview.getBusiness_id()+",");
                 writer.write(tempReview.getUser_id()+",");
-                writer.write(String.valueOf(tempReview.getStars())+",");
+                writer.write(tempReview.getStars()+",");
                 writer.write(tempReview.getUseful()+",");
                 writer.write(tempReview.getFunny()+",");
                 writer.write(tempReview.getCool()+",");
-                //writer.write(replaceLineBreaks+",");
+                writer.write(replaceLineBreaks+",");
                 writer.write(tempReview.getDate());
                 writer.newLine();
 
