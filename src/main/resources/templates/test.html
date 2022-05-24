@@ -127,6 +127,72 @@
 
             </form>
 
+                 <div>
+                <label for="Name">Name</label>
+                <input type="text" id="name" name="name">
+
+            </div>
+
+
+            <div>
+                <label >Time</label>
+                <input type="time" id="appt" name="appt"
+                       min="12:00" max="12:00" required>
+            </div>
+
+
+            <label for="from">From: </label>
+            <select name="from" id="from">
+                <option value="6">6:00</option>
+                <option value="7">7:00</option>
+                <option value="8">8:00</option>
+                <option value="9">9:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+                <option value="22">22:00</option>
+
+            </select>
+
+            <div>
+                <input type="checkbox" id="24" name="24">
+                <label for="Vegan">Vegan</label>
+            </div>
+
+            <div>
+                <label for="State">State</label>
+
+                <input type="text" id="State" name="State">
+            </div>
+
+            <div>
+                <label for="City">City </label>
+                <input type="text" id="City" name="City">
+
+            </div>
+
+            <div>
+
+                <label for="PLZ">PLZ</label>
+                <input type="text" id="PLZ" name="PLZ">
+            </div>
+
+
+
+            <div>
+                <label for="Kategorie">Kategorie</label>
+
+                <input type="text" id="Kategorie" name="Kategorie">
+            </div>
 
             <div>
                 <input type="checkbox" id="vegan" name="Vegan">
@@ -176,9 +242,17 @@
 
         var search = {
             vegan : document.getElementById('vegan').checked,
-            halal : document.getElementById("halal").checked,
-            lName : document.getElementById("info1").value,
-            star : document.getElementById("stars").value
+
+            star : document.getElementById("stars").value,
+            name : document.getElementById("name").value,
+            state : document.getElementById("State").value,
+            city : document.getElementById("City").value,
+            plz : document.getElementById("PLZ").value,
+            kategorie : document.getElementById("Kategorie").value
+
+
+
+
 
 
         }
@@ -187,7 +261,7 @@
             type: "POST",
             contentType : 'application/json; charset=utf-8',
             dataType : 'json',
-            url: "http://localhost:8080/restaurant/filtered",
+            url: "http://localhost:8080/restaurant/filtered/",
             data: JSON.stringify(search), // Note it is important
             success :function(result) {
                 // do what ever you want with data
