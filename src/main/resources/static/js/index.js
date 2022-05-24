@@ -118,6 +118,8 @@ function sideView() {
         json_return_markerArrTemp.unshift(json_return_marker)
     }
 
+    comparisonChart()
+
     console.log(json_return_markerArrTemp[0])
     //Window1
     document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
@@ -152,8 +154,6 @@ function sideView() {
         exampleChart3('chartWindow3',values,keys);
     }
     console.log(json_return_markerArrTemp)
-
-
 
 }
 
@@ -268,17 +268,15 @@ function exampleChart3(div,values,keys) {
 }
 
 
-var arrComp = [];
-arrComp[0].push(0)
-arrComp[1].push(0)
-arrComp[2].push(0)
 
-console.log(arrComp)
-comparisonChart()
+let compChart = null;
 
 
-function comparisonChart(arrComp){
+function comparisonChart(){
 
+    if (compChart != null) {
+        compChart.destroy();
+    }
 
 
     const labels = [
@@ -293,21 +291,21 @@ function comparisonChart(arrComp){
         labels: labels,
         datasets: [{
             label: 'Dataset 1',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [20,30],
+            backgroundColor: getRandomColor(),
+            borderColor: getRandomColor(),
+            data: [20,30,60,10],
         },
             {
                 label: 'Dataset 2',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0,50],
+                backgroundColor: getRandomColor(),
+                borderColor: getRandomColor(),
+                data: [0,50,20,10],
             },
             {
                 label: 'Dataset 3',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [30,50],
+                backgroundColor: getRandomColor(),
+                borderColor: getRandomColor(),
+                data: [30,50,70,35],
             }]
     };
 
@@ -317,7 +315,11 @@ function comparisonChart(arrComp){
         options: {}
     };
 
-    const compChart = new Chart(
+
+
+
+
+        compChart = new Chart(
         document.getElementById('testChart'),
         config
     );

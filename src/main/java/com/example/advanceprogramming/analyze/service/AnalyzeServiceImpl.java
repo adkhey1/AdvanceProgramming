@@ -141,7 +141,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         double winter = 0.0;
 
         List<Review> allReviews = reviewsRepo.selectReviewsWithBusinessId(bID);
-        log.debug(allReviews.get(0).toString());
+        //log.debug(allReviews.get(0).toString());
         for (Review r : allReviews) {
             switch (r.getDate().getMonthValue()) {
                 case 1, 2, 3:
