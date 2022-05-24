@@ -49,6 +49,7 @@ function initMap() {
 
             }, 5000);
 
+
         })
 
     }
@@ -268,8 +269,11 @@ function exampleChart3(div,values,keys) {
 
 
 var arrComp = [];
+arrComp[0].push(0)
+arrComp[1].push(0)
+arrComp[2].push(0)
 
-
+console.log(arrComp)
 comparisonChart()
 
 
@@ -320,28 +324,7 @@ function comparisonChart(arrComp){
 
 }
 
-function yeartime() {
 
-
-    $.ajax({
-        'async': "true",
-        'type': "POST",
-        'global': false,
-        'url': "/map/viewMarker/",
-        //'contentType': "text",
-        //'data':businessID.toString(),
-        'contentType': "application/json; charset=utf-8",
-        'data': JSON.stringify({business_id: businessID}),
-        //dataType: "json",
-        'success': function (data) {
-            //console.log("test")
-            //console.log(data)
-            json_return_marker = data
-            console.log(businessID)
-        }
-    });
-
-}
 
 
 function getRandomColor() {
