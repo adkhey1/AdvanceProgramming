@@ -1,13 +1,12 @@
 package com.example.advanceprogramming.analyze.service;
 
-import com.example.advanceprogramming.analyze.DTO.BasicAnalysisDTO;
-import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
-import com.example.advanceprogramming.analyze.DTO.FilterDTO;
-import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
+import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.controller.AnalyzeController;
 import com.example.advanceprogramming.analyze.model.Business;
+import com.example.advanceprogramming.analyze.model.Review;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
+import com.example.advanceprogramming.analyze.repository.ReviewsRepository;
 import com.example.advanceprogramming.analyze.temp.BusinessMapping;
 import com.example.advanceprogramming.analyze.temp.ReviewMapping;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -32,6 +31,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Autowired
     private CategoriesRepository categoriesRepository;
+
+    @Autowired
+    private ReviewsRepository reviewsRepo;
 
 
     @Override
@@ -103,7 +105,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     public String[] splitCategorie(Business input) {
         //Todo Split all tuples and insert into table "categories"
-            String[] categories = input.getCategories().split(",");
+        String[] categories = input.getCategories().split(",");
         return categories;
     }
 
@@ -125,7 +127,64 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return countCategorie;
     }
 
-    public void splitReviewsToCSV(){
+    @Override
+    public ReviewsAnalysisDTO getAverageScorePerSeason(String bID) {
+        ReviewsAnalysisDTO[] arrReviews = new ReviewsAnalysisDTO[4];
+
+        ReviewsAnalysisDTO output = new ReviewsAnalysisDTO();
+
+        int counterSpring = 0;
+        int counterSummer = 0;
+        int counterFall = 0;
+        int counterWinter = 0;
+
+        double spring = 0.0;
+        double summer = 0.0;
+        double fall = 0.0;
+        double winter = 0.0;
+
+        List<Review> allReviews = reviewsRepo.selectReviewsWithBusinessId(bID);
+        log.debug(allReviews.get(0).toString());
+        for (Review r : allReviews) {
+            switch (r.getDate().getMonthValue()) {
+                case 1, 2, 3:
+                    counterSpring++;
+                    spring += r.getStars();
+                    break;
+                case 4, 5, 6:
+                    counterSummer++;
+                    summer += r.getStars();
+                    break;
+                case 7, 8, 9:
+                    counterFall++;
+                    fall += r.getStars();
+                    break;
+                case 10, 11, 12:
+                    counterWinter++;
+                    winter += r.getStars();
+                    break;
+                default:
+                    System.out.println("Error im switch-case");
+
+            }
+        }
+
+
+        spring = spring / counterSpring;
+        summer = summer / counterSummer;
+        fall = fall / counterFall;
+        winter = winter / counterWinter;
+
+        output.setSpring(spring);
+        output.setSummer(summer);
+        output.setFall(fall);
+        output.setWinter(winter);
+
+
+        return output;
+    }
+
+    public void splitReviewsToCSV() {
 
         File reviewsCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Reviews.csv");
 
@@ -137,29 +196,29 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         String replaceLineBreaks;
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE")+"\\Downloads\\yelp_dataset\\yelp_academic_dataset_review.json"));
+            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE") + "\\Downloads\\yelp_dataset\\yelp_academic_dataset_review.json"));
             String line;
             BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
 
             writer.write("review_id,user_id,business_id,stars,useful,funny,cool,text,date");
             writer.newLine();
 
-            while ((line= reader.readLine()) != null) {
-                tempReview = objectMapper.readValue(line,ReviewMapping.class);
+            while ((line = reader.readLine()) != null) {
+                tempReview = objectMapper.readValue(line, ReviewMapping.class);
 
                 replaceLineBreaks = tempReview.getText();
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n", "");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n", "");
+                replaceLineBreaks = replaceLineBreaks.replaceAll(",", "+");
 
-                writer.write(tempReview.getReview_id()+",");
-                writer.write(tempReview.getBusiness_id()+",");
-                writer.write(tempReview.getUser_id()+",");
-                writer.write(tempReview.getStars()+",");
-                writer.write(tempReview.getUseful()+",");
-                writer.write(tempReview.getFunny()+",");
-                writer.write(tempReview.getCool()+",");
-                writer.write(replaceLineBreaks+",");
+                writer.write(tempReview.getReview_id() + ",");
+                writer.write(tempReview.getBusiness_id() + ",");
+                writer.write(tempReview.getUser_id() + ",");
+                writer.write(tempReview.getStars() + ",");
+                writer.write(tempReview.getUseful() + ",");
+                writer.write(tempReview.getFunny() + ",");
+                writer.write(tempReview.getCool() + ",");
+                writer.write(replaceLineBreaks + ",");
                 writer.write(tempReview.getDate());
                 writer.newLine();
 
@@ -187,7 +246,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String line, categories;
             String[] splitted;
             for (Business b : input) {
-                categories = b.getCategories().replaceAll("§",",");
+                categories = b.getCategories().replaceAll("§", ",");
                 splitted = categories.split(",");
 
                 for (String s : splitted) {
@@ -203,7 +262,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
     }
 
-    public void splitBusinessToCSV(){
+    public void splitBusinessToCSV() {
         String userpath = System.getenv("USERPROFILE");
 
         File businessCSV = new File(userpath + "\\Downloads\\" + "Business.csv");
@@ -216,7 +275,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         String line;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(userpath+"\\Downloads\\yelp_dataset\\yelp_academic_dataset_business.json"));
+            BufferedReader reader = new BufferedReader(new FileReader(userpath + "\\Downloads\\yelp_dataset\\yelp_academic_dataset_business.json"));
 
             writer = new BufferedWriter(new FileWriter(businessCSV));
             writer.write("business_id,name,address,city,state,postal_code,latitude,longitude,stars,review_count,is_open,attributes,categories,hours,");
@@ -227,51 +286,51 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String categories;
             String name;
             String address, city, state;
-            while ((line= reader.readLine()) != null) {
-                mapping = objectMapper.readValue(line,BusinessMapping.class);
+            while ((line = reader.readLine()) != null) {
+                mapping = objectMapper.readValue(line, BusinessMapping.class);
 
-                writer.write(mapping.getBusiness_id()+",");
-                name = mapping.getName().replaceAll(",","");
-                writer.write(name+",");
-                address = mapping.getAddress().replaceAll(",","");
-                writer.write(address+",");
-                city = mapping.getCity().replaceAll(",","");
-                writer.write(city+",");
-                state = mapping.getState().replaceAll(",","");
-                writer.write(state+",");
-                writer.write(mapping.getPostal_code()+",");
-                writer.write(mapping.getLatitude()+",");
-                writer.write(mapping.getLongitude()+",");
-                writer.write(mapping.getStars()+",");
-                writer.write(mapping.getReview_count()+",");
-                writer.write(mapping.getIs_open()+",");
-                if (mapping.getAttributes() != null){
-                    attributes = mapping.getAttributes().toString().replaceAll(",","§");
+                writer.write(mapping.getBusiness_id() + ",");
+                name = mapping.getName().replaceAll(",", "");
+                writer.write(name + ",");
+                address = mapping.getAddress().replaceAll(",", "");
+                writer.write(address + ",");
+                city = mapping.getCity().replaceAll(",", "");
+                writer.write(city + ",");
+                state = mapping.getState().replaceAll(",", "");
+                writer.write(state + ",");
+                writer.write(mapping.getPostal_code() + ",");
+                writer.write(mapping.getLatitude() + ",");
+                writer.write(mapping.getLongitude() + ",");
+                writer.write(mapping.getStars() + ",");
+                writer.write(mapping.getReview_count() + ",");
+                writer.write(mapping.getIs_open() + ",");
+                if (mapping.getAttributes() != null) {
+                    attributes = mapping.getAttributes().toString().replaceAll(",", "§");
                 } else {
                     attributes = "nan";
                 }
-                writer.write(attributes+",");
-                if(mapping.getCategories() != null){
-                    categories = mapping.getCategories().replaceAll(",","§");
-                }else {
+                writer.write(attributes + ",");
+                if (mapping.getCategories() != null) {
+                    categories = mapping.getCategories().replaceAll(",", "§");
+                } else {
                     categories = "nan";
                 }
-                writer.write(categories+",");
-                if(mapping.getHours() != null){
-                    hours = mapping.getHours().toString().replaceAll(",","§");
+                writer.write(categories + ",");
+                if (mapping.getHours() != null) {
+                    hours = mapping.getHours().toString().replaceAll(",", "§");
                 } else {
                     hours = "nan";
                 }
-                writer.write(hours+",");
+                writer.write(hours + ",");
                 writer.newLine();
 
             }
             writer.close();
 
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("File nicht gefunden + \n " + e);
-        } catch (IOException e){
-            System.out.println("Ein Fehler ist aufgetreten +\n" +e);
+        } catch (IOException e) {
+            System.out.println("Ein Fehler ist aufgetreten +\n" + e);
         }
     }
 
@@ -296,17 +355,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 if (b.getAttributes().length() > 2) {
                     bId = b.getBusiness_id();
 
-                    attributes = b.getAttributes().replaceAll("§",",");
+                    attributes = b.getAttributes().replaceAll("§", ",");
                     jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {
                     });
                     //Todo über alle Keys iterieren, pro key eine Zeile in der CSV schreiben
                     for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
-                        content = entry.getValue().toString().replace(",","+");
+                        content = entry.getValue().toString().replace(",", "+");
 
-                        if (entry.getValue().toString().contains(":")){
-                            writer.write(bId + "," + entry.getKey()+","+content+",true");
-                        }else {
-                            writer.write(bId + "," + entry.getKey()+","+content+",false");
+                        if (entry.getValue().toString().contains(":")) {
+                            writer.write(bId + "," + entry.getKey() + "," + content + ",true");
+                        } else {
+                            writer.write(bId + "," + entry.getKey() + "," + content + ",false");
                         }
                         writer.newLine();
                     }

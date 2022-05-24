@@ -113,6 +113,17 @@ public class AnalyzeController {
         return "transformingDB";
     }
 
+    @RequestMapping("/analyze/averageReviews/")
+    public ResponseEntity<?> averageScores(@RequestBody String input){
+
+        log.debug(input);
+        ReviewsAnalysisDTO reviewAnalyDTO = analyzeService.getAverageScorePerSeason(input);
+
+        System.out.println(reviewAnalyDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(reviewAnalyDTO);
+    }
+
 
     @RequestMapping(value = "/split/categories")
     public String splitCategoriesToTable() {
