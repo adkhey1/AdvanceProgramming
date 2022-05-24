@@ -312,39 +312,29 @@ function comparisonChart(){
 
 }
 
+function yeartime() {
 
 
+    $.ajax({
+        'async': "true",
+        'type': "POST",
+        'global': false,
+        'url': "/map/viewMarker/",
+        //'contentType': "text",
+        //'data':businessID.toString(),
+        'contentType': "application/json; charset=utf-8",
+        'data': JSON.stringify({business_id: businessID}),
+        //dataType: "json",
+        'success': function (data) {
+            //console.log("test")
+            //console.log(data)
+            json_return_marker = data
+            console.log(businessID)
+        }
+    });
 
-
-/*
-barChartcountCategorie()
-
-function barChartcountCategorie(){
-
-    var config={
-        type:"bar",
-        data:{
-            labels:["test1","test2","test3"],
-            datasets:[{
-                label: "testing",
-                data:[10,20,30],
-                backgroundColor: [getRandomColor(),getRandomColor(),getRandomColor()]
-
-
-
-            }]},
-
-
-
-
-    }
-
-    const barChart=new Chart(
-        document.getElementById("testBar"),
-        config);
 }
 
- */
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
