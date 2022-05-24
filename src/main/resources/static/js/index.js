@@ -53,6 +53,8 @@ function initMap() {
 
     }
 
+    console.log(json_data_LatLongArray)
+
     //add all marker
     var myLatlng;
     for (let i = 0; i < json_data_LatLongArray.length; i++) {
@@ -96,6 +98,7 @@ function loadMapMarkers() {
 
 loadMapMarkers();
 
+console.log(json_data_LatLongArray)
 
 
 
@@ -264,35 +267,40 @@ function exampleChart3(div,values,keys) {
 }
 
 
+var arrComp = [];
+
+
 comparisonChart()
 
 
-function comparisonChart(){
+function comparisonChart(arrComp){
 
 
 
     const labels = [
-        'Long',
-        'Lat',
+        'spring',
+        'summer',
+        'fall',
+        'winter'
 
     ];
 
     const data = {
         labels: labels,
         datasets: [{
-            label: '1',
+            label: 'Dataset 1',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: [20,30],
         },
             {
-                label: '2',
+                label: 'Dataset 2',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: [0,50],
             },
             {
-                label: '3',
+                label: 'Dataset 3',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: [30,50],
