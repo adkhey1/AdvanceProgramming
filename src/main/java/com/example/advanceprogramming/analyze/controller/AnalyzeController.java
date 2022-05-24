@@ -3,7 +3,6 @@ package com.example.advanceprogramming.analyze.controller;
 
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
-import com.example.advanceprogramming.analyze.model.Categories;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
@@ -81,9 +80,9 @@ public class AnalyzeController {
     }
 
     @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> listRestaurants( @RequestBody FilterDTO input) {
+    public ResponseEntity<?> listRestaurants(@RequestBody FilterDTO input) {
 
-        List<Business> businesses = businessRepository.selectFirst10();
+        List<Business> businesses = businessRepository.selectfirst100();
 
         List<MarkerDTO> markerList = new ArrayList<>();
         MarkerDTO temp;
@@ -104,17 +103,31 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
-    @RequestMapping("/split/attributes")
-    public String splitAttributesToDB() {
-        ArrayList<Business> listRaw = businessRepository.selectAll();
+    @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> listRestaurantsTemp() {
 
-        analyzeServiceImpl.splitAttributesToCSV(listRaw);
+        List<Business> businesses = businessRepository.selectfirst100();
 
-        return "transformingDB";
+        List<MarkerDTO> markerList = new ArrayList<>();
+        MarkerDTO temp;
+        for (Business b : businesses) {
+            temp = new MarkerDTO();
+
+            temp.setLatitude(b.getLatitude());
+            temp.setLongitude(b.getLongitude());
+            temp.setBusiness_id(b.getBusiness_id());
+
+            markerList.add(temp);
+        }
+
+
+        MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);
+
+        return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
     @RequestMapping("/analyze/averageReviews/")
-    public ResponseEntity<?> averageScores(@RequestBody String input){
+    public ResponseEntity<?> averageScores(@RequestBody String input) {
 
         log.debug(input);
         ReviewsAnalysisDTO reviewAnalyDTO = analyzeService.getAverageScorePerSeason(input);
@@ -124,6 +137,14 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(reviewAnalyDTO);
     }
 
+    @RequestMapping("/split/attributes")
+    public String splitAttributesToDB() {
+        ArrayList<Business> listRaw = businessRepository.selectAll();
+
+        analyzeServiceImpl.splitAttributesToCSV(listRaw);
+
+        return "transformingDB";
+    }
 
     @RequestMapping(value = "/split/categories")
     public String splitCategoriesToTable() {
@@ -138,14 +159,14 @@ public class AnalyzeController {
     }
 
     @RequestMapping(value = "/split/reviews")
-    public String splitReviews(){
+    public String splitReviews() {
         analyzeServiceImpl.splitReviewsToCSV();
 
         return "splitReviews";
     }
 
     @RequestMapping(value = "/split/business")
-    public String splitBusiness(){
+    public String splitBusiness() {
         analyzeServiceImpl.splitBusinessToCSV();
 
         return "splitBusiness";
