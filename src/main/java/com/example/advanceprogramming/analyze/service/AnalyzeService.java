@@ -18,5 +18,5 @@ public interface AnalyzeService {
 
     BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2);
 
-    ReviewsAnalysisDTO getAverageScorePerSeason(String bID);
+    BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO,String bID);
 }

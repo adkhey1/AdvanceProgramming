@@ -128,10 +128,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public ReviewsAnalysisDTO getAverageScorePerSeason(String bID) {
-        ReviewsAnalysisDTO[] arrReviews = new ReviewsAnalysisDTO[4];
-
-        ReviewsAnalysisDTO output = new ReviewsAnalysisDTO();
+    public BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO, String bID) {
 
         int counterSpring = 0;
         int counterSummer = 0;
@@ -165,23 +162,20 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                     break;
                 default:
                     System.out.println("Error im switch-case");
-
             }
         }
-
 
         spring = spring / counterSpring;
         summer = summer / counterSummer;
         fall = fall / counterFall;
         winter = winter / counterWinter;
 
-        output.setSpring(spring);
-        output.setSummer(summer);
-        output.setFall(fall);
-        output.setWinter(winter);
+        inputDTO.setSpring(spring);
+        inputDTO.setSummer(summer);
+        inputDTO.setFall(fall);
+        inputDTO.setWinter(winter);
 
-
-        return output;
+        return inputDTO;
     }
 
     public void splitReviewsToCSV() {
