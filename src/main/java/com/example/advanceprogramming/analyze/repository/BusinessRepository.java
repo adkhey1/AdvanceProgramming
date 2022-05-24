@@ -31,7 +31,7 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
     @Query(value = "SELECT * FROM Business b  LIMIT 100",
             nativeQuery = true)
-    ArrayList<Business> selectFirst10();
+    ArrayList<Business> selectfirst100();
 
     @Query("SELECT b FROM Business b WHERE b.categories LIKE %?1% AND b.city LIKE %?2% " +
             "AND b.stars >= ?3 AND b.postal_code LIKE %?4% AND b.is_open = ?5 AND b.review_count >= ?6")

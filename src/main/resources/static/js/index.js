@@ -85,7 +85,7 @@ function loadMapMarkers() {
         'async': false,
         'type': "POST",
         'global': false,
-        'url': "/restaurant/filtered/",
+        'url': "/100restaurants/",
         'success': function (data) {
             json_data_LatLongArray = data;
         }
