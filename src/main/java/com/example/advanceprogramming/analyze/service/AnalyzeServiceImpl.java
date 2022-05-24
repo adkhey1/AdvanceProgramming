@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.*;
 
+import static java.lang.Double.NaN;
+
 @Service
 public class AnalyzeServiceImpl implements AnalyzeService {
 
@@ -170,6 +172,18 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         fall = fall / counterFall;
         winter = winter / counterWinter;
 
+        if (Double.isNaN(spring)){
+            spring = 0;
+        }
+        if (Double.isNaN(summer)){
+            summer = 0;
+        }
+        if (Double.isNaN(fall)){
+            fall = 0;
+        }
+        if (Double.isNaN(winter)){
+            winter = 0;
+        }
         inputDTO.setSpring(spring);
         inputDTO.setSummer(summer);
         inputDTO.setFall(fall);
@@ -194,25 +208,30 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String line;
             BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
 
-            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,text,date");
+            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,date");
             writer.newLine();
 
             while ((line = reader.readLine()) != null) {
                 tempReview = objectMapper.readValue(line, ReviewMapping.class);
 
-                replaceLineBreaks = tempReview.getText();
+                /*replaceLineBreaks = tempReview.getText();
                 replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n", "");
                 replaceLineBreaks = replaceLineBreaks.replaceAll("\n", "");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\r","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\r\r","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\r\n","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\r","");
                 replaceLineBreaks = replaceLineBreaks.replaceAll(",", "+");
-
+                replaceLineBreaks = replaceLineBreaks.replaceAll(";","+");
+*/
                 writer.write(tempReview.getReview_id() + ",");
-                writer.write(tempReview.getBusiness_id() + ",");
                 writer.write(tempReview.getUser_id() + ",");
+                writer.write(tempReview.getBusiness_id() + ",");
                 writer.write(tempReview.getStars() + ",");
                 writer.write(tempReview.getUseful() + ",");
                 writer.write(tempReview.getFunny() + ",");
                 writer.write(tempReview.getCool() + ",");
-                writer.write(replaceLineBreaks + ",");
+                //writer.write(replaceLineBreaks + ",");
                 writer.write(tempReview.getDate());
                 writer.newLine();
 
