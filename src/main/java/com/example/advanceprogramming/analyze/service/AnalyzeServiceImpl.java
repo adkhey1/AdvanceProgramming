@@ -4,9 +4,11 @@ import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.controller.AnalyzeController;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.model.Review;
+import com.example.advanceprogramming.analyze.model.UserBusinessRelation;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
 import com.example.advanceprogramming.analyze.repository.ReviewsRepository;
+import com.example.advanceprogramming.analyze.repository.UserBusinessRelationRepository;
 import com.example.advanceprogramming.analyze.temp.BusinessMapping;
 import com.example.advanceprogramming.analyze.temp.ReviewMapping;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -16,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -30,6 +34,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Autowired
     private BusinessRepository restaurantRepo;
+
+    @Autowired
+    private UserBusinessRelationRepository userBizRepo;
 
     @Autowired
     private CategoriesRepository categoriesRepository;
@@ -96,6 +103,45 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
 
         return dto;
+    }
+
+    public ResponseEntity<?> addBusinessToList(String bId, long userId, int change){
+/*      0 = Im Verlauf -> Existiert nicht -> erzeugen mit "isfavorite" false
+                          existiert -> an "isfavorite" nicht ändern
+        1 = In Favoriten -> Exisiter nicht -> mit "isfavorite" 'true' erzeugen
+                            Exisitert -> "isfavorite" auf 'true' setzen
+        2 = Aus Favoriten löschen -> "isfavorite" auf 'false' setzen
+  */
+
+        UserBusinessRelation userInput = new UserBusinessRelation();
+        switch (change){
+            case 0:
+
+                break;
+
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+        }
+
+
+        userBizRepo.findByNameAndBusinessId(userId, bId);
+        if(){
+            userInput.setUserId(userId);
+            userInput.setBusinessId(bId);
+            userInput.setFavorite(isFavorite);
+
+            userBizRepo.save(userInput);
+            if (isFavorite){
+                return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to favorites!");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to history!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("This business is already selected as favorite!");
     }
 
     @Override

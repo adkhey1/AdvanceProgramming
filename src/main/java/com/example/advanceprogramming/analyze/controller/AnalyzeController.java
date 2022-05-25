@@ -3,11 +3,14 @@ package com.example.advanceprogramming.analyze.controller;
 
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
+import com.example.advanceprogramming.analyze.model.UserBusinessRelation;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.repository.UserBusinessRelationRepository;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
 import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
+import com.example.advanceprogramming.auth.model.User;
+import com.example.advanceprogramming.auth.repository.UserRepository;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,9 @@ public class AnalyzeController {
 
     @Autowired
     private BusinessRepository businessRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private CategoriesRepository categoriesRepository;
