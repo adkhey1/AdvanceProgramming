@@ -198,14 +198,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         String[] categories = splitCategorie(business);
         HashMap<String, Integer> countCategorie = new HashMap<>();
 
-        log.debug(">>>>>>> for Schleife in Service!");
-        for (String x : categories) {
-
-            int i = categoriesRepository.selectAllCategories(x, business.getPostal_code());
+        for (String x: categories ){
+            int i = restaurantRepo.selectAllCategories(x, business.getPostal_code());
             countCategorie.put(x, i);
-
         }
-        log.debug(">>>>>>> for Schleife in Service finish!");
 
         return countCategorie;
     }
