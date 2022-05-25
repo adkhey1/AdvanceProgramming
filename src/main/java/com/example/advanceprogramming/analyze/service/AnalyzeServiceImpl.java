@@ -11,6 +11,7 @@ import com.example.advanceprogramming.analyze.repository.ReviewsRepository;
 import com.example.advanceprogramming.analyze.repository.UserBusinessRelationRepository;
 import com.example.advanceprogramming.analyze.temp.BusinessMapping;
 import com.example.advanceprogramming.analyze.temp.ReviewMapping;
+import com.example.advanceprogramming.auth.model.User;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -105,7 +106,19 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return dto;
     }
 
-    public ResponseEntity<?> addBusinessToList(String bId, long userId, int change){
+    public UserBusinessRelation createUserBusinessRelation(long userId, String bId, boolean isFavorite) {
+
+        UserBusinessRelation input = new UserBusinessRelation();
+
+        input.setUserId(userId);
+        input.setBusinessId(bId);
+        input.setFavorite(isFavorite);
+        userBizRepo.save(input);
+
+        return input;
+    }
+
+    public ResponseEntity<?> addBusinessToList(String bId, long userId, int change) {
 /*      0 = Im Verlauf -> Existiert nicht -> erzeugen mit "isfavorite" false
                           existiert -> an "isfavorite" nicht ändern
         1 = In Favoriten -> Exisiter nicht -> mit "isfavorite" 'true' erzeugen
@@ -113,35 +126,57 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         2 = Aus Favoriten löschen -> "isfavorite" auf 'false' setzen
   */
 
-        UserBusinessRelation userInput = new UserBusinessRelation();
-        switch (change){
+
+        //andi das existiert braucht man doch eigentlich gar nicht, weil es wird ja sowieso in dem Verlauf
+        //gespeichert und falls man es in die Favoriten speichert möchte, müssen sie bereits existieren, da
+        //man sie vorher mit getBusinessById aufgerufen hat. Also habe ich nur geschaut, ob sie als Favorit
+        //gespeichert sind oder nicht.
+
+        UserBusinessRelation user = userBizRepo.findByNameAndBusinessId(userId, bId);
+
+        switch (change) {
             case 0:
 
+                createUserBusinessRelation(userId, bId, false);
                 break;
 
             case 1:
+
+                //falls es true ist, passiert nichts
+                //falls es false ist, wird es überschrieben
+
+                if (user.isFavorite()) {
+                    //nothing
+                } else {
+                    user.setFavorite(true);
+                    userBizRepo.save(user);
+                }
 
                 break;
 
             case 2:
 
+                if (user.isFavorite()) {
+                    user.setFavorite(false);
+                    userBizRepo.save(user);
+                } else {
+                    //nothing
+                }
+
                 break;
         }
 
 
-        userBizRepo.findByNameAndBusinessId(userId, bId);
-        if(){
-            userInput.setUserId(userId);
-            userInput.setBusinessId(bId);
-            userInput.setFavorite(isFavorite);
-
-            userBizRepo.save(userInput);
+        /*
             if (isFavorite){
                 return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to favorites!");
             }
             return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to history!");
         }
         return ResponseEntity.status(HttpStatus.OK).body("This business is already selected as favorite!");
+
+         */
+        return null;
     }
 
     @Override
@@ -218,16 +253,16 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         fall = fall / counterFall;
         winter = winter / counterWinter;
 
-        if (Double.isNaN(spring)){
+        if (Double.isNaN(spring)) {
             spring = 0;
         }
-        if (Double.isNaN(summer)){
+        if (Double.isNaN(summer)) {
             summer = 0;
         }
-        if (Double.isNaN(fall)){
+        if (Double.isNaN(fall)) {
             fall = 0;
         }
-        if (Double.isNaN(winter)){
+        if (Double.isNaN(winter)) {
             winter = 0;
         }
         inputDTO.setSpring(spring);
