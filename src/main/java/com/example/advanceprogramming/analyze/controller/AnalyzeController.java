@@ -5,19 +5,24 @@ import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
+import com.example.advanceprogramming.analyze.repository.UserBusinessRelationRepository;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
 import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -32,13 +37,23 @@ public class AnalyzeController {
     private CategoriesRepository categoriesRepository;
 
     @Autowired
+    private UserBusinessRelationRepository userBizRepo;
+
+    @Autowired
     private AnalyzeServiceImpl analyzeServiceImpl;
 
     @Autowired
     private AnalyzeService analyzeService;
 
     @PostMapping(value = "/map/viewMarker/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input) {
+    public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByEmail(principal.getName());
+
+
+
+        analyzeService.addBusinessToList(input.getBusiness_id(),user.getId(),0);
+
         log.debug(">>>> Anfrage 'viewMarker' angefangen");
 
         log.debug(">>>> Anfrage an DB per Repo gestartet");
@@ -53,10 +68,7 @@ public class AnalyzeController {
         BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
         log.debug(">>>> Service -> parsing finished");
 
-
         output = analyzeService.getAverageScorePerSeason(output, input.getBusiness_id());
-
-
 
         log.debug(">>>> Anfrage 'viewMarker' beendet");
         return ResponseEntity.status(HttpStatus.OK).body(output);
@@ -81,6 +93,22 @@ public class AnalyzeController {
 
         model.addAttribute("search", "The Business you were looking for is not known to us!");
         return null;
+    }
+
+    @PostMapping(value = "/favorites/add/")
+    public ResponseEntity<?> addBusinessToFavorites(@RequestBody IdDTO id, HttpServletRequest request){
+        //Todo get User from Name (Email)
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByEmail(principal.getName());
+
+        return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(),1);
+    }
+
+    public ResponseEntity<?> deleteBusinessFromFavorites(@RequestBody IdDTO id, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByEmail(principal.getName());
+
+        return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(), 2);
     }
 
     @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
