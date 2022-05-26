@@ -1,17 +1,12 @@
 package com.example.advanceprogramming.analyze.service;
 
 import com.example.advanceprogramming.analyze.DTO.*;
-import com.example.advanceprogramming.analyze.controller.AnalyzeController;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.model.Review;
 import com.example.advanceprogramming.analyze.model.UserBusinessRelation;
-import com.example.advanceprogramming.analyze.repository.BusinessRepository;
-import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
-import com.example.advanceprogramming.analyze.repository.ReviewsRepository;
-import com.example.advanceprogramming.analyze.repository.UserBusinessRelationRepository;
+import com.example.advanceprogramming.analyze.repository.*;
 import com.example.advanceprogramming.analyze.temp.BusinessMapping;
 import com.example.advanceprogramming.analyze.temp.ReviewMapping;
-import com.example.advanceprogramming.auth.model.User;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,14 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.*;
-
-import static java.lang.Double.NaN;
 
 @Service
 public class AnalyzeServiceImpl implements AnalyzeService {
@@ -40,7 +32,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private UserBusinessRelationRepository userBizRepo;
 
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private PostalCodeViewRepository postalCodeViewRepository;
 
     @Autowired
     private ReviewsRepository reviewsRepo;
@@ -196,11 +188,22 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         //Testing categorie by PostCode
         String[] categories = splitCategorie(business);
+        String[] attributes = {"'GoodForKids': 'True'", "'BusinessAcceptsCreditCards': 'True'", "'RestaurantsDelivery': 'True'"};
         HashMap<String, Integer> countCategorie = new HashMap<>();
+        int counter = 0;
+
 
         for (String x: categories ){
-            int i = restaurantRepo.selectAllCategories(x, business.getPostal_code());
+            int i = postalCodeViewRepository.selectAllCategories(x, business.getPostal_code());
             countCategorie.put(x, i);
+
+            /*
+            for (String z : attributes){
+                int anzahl = postalCodeViewRepository.selectAllAttributes(z, business.getPostal_code(), x);
+                countCategorie.put(z + Integer.toString(counter), anzahl);
+            }
+             */
+            counter++;
         }
 
         return countCategorie;

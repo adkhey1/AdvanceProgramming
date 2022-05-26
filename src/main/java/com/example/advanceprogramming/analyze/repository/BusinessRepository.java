@@ -41,14 +41,27 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
      */
 
-    @Query("SELECT b.business_id FROM Business b WHERE  b.postal_code LIKE %?1% ")
-    List<String> selectByPostalCode(String postal_code);
+
+    /*
+    @Query(value = "CREATE VIEW ?1 AS SELECT b.business_id, b.postal_code, b.categories, b.attributes " +
+            "FROM Business b WHERE b.postal_code = ?1")
+    void createView(String postal_code);
+
+    @Query(value = "DROP VIEW ?1")
+    void deleteView(String postal_code);
+     */
 
 
+    /*
     @Query(value = "SELECT count(*) FROM Business b WHERE b.categories LIKE %?1% " +
             "and b.postal_code LIKE %?2%",
             nativeQuery = true)
     Integer selectAllCategories(String categorie, String Postal_code);
 
+    @Query(value = "SELECT count(*) FROM Business b WHERE b.attributes LIKE %?1% " +
+            "and b.postal_code LIKE %?2% and b.categories LIKE %?3%",
+            nativeQuery = true)
+    Integer selectAllAttributes(String attribute, String Postal_code, String categorie);
+     */
 
 }

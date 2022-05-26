@@ -19,8 +19,6 @@ public class BasicAnalysisDTO {
 
     //analysis
 
-
-    //ob es in der Umgebung mehrere Restaurants von der categorie gibt mit postcode schauen
     private HashMap<String, Integer> countCategorie;
     //categorie und wie gut es in dieser ist (mit sternen schauen)
 
