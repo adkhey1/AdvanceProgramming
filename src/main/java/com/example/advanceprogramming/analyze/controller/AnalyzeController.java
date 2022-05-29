@@ -116,26 +116,15 @@ public class AnalyzeController {
 
     @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurants(@RequestBody FilterDTO input) {
+        log.debug(">>>> recieved Request");
+        List<BusinessDTO> businesses = analyzeService.getMarkerFromFilter(input);
 
-        List<Business> businesses = businessRepository.selectfirst100();
+        //log.debug(businesses.toString());
 
-        List<MarkerDTO> markerList = new ArrayList<>();
-        MarkerDTO temp;
-        for (Business b : businesses) {
-            temp = new MarkerDTO();
 
-            temp.setLatitude(b.getLatitude());
-            temp.setLongitude(b.getLongitude());
-            temp.setBusiness_id(b.getBusiness_id());
+        //MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);
 
-            markerList.add(temp);
-        }
-
-        log.debug(input.toString());
-
-        MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);
-
-        return ResponseEntity.status(HttpStatus.OK).body(output);
+        return ResponseEntity.status(HttpStatus.OK).body(businesses);
     }
 
     @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -161,16 +150,19 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
-    /*@RequestMapping("/analyze/averageReviews/")
-    public ResponseEntity<?> averageScores(@RequestBody String input) {
+    @PostMapping(value = "/list/categories/")
+    public ResponseEntity<?> listCategories(){
+        List<String> output = analyzeService.getPopularCategories();
 
-        log.debug(input);
-        ReviewsAnalysisDTO reviewAnalyDTO = analyzeService.getAverageScorePerSeason(input);
+        return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
 
-        System.out.println(reviewAnalyDTO);
+    @PostMapping(value = "/list/states/")
+    public ResponseEntity<?> listStates(){
+        List<String> output = businessRepository.selectStates();
 
-        return ResponseEntity.status(HttpStatus.OK).body(reviewAnalyDTO);
-    }*/
+        return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
 
     @RequestMapping("/split/attributes")
     public String splitAttributesToDB() {
@@ -207,24 +199,17 @@ public class AnalyzeController {
         return "splitBusiness";
     }
 
-    /**
-     * needs categories from filter
-     */
     @RequestMapping(value = "/test/test/1")
     public void getBusinessByFilter(/* @RequestBody FilterDTO filterInput*/) {
-
-
         //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
         //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
         //List<Business> allBusiness = businessRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
-
 
         Business businessByBusinessID = businessRepository.findByBusiness_id("__4gkf_0UJW78rkRzFm6Gw");
 
         HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
 
         BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
-
     }
 
 

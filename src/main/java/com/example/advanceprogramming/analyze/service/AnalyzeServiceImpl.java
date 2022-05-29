@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.error.Mark;
 
 import java.io.*;
 import java.util.*;
@@ -26,7 +27,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private static final Logger log = LoggerFactory.getLogger(AnalyzeServiceImpl.class);
 
     @Autowired
-    private BusinessRepository restaurantRepo;
+    private BusinessRepository businessRepo;
 
     @Autowired
     private UserBusinessRelationRepository userBizRepo;
@@ -172,10 +173,66 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public List<MarkerDTO> getMarkerFromFilter(FilterDTO input) {
+    public List<BusinessDTO> getMarkerFromFilter(FilterDTO input) {
+        if (input.getCity().equals("")){
+            log.debug("Ersetzen durch % ausgelöst");
+            input.setCity("%");
+        }
+        if (input.getPlz().equals("")){
+            log.debug("Ersetzen durch % ausgelöst");
+            input.setPlz("%");
+        }
+        if (input.getState().equals("")){
+            log.debug("Ersetzen durch % ausgelöst");
+            input.setState("%");
+        }
+        if (input.getName().equals("")){
+            log.debug("Ersetzen durch % ausgelöst");
+            input.setName("%");
+        }
 
-        //Todo implementieren
-        return null;
+
+        List<Business> rawList = businessRepo.selectByFilter(Double.valueOf(input.getStars()), input.getName(), "FL", input.getCity(), input.getPlz());
+
+        log.debug("Länger der sql-Antwort an Objekten " + rawList.size());
+
+        List<Business> filteredList = new ArrayList<>();
+
+        String[] splittedCategories;
+        boolean containsCategory;
+        for (Business b : rawList){
+            containsCategory = false;
+            splittedCategories =  b.getCategories().split(",");
+
+            for (String s : splittedCategories){
+                //if (s.equals(input.getCategory())){ TODO Liste der Kategorieren an Front-End
+                if (s.equals(" Burgers")){
+                    containsCategory = true;
+                }
+            }
+            if (containsCategory){
+                filteredList.add(b);
+            }
+        }
+
+        log.debug("Länger der filteredList " + filteredList.size());
+
+        /*List<MarkerDTO> output = new ArrayList<>();
+
+        MarkerDTO temp;
+        for (Business b : rawList) {
+            temp = new MarkerDTO();
+            temp.setLatitude(b.getLatitude());
+            temp.setLongitude(b.getLongitude());
+            temp.setBusiness_id(b.getBusiness_id());
+            output.add(temp);
+        }*/
+        List<BusinessDTO> output = new ArrayList<>();
+        for (Business b : filteredList){
+            output.add(parseBusinessToDTO(b));
+        }
+
+        return output;
     }
 
     public String[] splitCategorie(Business input) {
@@ -211,7 +268,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO, String bID) {
-
         int counterSpring = 0;
         int counterSummer = 0;
         int counterFall = 0;
@@ -223,7 +279,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         double winter = 0.0;
 
         List<Review> allReviews = reviewsRepo.selectReviewsWithBusinessId(bID);
-        //log.debug(allReviews.get(0).toString());
         for (Review r : allReviews) {
             switch (r.getDate().getMonthValue()) {
                 case 1, 2, 3:
@@ -270,6 +325,19 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         inputDTO.setWinter(winter);
 
         return inputDTO;
+    }
+
+    @Override
+    public List<String> getPopularCategories() {
+        List<String> listCategories = businessRepo.selectPopularCategories();
+
+        List<String> outputList = new ArrayList<>();
+        int commaIndex = 0;
+        for (String s : listCategories){
+            commaIndex = s.indexOf(",");
+            outputList.add(s.substring(0,commaIndex));
+        }
+        return outputList;
     }
 
     public void splitReviewsToCSV() {

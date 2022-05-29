@@ -12,5 +12,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class FilterDTO {
-    private String star, name, time, day, state, city, plz, kategorie, atribute;
+    private String stars, name, time, day, state, city, plz, category, attribute;
 }

@@ -21,15 +21,15 @@ function searchText() {
 
     var search = {
         //vegan : document.getElementById('vegan').checked,
-        star: document.getElementById("stars").value,
+        stars: document.getElementById("stars").value,
         name: document.getElementById("name").value,
         time: document.getElementById("time").value,
         day: document.getElementById("day").value,
         state: document.getElementById("State").value,
         city: document.getElementById("City").value,
         plz: document.getElementById("PLZ").value,
-        kategorie: document.getElementById("kategorie").value,
-        atribute: document.getElementById("atribute").value
+        category: document.getElementById("kategorie").value,
+        attribute: document.getElementById("atribute").value
 
     }
 

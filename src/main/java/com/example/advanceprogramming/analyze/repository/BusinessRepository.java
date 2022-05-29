@@ -33,13 +33,17 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
             nativeQuery = true)
     ArrayList<Business> selectfirst100();
 
-    /*
-    @Query("SELECT b FROM Business b WHERE b.categories LIKE %?1% AND b.city LIKE %?2% " +
-            "AND b.stars >= ?3 AND b.postal_code LIKE %?4% AND b.is_open = ?5 AND b.review_count >= ?6")
-    List<Business> selectByFilter(String categories, String city, double stars,
-                                  String postal_code, int is_open, int review_count);
+    @Query(value = "SELECT category, count(category) as anzahl FROM categories GROUP BY category ORDER BY anzahl DESC LIMIT 200;",
+    nativeQuery = true)
+    List<String> selectPopularCategories();
 
-     */
+    @Query(value = "SELECT state FROM business group by state",
+            nativeQuery = true)
+    List<String> selectStates();
+
+
+    @Query("SELECT b FROM Business b WHERE b.stars = ?1 AND b.name LIKE ?2 AND b.state LIKE ?3 AND b.city LIKE ?4 AND b.postal_code LIKE ?5")
+    List<Business> selectByFilter(double stars, String name, String state, String city, String plz);
 
 
     /*
