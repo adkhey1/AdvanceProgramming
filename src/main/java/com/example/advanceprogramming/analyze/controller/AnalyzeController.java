@@ -50,12 +50,12 @@ public class AnalyzeController {
 
     @PostMapping(value = "/map/viewMarker/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input, HttpServletRequest request) {
-        Principal principal = request.getUserPrincipal();
-        User user = userRepository.findByEmail(principal.getName());
+        //Principal principal = request.getUserPrincipal();
+        //User user = userRepository.findByEmail(principal.getName());
 
 
 
-        analyzeService.addBusinessToList(input.getBusiness_id(),user.getId(),0);
+        //analyzeService.addBusinessToList(input.getBusiness_id(),user.getId(),0);
 
         log.debug(">>>> Anfrage 'viewMarker' angefangen");
 
