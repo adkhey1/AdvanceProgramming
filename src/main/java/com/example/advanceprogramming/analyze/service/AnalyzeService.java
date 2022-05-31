@@ -13,7 +13,7 @@ public interface AnalyzeService {
 
     BusinessDTO parseBusinessToDTO(Business input);
 
-    List<MarkerDTO> getMarkerFromFilter(FilterDTO input);
+    List<BusinessDTO> getMarkerFromFilter(FilterDTO input);
 
     HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/);
 
@@ -22,4 +22,6 @@ public interface AnalyzeService {
     BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO,String bID);
 
     ResponseEntity<?> addBusinessToList(String bId, long userId, int change);
+
+    List<String> getPopularCategories();
 }
