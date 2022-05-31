@@ -3,6 +3,7 @@ package com.example.advanceprogramming.analyze.controller;
 
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
+import com.example.advanceprogramming.analyze.model.FranchiseAnalyzeResult;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
 import com.example.advanceprogramming.analyze.repository.FranchiseViewRepository;
@@ -21,13 +22,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.Text;
 
-import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class AnalyzeController {
@@ -217,21 +215,24 @@ public class AnalyzeController {
         //HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
         //BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
 
-        String franchise = "McDonald's";
+        String franchise = "Starbucks";
+
+        List<FranchiseAnalyzeResult> countFranchise = franchiseViewRepository.findBiggestFranchises();
+        List<FranchiseAnalyzeResult> storesInCity = franchiseViewRepository.storesInCity(franchise);
+        List<FranchiseAnalyzeResult> worstCity = franchiseViewRepository.averageStarsByCityWorst(franchise);
+        List<FranchiseAnalyzeResult> bestCity = franchiseViewRepository.averageStarsByCity(franchise);
+        HashMap<String, Integer> countCategories = analyzeServiceImpl.franchiseCategorie(franchise);
 
         double avgStars = franchiseViewRepository.averageStars(franchise);
         avgStars = Math.round(avgStars * 100.0) / 100.0;
 
-        //todo performance problems by query 10-15 seconds
-        HashMap<String, Integer> countCategories = analyzeServiceImpl.franchiseCategorie(franchise);
+        FranchiseAnalyzeDTO output = analyzeService.parseFranchiseAnalyzeDTO(franchise, countFranchise, storesInCity, worstCity, bestCity,
+               countCategories, avgStars);
 
 
-        //todo not working (cause of HashMap)
-        //HashMap<String, Integer> biggestFranchise = analyzeServiceImpl.countFranchise();
-        Map<String, Integer> storesInCity = franchiseViewRepository.storesInCity(franchise);
-        //get avgStars for each city
-
-        int bla = 12;
+        //todo not working jet
+        List<FranchiseAnalyzeResult> countBestReviews = franchiseViewRepository.reviewsInBestCity(franchise);
+        List<FranchiseAnalyzeResult> countWorstReviews = franchiseViewRepository.reviewsInWorstCity(franchise);
 
     }
 

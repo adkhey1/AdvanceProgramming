@@ -2,6 +2,7 @@ package com.example.advanceprogramming.analyze.service;
 
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
+import com.example.advanceprogramming.analyze.model.FranchiseAnalyzeResult;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
@@ -18,6 +19,10 @@ public interface AnalyzeService {
     HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/);
 
     BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2);
+
+    FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise, List<FranchiseAnalyzeResult> storesInCity,
+                                                List<FranchiseAnalyzeResult> worstCity, List<FranchiseAnalyzeResult> bestCity,
+                                                 HashMap<String, Integer> countCategories, double avgStars);
 
     BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO,String bID);
 

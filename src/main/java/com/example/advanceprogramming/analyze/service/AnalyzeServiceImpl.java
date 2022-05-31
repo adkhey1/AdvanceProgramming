@@ -1,10 +1,7 @@
 package com.example.advanceprogramming.analyze.service;
 
 import com.example.advanceprogramming.analyze.DTO.*;
-import com.example.advanceprogramming.analyze.model.Business;
-import com.example.advanceprogramming.analyze.model.Franchise;
-import com.example.advanceprogramming.analyze.model.Review;
-import com.example.advanceprogramming.analyze.model.UserBusinessRelation;
+import com.example.advanceprogramming.analyze.model.*;
 import com.example.advanceprogramming.analyze.repository.*;
 import com.example.advanceprogramming.analyze.temp.BusinessMapping;
 import com.example.advanceprogramming.analyze.temp.ReviewMapping;
@@ -330,6 +327,25 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return inputDTO;
     }
 
+    @Override
+    public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise, List<FranchiseAnalyzeResult> storesInCity,
+                                                        List<FranchiseAnalyzeResult> worstCity, List<FranchiseAnalyzeResult> bestCity,
+                                                        HashMap<String, Integer> countCategories, double avgStars) {
+        FranchiseAnalyzeDTO dto = new FranchiseAnalyzeDTO();
+
+        if (franchise != null) {
+            dto.setFranchise(franchise);
+            dto.setCountFranchise(countFranchise);
+            dto.setStoresInCity(storesInCity);
+            dto.setWorstCity(worstCity);
+            dto.setBestCity(bestCity);
+            dto.setCountCategorie(countCategories);
+            dto.setAvgFranchise(avgStars);
+        }
+
+        return dto;
+    }
+
     public String[] splitCategorieFr(Franchise input) {
         //Todo Split all tuples and insert into table "categories"
         String[] categories = input.getCategories().split(",");
@@ -365,17 +381,18 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 /*
     public HashMap<String, Integer> countFranchise(){
-        String[] franchise = {"Starbucks", "McDonald's","Dunkin'","Subway","Taco Bell","CVS Pharmacy","Walgreens"};
+
+        List<String> countFranchise = franchiseViewRepository.selectAllNames();
         HashMap<String, Integer> countRestaurante = new HashMap<>();
 
-        for(String z : franchise){
-            int i = franchiseViewRepository.countFranchiseByName(z);
-            countRestaurante.put(z,i);
+        for(String i : countFranchise){
+            switch
         }
-
         return countRestaurante;
     }
+
  */
+
 
 
     @Override
