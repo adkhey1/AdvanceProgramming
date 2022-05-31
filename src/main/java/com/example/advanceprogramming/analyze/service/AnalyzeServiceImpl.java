@@ -2,6 +2,7 @@ package com.example.advanceprogramming.analyze.service;
 
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
+import com.example.advanceprogramming.analyze.model.Franchise;
 import com.example.advanceprogramming.analyze.model.Review;
 import com.example.advanceprogramming.analyze.model.UserBusinessRelation;
 import com.example.advanceprogramming.analyze.repository.*;
@@ -27,6 +28,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Autowired
     private BusinessRepository restaurantRepo;
+
+    @Autowired
+    private FranchiseViewRepository franchiseViewRepository;
 
     @Autowired
     private UserBusinessRelationRepository userBizRepo;
@@ -271,6 +275,54 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         return inputDTO;
     }
+
+    public String[] splitCategorieFr(Franchise input) {
+        //Todo Split all tuples and insert into table "categories"
+        String[] categories = input.getCategories().split(",");
+        return categories;
+    }
+
+    public HashMap<String, Integer> franchiseCategorie(String franchiseName){
+
+        List<Franchise> all = franchiseViewRepository.selectFirst10(franchiseName);
+        Set<String> allCategories = new HashSet<>();
+
+        HashMap<String, Integer> categorieCount = new HashMap<>();
+
+        for(Franchise x : all){
+            String[] categories = splitCategorieFr(x);
+            for(String z : categories){
+                if(z.startsWith(" ")){
+                    z = z.replaceFirst("\\s+", "");
+                }
+                allCategories.add(z);
+            }
+        }
+
+        List<String> finalCategorie = new ArrayList<>(allCategories);
+
+        for(String i : finalCategorie){
+            //todo performance probleme
+            int count = franchiseViewRepository.basicCategorie(franchiseName, i);
+            categorieCount.put(i, count);
+        }
+
+        return categorieCount;
+    }
+/*
+    public HashMap<String, Integer> countFranchise(){
+        String[] franchise = {"Starbucks", "McDonald's","Dunkin'","Subway","Taco Bell","CVS Pharmacy","Walgreens"};
+        HashMap<String, Integer> countRestaurante = new HashMap<>();
+
+        for(String z : franchise){
+            int i = franchiseViewRepository.countFranchiseByName(z);
+            countRestaurante.put(z,i);
+        }
+
+        return countRestaurante;
+    }
+ */
+
 
     public void splitReviewsToCSV() {
 

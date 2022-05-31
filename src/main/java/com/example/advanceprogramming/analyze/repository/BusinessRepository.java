@@ -42,6 +42,10 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
      */
 
 
+
+    //TODO  Create View hier in Java mit allen Restaurantes in der Postleitzahl mit dem den folgenden Attributen
+    //TODO  und dem Namen der Postleitzahl und lösche es am Ende
+
     /*
     @Query(value = "CREATE VIEW ?1 AS SELECT b.business_id, b.postal_code, b.categories, b.attributes " +
             "FROM Business b WHERE b.postal_code = ?1")

@@ -29,6 +29,4 @@ public class PostalCodeView {
     @Column(name = "attributes")
     private String attributes;
 
-
-
 }

@@ -5,6 +5,7 @@ import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
 import com.example.advanceprogramming.analyze.repository.BusinessRepository;
+import com.example.advanceprogramming.analyze.repository.FranchiseViewRepository;
 import com.example.advanceprogramming.analyze.repository.UserBusinessRelationRepository;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
 import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
@@ -20,10 +21,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.Text;
 
+import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class AnalyzeController {
@@ -32,6 +36,9 @@ public class AnalyzeController {
 
     @Autowired
     private BusinessRepository businessRepository;
+
+    @Autowired
+    private FranchiseViewRepository franchiseViewRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -207,10 +214,15 @@ public class AnalyzeController {
         return "splitBusiness";
     }
 
-    /**
-     * needs categories from filter
-     */
-    @RequestMapping(value = "/test/test/1")
+    @PostMapping(value = "/franchise/analyze/")
+    public void getFranchiseAnalyze(/*String franchise*/){
+
+        String franchise = "Starbucks";
+
+    }
+
+
+    @RequestMapping(value = "/test/simon/")
     public void getBusinessByFilter(/* @RequestBody FilterDTO filterInput*/) {
 
 
@@ -218,12 +230,25 @@ public class AnalyzeController {
         //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
         //List<Business> allBusiness = businessRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
 
+        //Business businessByBusinessID = businessRepository.findByBusiness_id("__4gkf_0UJW78rkRzFm6Gw");
+        //HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
+        //BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
 
-        Business businessByBusinessID = businessRepository.findByBusiness_id("__4gkf_0UJW78rkRzFm6Gw");
+        String franchise = "McDonald's";
 
-        HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
+        double avgStars = franchiseViewRepository.averageStars(franchise);
+        avgStars = Math.round(avgStars * 100.0) / 100.0;
 
-        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
+        //todo performance problems by query 10-15 seconds
+        HashMap<String, Integer> countCategories = analyzeServiceImpl.franchiseCategorie(franchise);
+
+
+        //todo not working (cause of HashMap)
+        //HashMap<String, Integer> biggestFranchise = analyzeServiceImpl.countFranchise();
+        Map<String, Integer> storesInCity = franchiseViewRepository.storesInCity(franchise);
+        //get avgStars for each city
+
+        int bla = 12;
 
     }
 
