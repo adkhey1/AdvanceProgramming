@@ -20,10 +20,6 @@ public interface AnalyzeService {
 
     BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2);
 
-    FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise, List<FranchiseAnalyzeResult> storesInCity,
-                                                List<FranchiseAnalyzeResult> worstCity, List<FranchiseAnalyzeResult> bestCity,
-                                                 HashMap<String, Integer> countCategories, double avgStars);
-
     BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO,String bID);
 
     ResponseEntity<?> addBusinessToList(String bId, long userId, int change);

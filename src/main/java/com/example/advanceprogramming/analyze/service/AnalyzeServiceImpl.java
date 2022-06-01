@@ -327,9 +327,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return inputDTO;
     }
 
-    @Override
     public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise, List<FranchiseAnalyzeResult> storesInCity,
-                                                        List<FranchiseAnalyzeResult> worstCity, List<FranchiseAnalyzeResult> bestCity,
+                                                        List<FranchiseAnalyzeResult> worstCity, FranchiseAnalyzeResult countWorstReview,
+                                                        List<FranchiseAnalyzeResult> bestCity, FranchiseAnalyzeResult countBestReview,
                                                         HashMap<String, Integer> countCategories, double avgStars) {
         FranchiseAnalyzeDTO dto = new FranchiseAnalyzeDTO();
 
@@ -338,6 +338,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             dto.setCountFranchise(countFranchise);
             dto.setStoresInCity(storesInCity);
             dto.setWorstCity(worstCity);
+            dto.setCountWorstReview(countWorstReview);
+            dto.setCountBestReview(countBestReview);
             dto.setBestCity(bestCity);
             dto.setCountCategorie(countCategories);
             dto.setAvgFranchise(avgStars);
@@ -352,9 +354,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return categories;
     }
 
-    public HashMap<String, Integer> franchiseCategorie(String franchiseName){
+    public FranchiseAnalyzeDTO franchiseCategorie(String franchise){
 
-        List<Franchise> all = franchiseViewRepository.selectFirst10(franchiseName);
+        List<Franchise> all = franchiseViewRepository.selectFirst10(franchise);
         Set<String> allCategories = new HashSet<>();
 
         HashMap<String, Integer> categorieCount = new HashMap<>();
@@ -373,11 +375,45 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         for(String i : finalCategorie){
             //todo performance probleme
-            int count = franchiseViewRepository.basicCategorie(franchiseName, i);
+            int count = franchiseViewRepository.basicCategorie(franchise, i);
             categorieCount.put(i, count);
         }
 
-        return categorieCount;
+        List<FranchiseAnalyzeResult> bestCity = franchiseViewRepository.averageStarsByCity(franchise);
+
+        String best1 = bestCity.get(0).getName();
+        String best2 = bestCity.get(1).getName();
+        String best3 = bestCity.get(2).getName();
+        String best4 = bestCity.get(3).getName();
+        String best5 = bestCity.get(4).getName();
+
+        //name = number of restaurants      counter = number of reviews
+        FranchiseAnalyzeResult countBestReviews = franchiseViewRepository.countReviews(franchise, best1, best2, best3, best4, best5);
+
+        List<FranchiseAnalyzeResult> worstCity = franchiseViewRepository.averageStarsByCityWorst(franchise);
+
+        String worst1 = worstCity.get(0).getName();
+        String worst2 = worstCity.get(1).getName();
+        String worst3 = worstCity.get(2).getName();
+        String worst4 = worstCity.get(3).getName();
+        String worst5 = worstCity.get(4).getName();
+
+        //name = number of restaurants      counter = number of reviews
+        FranchiseAnalyzeResult countWorstReviews = franchiseViewRepository.countReviews(franchise, worst1, worst2, worst3, worst4, worst5);
+
+
+        List<FranchiseAnalyzeResult> countFranchise = franchiseViewRepository.findBiggestFranchises();
+        List<FranchiseAnalyzeResult> storesInCity = franchiseViewRepository.storesInCity(franchise);
+
+        double avgStars = franchiseViewRepository.averageStars(franchise);
+        avgStars = Math.round(avgStars * 100.0) / 100.0;
+
+        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, storesInCity,
+                worstCity, countWorstReviews, bestCity, countBestReviews,
+                categorieCount, avgStars);
+
+
+        return output;
     }
 /*
     public HashMap<String, Integer> countFranchise(){

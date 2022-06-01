@@ -15,6 +15,7 @@ public class FranchiseAnalyzeDTO {
 
     private String franchise;
     private List<FranchiseAnalyzeResult> countFranchise, storesInCity, worstCity, bestCity;
+    private FranchiseAnalyzeResult countWorstReview, countBestReview;
     private HashMap<String, Integer> countCategorie;
     private double avgFranchise;
 

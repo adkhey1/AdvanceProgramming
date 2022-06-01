@@ -59,7 +59,6 @@ public class AnalyzeController {
         //User user = userRepository.findByEmail(principal.getName());
 
 
-
         //analyzeService.addBusinessToList(input.getBusiness_id(),user.getId(),0);
 
         log.debug(">>>> Anfrage 'viewMarker' angefangen");
@@ -104,15 +103,15 @@ public class AnalyzeController {
     }
 
     @PostMapping(value = "/favorites/add/")
-    public ResponseEntity<?> addBusinessToFavorites(@RequestBody IdDTO id, HttpServletRequest request){
+    public ResponseEntity<?> addBusinessToFavorites(@RequestBody IdDTO id, HttpServletRequest request) {
         //Todo get User from Name (Email)
         Principal principal = request.getUserPrincipal();
         User user = userRepository.findByEmail(principal.getName());
 
-        return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(),1);
+        return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(), 1);
     }
 
-    public ResponseEntity<?> deleteBusinessFromFavorites(@RequestBody IdDTO id, HttpServletRequest request){
+    public ResponseEntity<?> deleteBusinessFromFavorites(@RequestBody IdDTO id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         User user = userRepository.findByEmail(principal.getName());
 
@@ -130,6 +129,15 @@ public class AnalyzeController {
         //MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);
 
         return ResponseEntity.status(HttpStatus.OK).body(businesses);
+    }
+
+    @GetMapping(value = "/analyze/franchise/")
+    public ResponseEntity<?> franchiseAnalyze(/*@RequestParam String franchiseName*/){
+
+        String franchise = "Burger King";
+        FranchiseAnalyzeDTO output = analyzeServiceImpl.franchiseCategorie(franchise);
+
+        return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
     @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -156,14 +164,14 @@ public class AnalyzeController {
     }
 
     @PostMapping(value = "/list/categories/")
-    public ResponseEntity<?> listCategories(){
+    public ResponseEntity<?> listCategories() {
         List<String> output = analyzeService.getPopularCategories();
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
     @PostMapping(value = "/list/states/")
-    public ResponseEntity<?> listStates(){
+    public ResponseEntity<?> listStates() {
         List<String> output = businessRepository.selectStates();
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
@@ -215,24 +223,43 @@ public class AnalyzeController {
         //HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
         //BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
 
-        String franchise = "Starbucks";
+        String franchise = "Burger King";
+
+        FranchiseAnalyzeDTO output = analyzeServiceImpl.franchiseCategorie(franchise);
+
+
+
+        List<FranchiseAnalyzeResult> bestCity = franchiseViewRepository.averageStarsByCity(franchise);
+
+        String best1 = bestCity.get(0).getName();
+        String best2 = bestCity.get(1).getName();
+        String best3 = bestCity.get(2).getName();
+        String best4 = bestCity.get(3).getName();
+        String best5 = bestCity.get(4).getName();
+
+        //name = number of restaurants      counter = number of reviews
+        FranchiseAnalyzeResult countBestReviews = franchiseViewRepository.countReviews(franchise, best1, best2, best3, best4, best5);
+
+        List<FranchiseAnalyzeResult> worstCity = franchiseViewRepository.averageStarsByCityWorst(franchise);
+
+        String worst1 = worstCity.get(0).getName();
+        String worst2 = worstCity.get(1).getName();
+        String worst3 = worstCity.get(2).getName();
+        String worst4 = worstCity.get(3).getName();
+        String worst5 = worstCity.get(4).getName();
+
+        //name = number of restaurants      counter = number of reviews
+        FranchiseAnalyzeResult countWorstReviews = franchiseViewRepository.countReviews(franchise, worst1, worst2, worst3, worst4, worst5);
+
 
         List<FranchiseAnalyzeResult> countFranchise = franchiseViewRepository.findBiggestFranchises();
         List<FranchiseAnalyzeResult> storesInCity = franchiseViewRepository.storesInCity(franchise);
-        List<FranchiseAnalyzeResult> worstCity = franchiseViewRepository.averageStarsByCityWorst(franchise);
-        List<FranchiseAnalyzeResult> bestCity = franchiseViewRepository.averageStarsByCity(franchise);
-        HashMap<String, Integer> countCategories = analyzeServiceImpl.franchiseCategorie(franchise);
 
         double avgStars = franchiseViewRepository.averageStars(franchise);
         avgStars = Math.round(avgStars * 100.0) / 100.0;
 
-        FranchiseAnalyzeDTO output = analyzeService.parseFranchiseAnalyzeDTO(franchise, countFranchise, storesInCity, worstCity, bestCity,
-               countCategories, avgStars);
-
-
-        //todo not working jet
-        List<FranchiseAnalyzeResult> countBestReviews = franchiseViewRepository.reviewsInBestCity(franchise);
-        List<FranchiseAnalyzeResult> countWorstReviews = franchiseViewRepository.reviewsInWorstCity(franchise);
+  //      FranchiseAnalyzeDTO output = analyzeService.parseFranchiseAnalyzeDTO(franchise, countFranchise, storesInCity,
+  //              worstCity, countWorstReviews, bestCity, countBestReviews, countCategories, avgStars);
 
     }
 
