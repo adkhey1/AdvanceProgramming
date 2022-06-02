@@ -141,6 +141,8 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
+
+
     @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurantsTemp() {
 
@@ -270,5 +272,10 @@ public class AnalyzeController {
 
     }
 
+
+    @RequestMapping("/franchise")
+    private String getMap() {
+        return "franchise";
+    }
 
 }
