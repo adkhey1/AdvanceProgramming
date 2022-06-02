@@ -141,6 +141,8 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
+
+
     @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurantsTemp() {
 
@@ -174,13 +176,6 @@ public class AnalyzeController {
     @PostMapping(value = "/list/states/")
     public ResponseEntity<?> listStates() {
         List<String> output = businessRepository.selectStates();
-
-        return ResponseEntity.status(HttpStatus.OK).body(output);
-    }
-
-    @PostMapping(value = "/list/attributes/")
-    public ResponseEntity<?> testingMethod() {
-        List<String> output = attributesRepository.selectAllAttributes("True", "False");
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
@@ -226,5 +221,18 @@ public class AnalyzeController {
 
         return "Andistests";
     }*/
+
+    @RequestMapping(value = "/test/simon/")
+    public void testingMethod(/* @RequestBody FilterDTO filterInput*/) {
+
+        List<String> all = attributesRepository.selectAllAttributes("True", "False");
+
+    }
+
+
+    @RequestMapping("/franchise")
+    private String getMap() {
+        return "franchise";
+    }
 
 }
