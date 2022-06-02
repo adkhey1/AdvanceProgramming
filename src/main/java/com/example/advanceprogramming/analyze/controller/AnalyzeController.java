@@ -63,19 +63,20 @@ public class AnalyzeController {
 
         log.debug(">>>> Anfrage 'viewMarker' angefangen");
 
-        log.debug(">>>> Anfrage an DB per Repo gestartet");
+
         Business businessByBusinessID = businessRepository.findByBusiness_id(input.getBusiness_id());
-        log.debug(">>>> Anfrage an DB fertig! ");
+
 
         log.debug(">>>> Service 'Categories in Postcode started");
         HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
         log.debug(">>>> Service 'Categories in Postcode finished");
 
-        log.debug(">>>> Service -> parsing started");
-        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
-        log.debug(">>>> Service -> parsing finished");
 
+        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
+
+        log.debug(">>>> Service 'Average Reviews started");
         output = analyzeService.getAverageScorePerSeason(output, input.getBusiness_id());
+        log.debug(">>>> Service-Method 'Average Reviews finished'");
 
         log.debug(">>>> Anfrage 'viewMarker' beendet");
         return ResponseEntity.status(HttpStatus.OK).body(output);
@@ -140,7 +141,7 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
-    @GetMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurantsTemp() {
 
         List<Business> businesses = businessRepository.selectfirst100();
@@ -212,6 +213,12 @@ public class AnalyzeController {
         return "splitBusiness";
     }
 
+    /*@RequestMapping(value = "/test/andi/")
+    public String testingstuff(){
+        analyzeService.addIntIdBusiness();
+
+        return "Andistests";
+    }*/
 
     @RequestMapping(value = "/test/simon/")
     public void testingMethod(/* @RequestBody FilterDTO filterInput*/) {

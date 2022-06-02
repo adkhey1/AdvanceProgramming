@@ -27,6 +27,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private BusinessRepository businessRepo;
 
     @Autowired
+    private BusinessNewRepository businessNewRepo;
+
+    @Autowired
     private FranchiseViewRepository franchiseViewRepository;
 
     @Autowired
@@ -278,7 +281,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         double fall = 0.0;
         double winter = 0.0;
 
-        List<Review> allReviews = reviewsRepo.selectReviewsWithBusinessId(bID);
+        /*log.debug(">>>> In Service query started!");
+        //List<Review> allReviews = reviewsRepo.selectReviewsWithBusinessId(bID);
+        log.debug(">>>> In Service query finished");
+
         for (Review r : allReviews) {
             switch (r.getDate().getMonthValue()) {
                 case 1, 2, 3:
@@ -319,10 +325,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         if (Double.isNaN(winter)) {
             winter = 0;
         }
+
+
         inputDTO.setSpring(spring);
         inputDTO.setSummer(summer);
         inputDTO.setFall(fall);
         inputDTO.setWinter(winter);
+*/
+        inputDTO.setSpring(0.0);
+        inputDTO.setSummer(0.0);
+        inputDTO.setFall(0.0);
+        inputDTO.setWinter(0.0);
 
         return inputDTO;
     }
@@ -598,6 +611,78 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             System.out.println("Ein Fehler ist aufgetreten +\n" + e);
         }
     }
+
+   /* public void addIntIdBusiness(){
+        List<Business> list = businessRepo.selectAll();
+
+        BusinessNew temp;
+
+        int counter = 0;
+
+        for (Business b : list){
+            counter++;
+            temp = new BusinessNew();
+
+            temp.setBusiness_id(b.getBusiness_id());
+            temp.setName(b.getName());
+            temp.setAddress(b.getAddress());
+            temp.setCity(b.getCity());
+            temp.setState(b.getState());
+            temp.setPostal_code(b.getPostal_code());
+            temp.setLatitude(b.getLatitude());
+            temp.setLongitude(b.getLongitude());
+            temp.setStars(b.getStars());
+            temp.setReview_count(b.getReview_count());
+            temp.setIs_open(b.getIs_open());
+            temp.setAttributes(b.getAttributes());
+            temp.setCategories(b.getCategories());
+            temp.setHours(b.getHours());
+
+            businessNewRepo.save(temp);
+
+            System.out.println("Business Nr. " + counter + "erstellt!");
+        }
+
+        /*File newBusinessCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "NewBusiness.csv");
+        BufferedWriter writer;
+
+        String oldId, name, address, city, state, postal_code, latitude, longitude, attributes, categories, hours;
+        double stars;
+        int review_count, is_open, bId;
+        bId = 0;
+        try {
+            writer = new BufferedWriter(new FileWriter(newBusinessCSV));
+            writer.write("business_id,bId,name,address,city,state,postal_code,latitude,longitude,stars,review_count,is_open,attributes,categories,hours,");
+            writer.newLine();
+            String content;
+            for (Business b : list){
+                bId++;
+
+                writer.write(b.getBusiness_id() + ";");
+                writer.write(bId + ";");
+                writer.write(b.getName() + ";");
+                writer.write(b.getAddress() + ";");
+                writer.write(b.getCity() + ";");
+                writer.write(b.getState() + ";");
+                writer.write(b.getPostal_code() + ";");
+                writer.write(b.getState() + ";");
+                writer.write(b.getPostal_code() + ";");
+                writer.write(b.getLatitude() + ";");
+                writer.write(b.getLongitude() + ";");
+                writer.write(b.getStars() + ";");
+                writer.write(b.getReview_count() + ";");
+                writer.write(b.getIs_open() + ";");
+                writer.write(b.getAttributes() + ";");
+                writer.write(b.getCategories() + ";");
+                writer.write(b.getHours() + ";");
+
+                writer.newLine();
+            }
+
+        } catch (Exception e){
+            System.out.println("Some ERROR happend mate!");
+        }
+*/
 
     public void splitAttributesToCSV(List<Business> input) {
         //if (attributes.length() > 2) {//Attribute sind vorhanden
