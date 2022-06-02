@@ -16,6 +16,8 @@ public interface AnalyzeService {
 
     List<BusinessDTO> getMarkerFromFilter(FilterDTO input);
 
+    void sentimentToCSV();
+
     HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/);
 
     BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2);

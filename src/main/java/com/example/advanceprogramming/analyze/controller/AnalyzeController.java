@@ -222,12 +222,12 @@ public class AnalyzeController {
         return "splitBusiness";
     }
 
-    /*@RequestMapping(value = "/test/andi/")
+    @RequestMapping(value = "/test/andi/")
     public String testingstuff(){
-        analyzeService.addIntIdBusiness();
+        //analyzeService.sentimentToCSV();
 
         return "Andistests";
-    }*/
+    }
 
     @RequestMapping("/franchise")
     private String getMap() {

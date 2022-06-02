@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -27,7 +29,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private BusinessRepository businessRepo;
 
     @Autowired
-    private BusinessNewRepository businessNewRepo;
+    private SentimentsRepository sentimentRepo;
 
     @Autowired
     private FranchiseViewRepository franchiseViewRepository;
@@ -194,7 +196,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             input.setName("%");
         }
 
-        List<Business> rawList = businessRepo.selectByFilter(Double.valueOf(input.getStars()), input.getName(), "FL", input.getCity(), input.getPlz());
+        List<Business> rawList = businessRepo.selectByFilter(Double.parseDouble(input.getStars()), input.getName(), "FL", input.getCity(), input.getPlz());
 
         log.debug("Länger der sql-Antwort an Objekten " + rawList.size());
 
@@ -421,7 +423,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         List<FranchiseAnalyzeResult> storesInCity = franchiseViewRepository.storesInCity(franchise);
 
 
-
         FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage,
                 storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, categorieCount);
 
@@ -454,6 +455,62 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             outputList.add(s.substring(0, commaIndex));
         }
         return outputList;
+    }
+
+    public void sentimentToCSV() {
+        List<Sentiments> inputList = sentimentRepo.findAll();
+
+        List<tempModel> resultsList = new ArrayList<>();
+
+        tempModel vergleich;
+        int monat, index;
+        int counter = 0;
+        for (Sentiments s : inputList) {
+            counter++;
+            vergleich = new tempModel(s.getBusiness_id());
+
+            monat = reviewsRepo.selectReviewWithId(s.getReview_id()).getDate().getMonthValue();
+
+            if (!resultsList.contains(vergleich)) {
+                resultsList.add(vergleich);
+            }
+            index = resultsList.indexOf(vergleich);
+
+            resultsList.get(index).addScore(monat, s.getNormalStars(), s.getSentimentNormal());
+
+            System.out.println("Durchlauf Nr. " + counter  + "der for-Schleife erreicht.");
+        }
+
+        File outputCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\reducedReviews.csv");
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputCSV));
+
+            writer.write("business_id,countSpring,countSummer,countFall,countWinter,revSpring,revSummer,revFall,revWinter,sentSpring,sentSummer,sentFall,sentWinter");
+            writer.newLine();
+            for (tempModel t : resultsList){
+                writer.write(t.getBID() + ",");
+                writer.write(t.getSpringCounter() + ",");
+                writer.write(t.getSummerCounter() + ",");
+                writer.write(t.getFallCounter() + ",");
+                writer.write(t.getWinterCounter() + ",");
+                writer.write(t.getRevSpring() + ",");
+                writer.write(t.getRevSummer() + ",");
+                writer.write(t.getRevFall() + ",");
+                writer.write(t.getRevWinter() + ",");
+                writer.write(t.getSentSpring() + ",");
+                writer.write(t.getSentSummer() + ",");
+                writer.write(t.getSentFall() + ",");
+                writer.write(t.getSentWinter() + ",");
+
+                writer.newLine();
+            }
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("Fehler aufgetreten");
+        }
+
+
     }
 
     public void splitReviewsToCSV() {
