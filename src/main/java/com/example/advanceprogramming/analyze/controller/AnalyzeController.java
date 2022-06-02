@@ -180,6 +180,13 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
+    @RequestMapping(value = "/list/attributes/")
+    public ResponseEntity<?> listAttributes() {
+        List<String> output = attributesRepository.selectAllAttributes("True", "False");
+
+        return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
+
     @RequestMapping("/split/attributes")
     public String splitAttributesToDB() {
         ArrayList<Business> listRaw = businessRepository.selectAll();
@@ -221,14 +228,6 @@ public class AnalyzeController {
 
         return "Andistests";
     }*/
-
-    @RequestMapping(value = "/test/simon/")
-    public void testingMethod(/* @RequestBody FilterDTO filterInput*/) {
-
-        List<String> all = attributesRepository.selectAllAttributes("True", "False");
-
-    }
-
 
     @RequestMapping("/franchise")
     private String getMap() {
