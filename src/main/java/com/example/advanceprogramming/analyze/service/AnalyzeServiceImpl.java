@@ -1,13 +1,8 @@
 package com.example.advanceprogramming.analyze.service;
 
-import com.example.advanceprogramming.analyze.DTO.BasicAnalysisDTO;
-import com.example.advanceprogramming.analyze.DTO.BusinessDTO;
-import com.example.advanceprogramming.analyze.DTO.FilterDTO;
-import com.example.advanceprogramming.analyze.DTO.MarkerDTO;
-import com.example.advanceprogramming.analyze.controller.AnalyzeController;
-import com.example.advanceprogramming.analyze.model.Business;
-import com.example.advanceprogramming.analyze.repository.BusinessRepository;
-import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
+import com.example.advanceprogramming.analyze.DTO.*;
+import com.example.advanceprogramming.analyze.model.*;
+import com.example.advanceprogramming.analyze.repository.*;
 import com.example.advanceprogramming.analyze.temp.BusinessMapping;
 import com.example.advanceprogramming.analyze.temp.ReviewMapping;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -17,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -28,10 +24,19 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private static final Logger log = LoggerFactory.getLogger(AnalyzeServiceImpl.class);
 
     @Autowired
-    private BusinessRepository restaurantRepo;
+    private BusinessRepository businessRepo;
 
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private FranchiseViewRepository franchiseViewRepository;
+
+    @Autowired
+    private UserBusinessRelationRepository userBizRepo;
+
+    @Autowired
+    private PostalCodeViewRepository postalCodeViewRepository;
+
+    @Autowired
+    private ReviewsRepository reviewsRepo;
 
 
     @Override
@@ -94,16 +99,145 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return dto;
     }
 
-    @Override
-    public List<MarkerDTO> getMarkerFromFilter(FilterDTO input) {
+    public UserBusinessRelation createUserBusinessRelation(long userId, String bId, boolean isFavorite) {
 
-        //Todo implementieren
+        UserBusinessRelation input = new UserBusinessRelation();
+
+        input.setUserId(userId);
+        input.setBusinessId(bId);
+        input.setFavorite(isFavorite);
+        userBizRepo.save(input);
+
+        return input;
+    }
+
+    public ResponseEntity<?> addBusinessToList(String bId, long userId, int change) {
+/*      0 = Im Verlauf -> Existiert nicht -> erzeugen mit "isfavorite" false
+                          existiert -> an "isfavorite" nicht ändern
+        1 = In Favoriten -> Exisiter nicht -> mit "isfavorite" 'true' erzeugen
+                            Exisitert -> "isfavorite" auf 'true' setzen
+        2 = Aus Favoriten löschen -> "isfavorite" auf 'false' setzen
+  */
+
+
+        //andi das existiert braucht man doch eigentlich gar nicht, weil es wird ja sowieso in dem Verlauf
+        //gespeichert und falls man es in die Favoriten speichert möchte, müssen sie bereits existieren, da
+        //man sie vorher mit getBusinessById aufgerufen hat. Also habe ich nur geschaut, ob sie als Favorit
+        //gespeichert sind oder nicht.
+
+        UserBusinessRelation user = userBizRepo.findByNameAndBusinessId(userId, bId);
+
+        switch (change) {
+            case 0:
+
+                createUserBusinessRelation(userId, bId, false);
+                break;
+
+            case 1:
+
+                //falls es true ist, passiert nichts
+                //falls es false ist, wird es überschrieben
+
+                if (user.isFavorite()) {
+                    //nothing
+                } else {
+                    user.setFavorite(true);
+                    userBizRepo.save(user);
+                }
+
+                break;
+
+            case 2:
+
+                if (user.isFavorite()) {
+                    user.setFavorite(false);
+                    userBizRepo.save(user);
+                } else {
+                    //nothing
+                }
+
+                break;
+        }
+
+
+        /*
+            if (isFavorite){
+                return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to favorites!");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to history!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("This business is already selected as favorite!");
+
+         */
         return null;
+    }
+
+    @Override
+    public List<BusinessDTO> getMarkerFromFilter(FilterDTO input) {
+        if (input.getCity().equals("")) {
+            log.debug("Ersetzen durch % ausgelöst");
+            input.setCity("%");
+        }
+        if (input.getPlz().equals("")) {
+            log.debug("Ersetzen durch % ausgelöst");
+            input.setPlz("%");
+        }
+        if (input.getState().equals("")) {
+            log.debug("Ersetzen durch % ausgelöst");
+            input.setState("%");
+        }
+        if (input.getName().equals("")) {
+            log.debug("Ersetzen durch % ausgelöst");
+            input.setName("%");
+        }
+
+
+        List<Business> rawList = businessRepo.selectByFilter(Double.valueOf(input.getStars()), input.getName(), "FL", input.getCity(), input.getPlz());
+
+        log.debug("Länger der sql-Antwort an Objekten " + rawList.size());
+
+        List<Business> filteredList = new ArrayList<>();
+
+        String[] splittedCategories;
+        boolean containsCategory;
+        for (Business b : rawList) {
+            containsCategory = false;
+            splittedCategories = b.getCategories().split(",");
+
+            for (String s : splittedCategories) {
+                //if (s.equals(input.getCategory())){ TODO Liste der Kategorieren an Front-End
+                if (s.equals(" Burgers")) {
+                    containsCategory = true;
+                }
+            }
+            if (containsCategory) {
+                filteredList.add(b);
+            }
+        }
+
+        log.debug("Länger der filteredList " + filteredList.size());
+
+        /*List<MarkerDTO> output = new ArrayList<>();
+
+        MarkerDTO temp;
+        for (Business b : rawList) {
+            temp = new MarkerDTO();
+            temp.setLatitude(b.getLatitude());
+            temp.setLongitude(b.getLongitude());
+            temp.setBusiness_id(b.getBusiness_id());
+            output.add(temp);
+        }*/
+        List<BusinessDTO> output = new ArrayList<>();
+        for (Business b : filteredList) {
+            output.add(parseBusinessToDTO(b));
+        }
+
+        return output;
     }
 
     public String[] splitCategorie(Business input) {
         //Todo Split all tuples and insert into table "categories"
-            String[] categories = input.getCategories().split(",");
+        String[] categories = input.getCategories().split(",");
         return categories;
     }
 
@@ -111,21 +245,206 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         //Testing categorie by PostCode
         String[] categories = splitCategorie(business);
+        String[] attributes = {"'GoodForKids': 'True'", "'BusinessAcceptsCreditCards': 'True'", "'RestaurantsDelivery': 'True'"};
         HashMap<String, Integer> countCategorie = new HashMap<>();
+        int counter = 0;
 
-        log.debug(">>>>>>> for Schleife in Service!");
+
         for (String x : categories) {
-
-            int i = categoriesRepository.selectAllCategories(x, business.getPostal_code());
+            int i = postalCodeViewRepository.selectAllCategories(x, business.getPostal_code());
             countCategorie.put(x, i);
 
+            /*
+            for (String z : attributes){
+                int anzahl = postalCodeViewRepository.selectAllAttributes(z, business.getPostal_code(), x);
+                countCategorie.put(z + Integer.toString(counter), anzahl);
+            }
+             */
+            counter++;
         }
-        log.debug(">>>>>>> for Schleife in Service finish!");
 
         return countCategorie;
     }
 
-    public void splitReviewsToCSV(){
+    @Override
+    public BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO, String bID) {
+        int counterSpring = 0;
+        int counterSummer = 0;
+        int counterFall = 0;
+        int counterWinter = 0;
+
+        double spring = 0.0;
+        double summer = 0.0;
+        double fall = 0.0;
+        double winter = 0.0;
+
+        List<Review> allReviews = reviewsRepo.selectReviewsWithBusinessId(bID);
+        for (Review r : allReviews) {
+            switch (r.getDate().getMonthValue()) {
+                case 1, 2, 3:
+                    counterSpring++;
+                    spring += r.getStars();
+                    break;
+                case 4, 5, 6:
+                    counterSummer++;
+                    summer += r.getStars();
+                    break;
+                case 7, 8, 9:
+                    counterFall++;
+                    fall += r.getStars();
+                    break;
+                case 10, 11, 12:
+                    counterWinter++;
+                    winter += r.getStars();
+                    break;
+                default:
+                    System.out.println("Error im switch-case");
+            }
+        }
+
+        spring = spring / counterSpring;
+        summer = summer / counterSummer;
+        fall = fall / counterFall;
+        winter = winter / counterWinter;
+
+        if (Double.isNaN(spring)) {
+            spring = 0;
+        }
+        if (Double.isNaN(summer)) {
+            summer = 0;
+        }
+        if (Double.isNaN(fall)) {
+            fall = 0;
+        }
+        if (Double.isNaN(winter)) {
+            winter = 0;
+        }
+        inputDTO.setSpring(spring);
+        inputDTO.setSummer(summer);
+        inputDTO.setFall(fall);
+        inputDTO.setWinter(winter);
+
+        return inputDTO;
+    }
+
+    public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise,
+                                                        List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult> storesInCity,
+                                                        List<FranchiseAnalyzeResult> worstCity, FranchiseAnalyzeResult countWorstReview,
+                                                        List<FranchiseAnalyzeResult> bestCity, FranchiseAnalyzeResult countBestReview,
+                                                        HashMap<String, Integer> countCategories) {
+        FranchiseAnalyzeDTO dto = new FranchiseAnalyzeDTO();
+
+        if (franchise != null) {
+            dto.setFranchise(franchise);
+            dto.setCountFranchise(countFranchise);
+            dto.setEachAverage(eachAverage);
+            dto.setStoresInCity(storesInCity);
+            dto.setWorstCity(worstCity);
+            dto.setCountWorstReview(countWorstReview);
+            dto.setCountBestReview(countBestReview);
+            dto.setBestCity(bestCity);
+            dto.setCountCategorie(countCategories);
+        }
+
+        return dto;
+    }
+
+    public String[] splitCategorieFr(Franchise input) {
+        //Todo Split all tuples and insert into table "categories"
+        String[] categories = input.getCategories().split(",");
+        return categories;
+    }
+
+    public FranchiseAnalyzeDTO franchiseCategorie(String franchise) {
+
+        List<Franchise> all = franchiseViewRepository.selectFirst10(franchise);
+        Set<String> allCategories = new HashSet<>();
+
+        HashMap<String, Integer> categorieCount = new HashMap<>();
+
+        for (Franchise x : all) {
+            String[] categories = splitCategorieFr(x);
+            for (String z : categories) {
+                if (z.startsWith(" ")) {
+                    z = z.replaceFirst("\\s+", "");
+                }
+                allCategories.add(z);
+            }
+        }
+
+        List<String> finalCategorie = new ArrayList<>(allCategories);
+
+        for (String i : finalCategorie) {
+            //todo performance probleme
+            int count = franchiseViewRepository.basicCategorie(franchise, i);
+            categorieCount.put(i, count);
+        }
+
+
+        List<FranchiseAnalyzeResult> countFranchise = franchiseViewRepository.findBiggestFranchises();
+        List<FranchiseAnalyzeResult> eachAverage = franchiseViewRepository.eachAverage();
+
+        List<FranchiseAnalyzeResult> bestCity = franchiseViewRepository.averageStarsByCity(franchise);
+
+        String best1 = bestCity.get(0).getName();
+        String best2 = bestCity.get(1).getName();
+        String best3 = bestCity.get(2).getName();
+        String best4 = bestCity.get(3).getName();
+        String best5 = bestCity.get(4).getName();
+
+        //name = number of restaurants      counter = number of reviews
+        FranchiseAnalyzeResult countBestReviews = franchiseViewRepository.countReviews(franchise, best1, best2, best3, best4, best5);
+
+        List<FranchiseAnalyzeResult> worstCity = franchiseViewRepository.averageStarsByCityWorst(franchise);
+
+        String worst1 = worstCity.get(0).getName();
+        String worst2 = worstCity.get(1).getName();
+        String worst3 = worstCity.get(2).getName();
+        String worst4 = worstCity.get(3).getName();
+        String worst5 = worstCity.get(4).getName();
+
+        //name = number of restaurants      counter = number of reviews
+        FranchiseAnalyzeResult countWorstReviews = franchiseViewRepository.countReviews(franchise, worst1, worst2, worst3, worst4, worst5);
+
+        List<FranchiseAnalyzeResult> storesInCity = franchiseViewRepository.storesInCity(franchise);
+
+
+
+        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage,
+                storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, categorieCount);
+
+
+        return output;
+    }
+/*
+    public HashMap<String, Integer> countFranchise(){
+
+        List<String> countFranchise = franchiseViewRepository.selectAllNames();
+        HashMap<String, Integer> countRestaurante = new HashMap<>();
+
+        for(String i : countFranchise){
+            switch
+        }
+        return countRestaurante;
+    }
+
+ */
+
+
+    @Override
+    public List<String> getPopularCategories() {
+        List<String> listCategories = businessRepo.selectPopularCategories();
+
+        List<String> outputList = new ArrayList<>();
+        int commaIndex = 0;
+        for (String s : listCategories) {
+            commaIndex = s.indexOf(",");
+            outputList.add(s.substring(0, commaIndex));
+        }
+        return outputList;
+    }
+
+    public void splitReviewsToCSV() {
 
         File reviewsCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Reviews.csv");
 
@@ -137,29 +456,34 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         String replaceLineBreaks;
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE")+"\\Downloads\\yelp_dataset\\yelp_academic_dataset_review.json"));
+            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE") + "\\Downloads\\yelp_dataset\\yelp_academic_dataset_review.json"));
             String line;
             BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
 
-            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,text,date");
+            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,date");
             writer.newLine();
 
-            while ((line= reader.readLine()) != null) {
-                tempReview = objectMapper.readValue(line,ReviewMapping.class);
+            while ((line = reader.readLine()) != null) {
+                tempReview = objectMapper.readValue(line, ReviewMapping.class);
 
-                replaceLineBreaks = tempReview.getText();
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll(",","+");
-
-                writer.write(tempReview.getReview_id()+",");
-                writer.write(tempReview.getBusiness_id()+",");
-                writer.write(tempReview.getUser_id()+",");
-                writer.write(tempReview.getStars()+",");
-                writer.write(tempReview.getUseful()+",");
-                writer.write(tempReview.getFunny()+",");
-                writer.write(tempReview.getCool()+",");
-                writer.write(replaceLineBreaks+",");
+                /*replaceLineBreaks = tempReview.getText();
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n", "");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n", "");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\r","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\r\r","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\r\n","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\r","");
+                replaceLineBreaks = replaceLineBreaks.replaceAll(",", "+");
+                replaceLineBreaks = replaceLineBreaks.replaceAll(";","+");
+*/
+                writer.write(tempReview.getReview_id() + ",");
+                writer.write(tempReview.getUser_id() + ",");
+                writer.write(tempReview.getBusiness_id() + ",");
+                writer.write(tempReview.getStars() + ",");
+                writer.write(tempReview.getUseful() + ",");
+                writer.write(tempReview.getFunny() + ",");
+                writer.write(tempReview.getCool() + ",");
+                //writer.write(replaceLineBreaks + ",");
                 writer.write(tempReview.getDate());
                 writer.newLine();
 
@@ -187,7 +511,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String line, categories;
             String[] splitted;
             for (Business b : input) {
-                categories = b.getCategories().replaceAll("§",",");
+                categories = b.getCategories().replaceAll("§", ",");
                 splitted = categories.split(",");
 
                 for (String s : splitted) {
@@ -203,7 +527,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
     }
 
-    public void splitBusinessToCSV(){
+    public void splitBusinessToCSV() {
         String userpath = System.getenv("USERPROFILE");
 
         File businessCSV = new File(userpath + "\\Downloads\\" + "Business.csv");
@@ -216,7 +540,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         String line;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(userpath+"\\Downloads\\yelp_dataset\\yelp_academic_dataset_business.json"));
+            BufferedReader reader = new BufferedReader(new FileReader(userpath + "\\Downloads\\yelp_dataset\\yelp_academic_dataset_business.json"));
 
             writer = new BufferedWriter(new FileWriter(businessCSV));
             writer.write("business_id,name,address,city,state,postal_code,latitude,longitude,stars,review_count,is_open,attributes,categories,hours,");
@@ -227,51 +551,51 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String categories;
             String name;
             String address, city, state;
-            while ((line= reader.readLine()) != null) {
-                mapping = objectMapper.readValue(line,BusinessMapping.class);
+            while ((line = reader.readLine()) != null) {
+                mapping = objectMapper.readValue(line, BusinessMapping.class);
 
-                writer.write(mapping.getBusiness_id()+",");
-                name = mapping.getName().replaceAll(",","");
-                writer.write(name+",");
-                address = mapping.getAddress().replaceAll(",","");
-                writer.write(address+",");
-                city = mapping.getCity().replaceAll(",","");
-                writer.write(city+",");
-                state = mapping.getState().replaceAll(",","");
-                writer.write(state+",");
-                writer.write(mapping.getPostal_code()+",");
-                writer.write(mapping.getLatitude()+",");
-                writer.write(mapping.getLongitude()+",");
-                writer.write(mapping.getStars()+",");
-                writer.write(mapping.getReview_count()+",");
-                writer.write(mapping.getIs_open()+",");
-                if (mapping.getAttributes() != null){
-                    attributes = mapping.getAttributes().toString().replaceAll(",","§");
+                writer.write(mapping.getBusiness_id() + ",");
+                name = mapping.getName().replaceAll(",", "");
+                writer.write(name + ",");
+                address = mapping.getAddress().replaceAll(",", "");
+                writer.write(address + ",");
+                city = mapping.getCity().replaceAll(",", "");
+                writer.write(city + ",");
+                state = mapping.getState().replaceAll(",", "");
+                writer.write(state + ",");
+                writer.write(mapping.getPostal_code() + ",");
+                writer.write(mapping.getLatitude() + ",");
+                writer.write(mapping.getLongitude() + ",");
+                writer.write(mapping.getStars() + ",");
+                writer.write(mapping.getReview_count() + ",");
+                writer.write(mapping.getIs_open() + ",");
+                if (mapping.getAttributes() != null) {
+                    attributes = mapping.getAttributes().toString().replaceAll(",", "§");
                 } else {
                     attributes = "nan";
                 }
-                writer.write(attributes+",");
-                if(mapping.getCategories() != null){
-                    categories = mapping.getCategories().replaceAll(",","§");
-                }else {
+                writer.write(attributes + ",");
+                if (mapping.getCategories() != null) {
+                    categories = mapping.getCategories().replaceAll(",", "§");
+                } else {
                     categories = "nan";
                 }
-                writer.write(categories+",");
-                if(mapping.getHours() != null){
-                    hours = mapping.getHours().toString().replaceAll(",","§");
+                writer.write(categories + ",");
+                if (mapping.getHours() != null) {
+                    hours = mapping.getHours().toString().replaceAll(",", "§");
                 } else {
                     hours = "nan";
                 }
-                writer.write(hours+",");
+                writer.write(hours + ",");
                 writer.newLine();
 
             }
             writer.close();
 
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("File nicht gefunden + \n " + e);
-        } catch (IOException e){
-            System.out.println("Ein Fehler ist aufgetreten +\n" +e);
+        } catch (IOException e) {
+            System.out.println("Ein Fehler ist aufgetreten +\n" + e);
         }
     }
 
@@ -296,17 +620,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 if (b.getAttributes().length() > 2) {
                     bId = b.getBusiness_id();
 
-                    attributes = b.getAttributes().replaceAll("§",",");
+                    attributes = b.getAttributes().replaceAll("§", ",");
                     jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {
                     });
                     //Todo über alle Keys iterieren, pro key eine Zeile in der CSV schreiben
                     for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
-                        content = entry.getValue().toString().replace(",","+");
+                        content = entry.getValue().toString().replace(",", "+");
 
-                        if (entry.getValue().toString().contains(":")){
-                            writer.write(bId + "," + entry.getKey()+","+content+",true");
-                        }else {
-                            writer.write(bId + "," + entry.getKey()+","+content+",false");
+                        if (entry.getValue().toString().contains(":")) {
+                            writer.write(bId + "," + entry.getKey() + "," + content + ",true");
+                        } else {
+                            writer.write(bId + "," + entry.getKey() + "," + content + ",false");
                         }
                         writer.newLine();
                     }

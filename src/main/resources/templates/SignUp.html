@@ -68,7 +68,7 @@
 
         <div>
         <label for="inputEmail4" class="form-label">Email</label>
-        <input type="email" class="form-control" id="inputEmail4" placeholder="example@yahoo.com">
+        <input type="email" class="form-control" id="inputEmail4" placeholder="example@yahoo.com" onkeypress="return rescticteAlphabet(event)">
     </div>
     <div class="col-md-6">
         <label for="inputPassword4" class="form-label">Password</label>
@@ -87,6 +87,20 @@
     </div>
 
 </form>
+
+<script>
+
+function rescticteAlphabet(e){
+
+
+var x = e.which || e.keycode;
+if((x>=48 && x<=57))
+return true;
+else
+return false;
+}
+
+</script>
 
 
 

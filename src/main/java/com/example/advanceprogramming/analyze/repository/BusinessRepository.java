@@ -31,15 +31,45 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
     @Query(value = "SELECT * FROM Business b  LIMIT 100",
             nativeQuery = true)
-    ArrayList<Business> selectFirst10();
+    ArrayList<Business> selectfirst100();
 
-    @Query("SELECT b FROM Business b WHERE b.categories LIKE %?1% AND b.city LIKE %?2% " +
-            "AND b.stars >= ?3 AND b.postal_code LIKE %?4% AND b.is_open = ?5 AND b.review_count >= ?6")
-    List<Business> selectByFilter(String categories, String city, double stars,
-                                  String postal_code, int is_open, int review_count);
+    @Query(value = "SELECT category, count(category) as anzahl FROM categories GROUP BY category ORDER BY anzahl DESC LIMIT 200;",
+    nativeQuery = true)
+    List<String> selectPopularCategories();
 
-    @Query("SELECT b.business_id FROM Business b WHERE  b.postal_code LIKE %?1% ")
-    List<String> selectByPostalCode(String postal_code);
+    @Query(value = "SELECT state FROM business group by state",
+            nativeQuery = true)
+    List<String> selectStates();
 
+
+    @Query("SELECT b FROM Business b WHERE b.stars = ?1 AND b.name LIKE ?2 AND b.state LIKE ?3 AND b.city LIKE ?4 AND b.postal_code LIKE ?5")
+    List<Business> selectByFilter(double stars, String name, String state, String city, String plz);
+
+
+
+    //TODO  Create View hier in Java mit allen Restaurantes in der Postleitzahl mit dem den folgenden Attributen
+    //TODO  und dem Namen der Postleitzahl und lösche es am Ende
+
+    /*
+    @Query(value = "CREATE VIEW ?1 AS SELECT b.business_id, b.postal_code, b.categories, b.attributes " +
+            "FROM Business b WHERE b.postal_code = ?1")
+    void createView(String postal_code);
+
+    @Query(value = "DROP VIEW ?1")
+    void deleteView(String postal_code);
+     */
+
+
+    /*
+    @Query(value = "SELECT count(*) FROM Business b WHERE b.categories LIKE %?1% " +
+            "and b.postal_code LIKE %?2%",
+            nativeQuery = true)
+    Integer selectAllCategories(String categorie, String Postal_code);
+
+    @Query(value = "SELECT count(*) FROM Business b WHERE b.attributes LIKE %?1% " +
+            "and b.postal_code LIKE %?2% and b.categories LIKE %?3%",
+            nativeQuery = true)
+    Integer selectAllAttributes(String attribute, String Postal_code, String categorie);
+     */
 
 }
