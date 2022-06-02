@@ -194,7 +194,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             input.setName("%");
         }
 
-
         List<Business> rawList = businessRepo.selectByFilter(Double.valueOf(input.getStars()), input.getName(), "FL", input.getCity(), input.getPlz());
 
         log.debug("Länger der sql-Antwort an Objekten " + rawList.size());
