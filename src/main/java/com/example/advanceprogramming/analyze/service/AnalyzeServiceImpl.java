@@ -174,19 +174,19 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public List<BusinessDTO> getMarkerFromFilter(FilterDTO input) {
-        if (input.getCity().equals("")){
+        if (input.getCity().equals("")) {
             log.debug("Ersetzen durch % ausgelöst");
             input.setCity("%");
         }
-        if (input.getPlz().equals("")){
+        if (input.getPlz().equals("")) {
             log.debug("Ersetzen durch % ausgelöst");
             input.setPlz("%");
         }
-        if (input.getState().equals("")){
+        if (input.getState().equals("")) {
             log.debug("Ersetzen durch % ausgelöst");
             input.setState("%");
         }
-        if (input.getName().equals("")){
+        if (input.getName().equals("")) {
             log.debug("Ersetzen durch % ausgelöst");
             input.setName("%");
         }
@@ -200,17 +200,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         String[] splittedCategories;
         boolean containsCategory;
-        for (Business b : rawList){
+        for (Business b : rawList) {
             containsCategory = false;
-            splittedCategories =  b.getCategories().split(",");
+            splittedCategories = b.getCategories().split(",");
 
-            for (String s : splittedCategories){
+            for (String s : splittedCategories) {
                 //if (s.equals(input.getCategory())){ TODO Liste der Kategorieren an Front-End
-                if (s.equals(" Burgers")){
+                if (s.equals(" Burgers")) {
                     containsCategory = true;
                 }
             }
-            if (containsCategory){
+            if (containsCategory) {
                 filteredList.add(b);
             }
         }
@@ -228,7 +228,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             output.add(temp);
         }*/
         List<BusinessDTO> output = new ArrayList<>();
-        for (Business b : filteredList){
+        for (Business b : filteredList) {
             output.add(parseBusinessToDTO(b));
         }
 
@@ -250,7 +250,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         int counter = 0;
 
 
-        for (String x: categories ){
+        for (String x : categories) {
             int i = postalCodeViewRepository.selectAllCategories(x, business.getPostal_code());
             countCategorie.put(x, i);
 
@@ -327,22 +327,23 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return inputDTO;
     }
 
-    public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise, List<FranchiseAnalyzeResult> storesInCity,
+    public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise,
+                                                        List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult> storesInCity,
                                                         List<FranchiseAnalyzeResult> worstCity, FranchiseAnalyzeResult countWorstReview,
                                                         List<FranchiseAnalyzeResult> bestCity, FranchiseAnalyzeResult countBestReview,
-                                                        HashMap<String, Integer> countCategories, double avgStars) {
+                                                        HashMap<String, Integer> countCategories) {
         FranchiseAnalyzeDTO dto = new FranchiseAnalyzeDTO();
 
         if (franchise != null) {
             dto.setFranchise(franchise);
             dto.setCountFranchise(countFranchise);
+            dto.setEachAverage(eachAverage);
             dto.setStoresInCity(storesInCity);
             dto.setWorstCity(worstCity);
             dto.setCountWorstReview(countWorstReview);
             dto.setCountBestReview(countBestReview);
             dto.setBestCity(bestCity);
             dto.setCountCategorie(countCategories);
-            dto.setAvgFranchise(avgStars);
         }
 
         return dto;
@@ -354,17 +355,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return categories;
     }
 
-    public FranchiseAnalyzeDTO franchiseCategorie(String franchise){
+    public FranchiseAnalyzeDTO franchiseCategorie(String franchise) {
 
         List<Franchise> all = franchiseViewRepository.selectFirst10(franchise);
         Set<String> allCategories = new HashSet<>();
 
         HashMap<String, Integer> categorieCount = new HashMap<>();
 
-        for(Franchise x : all){
+        for (Franchise x : all) {
             String[] categories = splitCategorieFr(x);
-            for(String z : categories){
-                if(z.startsWith(" ")){
+            for (String z : categories) {
+                if (z.startsWith(" ")) {
                     z = z.replaceFirst("\\s+", "");
                 }
                 allCategories.add(z);
@@ -373,11 +374,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         List<String> finalCategorie = new ArrayList<>(allCategories);
 
-        for(String i : finalCategorie){
+        for (String i : finalCategorie) {
             //todo performance probleme
             int count = franchiseViewRepository.basicCategorie(franchise, i);
             categorieCount.put(i, count);
         }
+
+
+        List<FranchiseAnalyzeResult> countFranchise = franchiseViewRepository.findBiggestFranchises();
+        List<FranchiseAnalyzeResult> eachAverage = franchiseViewRepository.eachAverage();
 
         List<FranchiseAnalyzeResult> bestCity = franchiseViewRepository.averageStarsByCity(franchise);
 
@@ -401,16 +406,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         //name = number of restaurants      counter = number of reviews
         FranchiseAnalyzeResult countWorstReviews = franchiseViewRepository.countReviews(franchise, worst1, worst2, worst3, worst4, worst5);
 
-
-        List<FranchiseAnalyzeResult> countFranchise = franchiseViewRepository.findBiggestFranchises();
         List<FranchiseAnalyzeResult> storesInCity = franchiseViewRepository.storesInCity(franchise);
 
-        double avgStars = franchiseViewRepository.averageStars(franchise);
-        avgStars = Math.round(avgStars * 100.0) / 100.0;
 
-        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, storesInCity,
-                worstCity, countWorstReviews, bestCity, countBestReviews,
-                categorieCount, avgStars);
+
+        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage,
+                storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, categorieCount);
 
 
         return output;
@@ -430,16 +431,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
  */
 
 
-
     @Override
     public List<String> getPopularCategories() {
         List<String> listCategories = businessRepo.selectPopularCategories();
 
         List<String> outputList = new ArrayList<>();
         int commaIndex = 0;
-        for (String s : listCategories){
+        for (String s : listCategories) {
             commaIndex = s.indexOf(",");
-            outputList.add(s.substring(0,commaIndex));
+            outputList.add(s.substring(0, commaIndex));
         }
         return outputList;
     }

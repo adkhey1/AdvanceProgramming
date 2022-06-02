@@ -34,12 +34,6 @@ public interface FranchiseViewRepository extends JpaRepository<Franchise, Long> 
             nativeQuery = true)
     FranchiseAnalyzeResult countReviews(String franchiseName, String city1, String city2, String city3, String city4, String city5);
 
-    @Query(value = "SELECT f.city as name, count(f.review_count) as counter FROM franchise f WHERE f.name = ?1 " +
-            "and f.city IN (SELECT f.city FROM franchise f WHERE f.name = ?1 group by name " +
-            "order by avg(f.stars) DESC LIMIT 5) group by name order by counter DESC LIMIT 5",
-            nativeQuery = true)
-    List<FranchiseAnalyzeResult> reviewsInBestCity(String franchiseName);
-
     @Query(value = "SELECT f.city as name, count(*) as counter FROM franchise f WHERE f.name = ?1 group by name" +
             " order by counter DESC LIMIT 10", nativeQuery = true)
     List<FranchiseAnalyzeResult> storesInCity(String franchiseName);
@@ -52,7 +46,9 @@ public interface FranchiseViewRepository extends JpaRepository<Franchise, Long> 
             nativeQuery = true)
     List<Franchise> selectFirst10(String franchiseName);
 
-    @Query("SELECT count(name) FROM Franchise group by name")
-    List<String> selectAllNames();
+    @Query(value = "SELECT f.name as name, avg(f.stars) as counter FROM franchise f group by name",
+            nativeQuery = true)
+    List<FranchiseAnalyzeResult> eachAverage();
+
 
 }
