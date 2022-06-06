@@ -83,12 +83,12 @@ public class UserController {
 
     @GetMapping({"/search",})
     public String search() {
-        return "Search";
+        return "analyze";
     }
 
     @GetMapping({"/about",})
     public String about() {
-        return "About";
+        return "about";
     }
 
     @GetMapping({"/index",})
