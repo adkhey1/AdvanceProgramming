@@ -16,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -32,7 +30,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private SentimentsRepository sentimentRepo;
 
     @Autowired
-    private FranchiseViewRepository franchiseViewRepository;
+    private FranchiseRepository franchiseRepository;
 
     @Autowired
     private UserBusinessRelationRepository userBizRepo;
@@ -371,7 +369,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     public FranchiseAnalyzeDTO franchiseCategorie(String franchise) {
 
-        List<Franchise> all = franchiseViewRepository.selectFirst10(franchise);
+        List<Franchise> all = franchiseRepository.selectFirst10(franchise);
         Set<String> allCategories = new HashSet<>();
 
         HashMap<String, Integer> categorieCount = new HashMap<>();
@@ -390,37 +388,36 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         for (String i : finalCategorie) {
             //todo performance probleme
-            int count = franchiseViewRepository.basicCategorie(franchise, i);
+            int count = franchiseRepository.basicCategorie(franchise, i);
             categorieCount.put(i, count);
         }
 
+        List<FranchiseAnalyzeResult> storesInCity = franchiseRepository.storesInCity(franchise);
 
-        List<FranchiseAnalyzeResult> countFranchise = franchiseViewRepository.findBiggestFranchises();
-        List<FranchiseAnalyzeResult> eachAverage = franchiseViewRepository.eachAverage();
+        List<FranchiseAnalyzeResult> countFranchise = franchiseRepository.findBiggestFranchises();
+        List<FranchiseAnalyzeResult> eachAverage = franchiseRepository.eachAverage();
 
-        List<FranchiseAnalyzeResult> bestCity = franchiseViewRepository.averageStarsByCity(franchise);
+        List<FranchiseAnalyzeResult> bestCity = franchiseRepository.averageStarsByCity(franchise);
 
-        String best1 = bestCity.get(0).getName();
-        String best2 = bestCity.get(1).getName();
-        String best3 = bestCity.get(2).getName();
-        String best4 = bestCity.get(3).getName();
-        String best5 = bestCity.get(4).getName();
-
-        //name = number of restaurants      counter = number of reviews
-        FranchiseAnalyzeResult countBestReviews = franchiseViewRepository.countReviews(franchise, best1, best2, best3, best4, best5);
-
-        List<FranchiseAnalyzeResult> worstCity = franchiseViewRepository.averageStarsByCityWorst(franchise);
-
-        String worst1 = worstCity.get(0).getName();
-        String worst2 = worstCity.get(1).getName();
-        String worst3 = worstCity.get(2).getName();
-        String worst4 = worstCity.get(3).getName();
-        String worst5 = worstCity.get(4).getName();
+        String best1 = bestCity.get(0).getName1();
+        String best2 = bestCity.get(1).getName1();
+        String best3 = bestCity.get(2).getName1();
+        String best4 = bestCity.get(3).getName1();
+        String best5 = bestCity.get(4).getName1();
 
         //name = number of restaurants      counter = number of reviews
-        FranchiseAnalyzeResult countWorstReviews = franchiseViewRepository.countReviews(franchise, worst1, worst2, worst3, worst4, worst5);
+        FranchiseAnalyzeResult countBestReviews = franchiseRepository.countReviews(franchise, best1, best2, best3, best4, best5);
 
-        List<FranchiseAnalyzeResult> storesInCity = franchiseViewRepository.storesInCity(franchise);
+        List<FranchiseAnalyzeResult> worstCity = franchiseRepository.averageStarsByCityWorst(franchise);
+
+        String worst1 = worstCity.get(0).getName1();
+        String worst2 = worstCity.get(1).getName1();
+        String worst3 = worstCity.get(2).getName1();
+        String worst4 = worstCity.get(3).getName1();
+        String worst5 = worstCity.get(4).getName1();
+
+        //name = number of restaurants      counter = number of reviews
+        FranchiseAnalyzeResult countWorstReviews = franchiseRepository.countReviews(franchise, worst1, worst2, worst3, worst4, worst5);
 
 
         FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage,

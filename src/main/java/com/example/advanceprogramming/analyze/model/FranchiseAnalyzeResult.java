@@ -2,6 +2,6 @@ package com.example.advanceprogramming.analyze.model;
 
 public interface FranchiseAnalyzeResult {
 
-    String getName();
+    String getName1();
     double getCounter();
 }
