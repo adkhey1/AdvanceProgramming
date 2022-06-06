@@ -4,10 +4,7 @@ package com.example.advanceprogramming.analyze.controller;
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.model.FranchiseAnalyzeResult;
-import com.example.advanceprogramming.analyze.repository.CategoriesRepository;
-import com.example.advanceprogramming.analyze.repository.BusinessRepository;
-import com.example.advanceprogramming.analyze.repository.FranchiseViewRepository;
-import com.example.advanceprogramming.analyze.repository.UserBusinessRelationRepository;
+import com.example.advanceprogramming.analyze.repository.*;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
 import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
 import com.example.advanceprogramming.auth.model.User;
@@ -34,6 +31,9 @@ public class AnalyzeController {
 
     @Autowired
     private BusinessRepository businessRepository;
+
+    @Autowired
+    private AttributesRepository attributesRepository;
 
     @Autowired
     private FranchiseViewRepository franchiseViewRepository;
@@ -63,19 +63,20 @@ public class AnalyzeController {
 
         log.debug(">>>> Anfrage 'viewMarker' angefangen");
 
-        log.debug(">>>> Anfrage an DB per Repo gestartet");
+
         Business businessByBusinessID = businessRepository.findByBusiness_id(input.getBusiness_id());
-        log.debug(">>>> Anfrage an DB fertig! ");
+
 
         log.debug(">>>> Service 'Categories in Postcode started");
         HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
         log.debug(">>>> Service 'Categories in Postcode finished");
 
-        log.debug(">>>> Service -> parsing started");
-        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
-        log.debug(">>>> Service -> parsing finished");
 
+        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
+
+        log.debug(">>>> Service 'Average Reviews started");
         output = analyzeService.getAverageScorePerSeason(output, input.getBusiness_id());
+        log.debug(">>>> Service-Method 'Average Reviews finished'");
 
         log.debug(">>>> Anfrage 'viewMarker' beendet");
         return ResponseEntity.status(HttpStatus.OK).body(output);
@@ -140,6 +141,8 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
+
+
     @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurantsTemp() {
 
@@ -173,6 +176,13 @@ public class AnalyzeController {
     @PostMapping(value = "/list/states/")
     public ResponseEntity<?> listStates() {
         List<String> output = businessRepository.selectStates();
+
+        return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
+
+    @RequestMapping(value = "/list/attributes/")
+    public ResponseEntity<?> listAttributes() {
+        List<String> output = attributesRepository.selectAllAttributes("True", "False");
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
@@ -212,56 +222,16 @@ public class AnalyzeController {
         return "splitBusiness";
     }
 
+    @RequestMapping(value = "/test/andi/")
+    public String testingstuff(){
+        //analyzeService.sentimentToCSV();
 
-    @RequestMapping(value = "/test/simon/")
-    public void getBusinessByFilter(/* @RequestBody FilterDTO filterInput*/) {
-        //Prototype Data: get 3760 Business from Philadelphia and with food in the categories (not only "food")
-        //Prototype Filter: Categorie, ctiy, stars(double minimum), postcode, is_open, review_count(int minimum)
-        //List<Business> allBusiness = businessRepository.selectByFilter("", "Philadelphia", 3, "19146", 1, 50);
-
-        //Business businessByBusinessID = businessRepository.findByBusiness_id("__4gkf_0UJW78rkRzFm6Gw");
-        //HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
-        //BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
-
-        String franchise = "Burger King";
-
-        FranchiseAnalyzeDTO output = analyzeServiceImpl.franchiseCategorie(franchise);
-
-
-
-        List<FranchiseAnalyzeResult> bestCity = franchiseViewRepository.averageStarsByCity(franchise);
-
-        String best1 = bestCity.get(0).getName();
-        String best2 = bestCity.get(1).getName();
-        String best3 = bestCity.get(2).getName();
-        String best4 = bestCity.get(3).getName();
-        String best5 = bestCity.get(4).getName();
-
-        //name = number of restaurants      counter = number of reviews
-        FranchiseAnalyzeResult countBestReviews = franchiseViewRepository.countReviews(franchise, best1, best2, best3, best4, best5);
-
-        List<FranchiseAnalyzeResult> worstCity = franchiseViewRepository.averageStarsByCityWorst(franchise);
-
-        String worst1 = worstCity.get(0).getName();
-        String worst2 = worstCity.get(1).getName();
-        String worst3 = worstCity.get(2).getName();
-        String worst4 = worstCity.get(3).getName();
-        String worst5 = worstCity.get(4).getName();
-
-        //name = number of restaurants      counter = number of reviews
-        FranchiseAnalyzeResult countWorstReviews = franchiseViewRepository.countReviews(franchise, worst1, worst2, worst3, worst4, worst5);
-
-
-        List<FranchiseAnalyzeResult> countFranchise = franchiseViewRepository.findBiggestFranchises();
-        List<FranchiseAnalyzeResult> storesInCity = franchiseViewRepository.storesInCity(franchise);
-
-        double avgStars = franchiseViewRepository.averageStars(franchise);
-        avgStars = Math.round(avgStars * 100.0) / 100.0;
-
-  //      FranchiseAnalyzeDTO output = analyzeService.parseFranchiseAnalyzeDTO(franchise, countFranchise, storesInCity,
-  //              worstCity, countWorstReviews, bestCity, countBestReviews, countCategories, avgStars);
-
+        return "Andistests";
     }
 
+    @RequestMapping("/franchise")
+    private String getMap() {
+        return "franchise";
+    }
 
 }

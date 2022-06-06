@@ -26,9 +26,6 @@ public class Franchise {
     @Column(name = "state")
     private String state;
 
-    @Column(name = "postal_code")
-    private String postal_code;
-
     @Column(name = "stars")
     private double stars;
 
@@ -44,7 +41,5 @@ public class Franchise {
     @Column(name = "categories")
     private String categories;
 
-    @Column(name = "hours")
-    private String hours;
 }
 

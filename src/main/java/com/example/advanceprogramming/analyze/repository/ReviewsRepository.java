@@ -11,5 +11,8 @@ public interface ReviewsRepository extends JpaRepository<Review, String> {
     @Query("SELECT r FROM Review r WHERE r.business_id = ?1")
     List<Review> selectReviewsWithBusinessId(String businessID);
 
+    @Query(value = "SELECT r FROM Review r WHERE r.review_id = ?1")
+    Review selectReviewWithId(String reviewId);
+
 
 }
