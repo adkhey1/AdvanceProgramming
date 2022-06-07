@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Add Map</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -20,9 +20,8 @@
 
 </head>
 <body>
-
-<div id="map"></div>
 <div id="test"></div>
+
 <div id="filter">
     <button class="openButton" onclick="openForm()">Open Form</button>
 
@@ -77,8 +76,7 @@
                 <button type="button" onclick="searchText()">Send to Controller</button>
             </form>
         </div>
-    </div>
-</div>
+        <div id="map"></div>
 <div id="input"></div>
 <canvas id="testChart"></canvas>
 <canvas id="testBar"></canvas>
