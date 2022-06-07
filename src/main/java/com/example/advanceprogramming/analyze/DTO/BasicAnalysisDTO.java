@@ -14,7 +14,7 @@ public class BasicAnalysisDTO {
 
     //attributes
     private String business_id, name, address, city, state, attributes, categories, hours, postal_code;
-    private double stars,spring, summer, fall, winter;
+    private double stars, spring, summer, fall, winter;
     private int review_count, is_open;
 
     //analysis

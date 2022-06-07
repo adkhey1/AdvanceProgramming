@@ -262,7 +262,7 @@ public class AnalyzeController {
 
     @RequestMapping(value = "/test/andi/")
     public String testingstuff() {
-        //analyzeService.sentimentToCSV();
+        analyzeService.sentimentToCSV();
 
         return "Andistests";
     }

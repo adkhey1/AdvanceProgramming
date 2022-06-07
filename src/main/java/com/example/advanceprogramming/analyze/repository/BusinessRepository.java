@@ -33,7 +33,7 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     ArrayList<Business> selectAll();
 
 
-    @Query(value = "SELECT * FROM Business b  LIMIT 100",
+    @Query(value = "SELECT * FROM Business b  LIMIT 1000",
             nativeQuery = true)
     ArrayList<Business> selectfirst100();
 
