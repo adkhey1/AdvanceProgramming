@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -270,11 +271,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO, String bID) {
-        int counterSpring = 0;
-        int counterSummer = 0;
-        int counterFall = 0;
-        int counterWinter = 0;
-
         double spring = 0.0;
         double summer = 0.0;
         double fall = 0.0;
@@ -331,6 +327,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         inputDTO.setFall(fall);
         inputDTO.setWinter(winter);
 */
+
+
         inputDTO.setSpring(0.0);
         inputDTO.setSummer(0.0);
         inputDTO.setFall(0.0);
@@ -557,27 +555,46 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     public void sentimentToCSV() {
-        List<Sentiments> inputList = sentimentRepo.findAll();
+        //List<Sentiments> inputList = sentimentRepo.findAll();
 
         List<tempModel> resultsList = new ArrayList<>();
-
         tempModel vergleich;
-        int monat, index;
-        int counter = 0;
-        for (Sentiments s : inputList) {
-            counter++;
-            vergleich = new tempModel(s.getBusiness_id());
+        String line;
+        String[] splitted;
+        double stars, sent;
 
-            monat = reviewsRepo.selectReviewWithId(s.getReview_id()).getDate().getMonthValue();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE") + "\\Downloads\\sentimentTableNew.csv"));
 
-            if (!resultsList.contains(vergleich)) {
-                resultsList.add(vergleich);
+            int monat, index;
+            int counter = 0;
+            line = reader.readLine();
+
+            while ((line = reader.readLine()) != null) {
+                counter++;
+
+                splitted = line.split(",");
+                stars = Double.parseDouble(splitted[5]);
+                sent = Double.parseDouble(splitted[6]);
+                vergleich = new tempModel(splitted[3]);
+
+                //monat = splitted[7];
+
+
+                if (!resultsList.contains(vergleich)) {
+                    resultsList.add(vergleich);
+                }
+                index = resultsList.indexOf(vergleich);
+
+                //resultsList.get(index).addScore(monat, stars, sent);
+                System.out.println("Durchlauf mit review-id: " + splitted[1]);
             }
-            index = resultsList.indexOf(vergleich);
-
-            resultsList.get(index).addScore(monat, s.getNormalStars(), s.getSentimentNormal());
-
-            System.out.println("Durchlauf Nr. " + counter  + "der for-Schleife erreicht.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Fehler ist aufgetreten");
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            System.out.println("Fehler ist aufgetreten");
+            throw new RuntimeException(e);
         }
 
         File outputCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\reducedReviews.csv");
@@ -587,7 +604,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
             writer.write("business_id,countSpring,countSummer,countFall,countWinter,revSpring,revSummer,revFall,revWinter,sentSpring,sentSummer,sentFall,sentWinter");
             writer.newLine();
-            for (tempModel t : resultsList){
+            for (tempModel t : resultsList) {
                 writer.write(t.getBID() + ",");
                 writer.write(t.getSpringCounter() + ",");
                 writer.write(t.getSummerCounter() + ",");
