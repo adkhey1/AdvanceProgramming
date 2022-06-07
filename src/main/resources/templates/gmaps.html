@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Add Map</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -7,8 +7,15 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     <script type="module" th:src="@{/js/index.js}"></script>
     <script type="module" th:src="@{/js/chart1.js}"></script>
+    <script type="module" th:src="@{/js/index.js}"></script>
+    <script type="module" th:src="@{/js/suggestions.js}"></script>
+
     <script type="module" th:src="@{static/js/filterJS.js}"></script>
+
     <script th:src="@{/js/filterJS.js}"></script>
+    <script th:src="@{/js/suggestions.js}"></script>
+    <script th:src="@{/js/index.js}"></script>
+
 
     <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA40cGYwJwf8sG2QdRAWO0eTzACUsnJYpc&callback=initMap&v=weekly"
@@ -20,8 +27,9 @@
 
 </head>
 <body>
-<div id="test"></div>
 
+<div id="map"></div>
+<div id="test"></div>
 <div id="filter">
     <button class="openButton" onclick="openForm()">Open Form</button>
 
@@ -31,7 +39,7 @@
             <form class="formContainer">
                 <h2>Filter</h2>
 
-                <label for="stars">stars:</label>
+                <label for="stars">Stars:</label>
                 <select name="stars" id="stars">
                     <option value="1.0">1.0</option>
                     <option value="1.5">1.5</option>
@@ -50,36 +58,42 @@
                 </div>
 
                 <div>
-                    <label for="State">state:</label>
-                    <select name="State" id="State">
+                    <label for="State">State:</label>
+                    <select name="State" id="State" onclick="fillDropdown()">
                     </select>
+                </div>
 
-                    <label for="City">city </label>
+                <div>
+                    <label for="City">City:</label>
                     <input type="text" id="City" name="City">
+                </div>
 
-                    <label for="PLZ">postal code</label>
+                <div>
+                    <label for="PLZ">Postal code:</label>
                     <input type="text" id="PLZ" name="PLZ" maxlength="6" onkeypress="return rescticteAlphabet(event)"/>
                 </div>
 
                 <div>
-                    <label for="kategorie">Kategorie:</label>
-                    <select name="category" id="kategorie">
+                    <label for="kategorie">Cotegory:</label>
+                    <input type="text" name="category" id="kategorie"/>
+                    <ul id="suggestionsKa"></ul>
+                </div>
 
-                    </select>
-
-                    <label for="atribute">atribute:</label>
-                    <select name="attribute" id="atribute">
-                    </select>
+                <div>
+                    <label for="atribute">Attribute:</label>
+                    <input type="text" name="attribute" id="atribute"/>
+                    <ul id="suggestionsAt"></ul>
                 </div>
 
 
                 <button type="button" onclick="searchText()">Send to Controller</button>
             </form>
         </div>
-        <div id="map"></div>
+    </div>
+</div>
 <div id="input"></div>
 <canvas id="testChart"></canvas>
-
+<canvas id="testBar"></canvas>
 
 
 <p id="demo"></p>
@@ -89,6 +103,8 @@
     <div id="sideWindow1inner"></div>
     <canvas id="chartWindow1"></canvas>
     <canvas id="lineComp1"></canvas>
+
+
 </div>
 
 <div id="sideWindow2">
