@@ -13,8 +13,8 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "postalcodeview")
-public class PostalCodeView {
+@Table(name = "postalcodeanalyze")
+public class PostalCodeAnalyze {
 
     @Id
     @Column(name = "business_id")
@@ -25,8 +25,5 @@ public class PostalCodeView {
 
     @Column(name = "categories")
     private String categories;
-
-    @Column(name = "attributes")
-    private String attributes;
 
 }
