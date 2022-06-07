@@ -20,7 +20,7 @@ async function getFranchiseData() {
         //dataType: "json",
         'success': function (data) {
             //console.log("test")
-            console.log(data)
+            //console.log(data)
             franchiseList = data
 
 
@@ -28,12 +28,14 @@ async function getFranchiseData() {
     });
 }
 
+
+// Wartet auf die antwort der AJAX calls !!!
 $.when(getFranchiseData()).done(function() {
     console.log(franchiseList)
-    console.log('All 3 ajax request complete.');
+
     document.getElementById("data").innerHTML = franchiseList.bestCity[0].counter
     document.getElementById("data").innerHTML = franchiseList.countFranchise[0].name1
-    console.log(franchiseList.bestCity[0])
+
 
 
 
@@ -57,7 +59,7 @@ function getTop10Keys(){
     for (let i = 0; i < 10; i++) {
         tempArray.push(franchiseList.countFranchise[i].name1)
     }
-   console.log(tempArray)
+
     return tempArray
 }
 
@@ -66,7 +68,7 @@ function getTop10Data(){
     for (let i = 0; i < 10; i++) {
         tempArray.push(franchiseList.countFranchise[i].counter)
     }
-    console.log(tempArray)
+
     return tempArray
 }
 
@@ -109,9 +111,9 @@ function barChart10(){
         //console.log("click")
         const points = myChart1.getElementsAtEventForMode(click,'nearest',{
             intersect: true},true);
-        console.log(points)
-        console.log(points[0].index)
-        console.log(franchiseList.countFranchise[points[0].index].name1)
+        //console.log(points)
+        //console.log(points[0].index)
+        //console.log(franchiseList.countFranchise[points[0].index].name1)
 
         getMoreInfo(franchiseList.countFranchise[points[0].index].name1)
 
@@ -125,7 +127,7 @@ function barChart10(){
 function getMoreInfo(restaurant){
     for (let i = 0; i < 10; i++) {
         if(restaurant===franchiseList.eachAverage[i].name1){
-            console.log(franchiseList.eachAverage[i].counter)   // Die folge von top Franchise und review count ist unterschiedlich deswegen rausfinden welches restaurant angedrückt wurde und dieses finden
+            //console.log(franchiseList.eachAverage[i].counter)   // Die folge von top Franchise und review count ist unterschiedlich deswegen rausfinden welches restaurant angedrückt wurde und dieses finden
             document.getElementById('inputEachScore').innerHTML ="average Score: "+ franchiseList.eachAverage[i].counter
         }
     }
