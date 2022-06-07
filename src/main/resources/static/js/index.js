@@ -1,7 +1,7 @@
 // TODO Patryk Filter START
 
 let states = null;
-let categories = null;
+var categories = null;
 let attributes = null;
 
 async function loadStates() {
@@ -60,7 +60,18 @@ async function loadAttributes() {
     }
 }
 
+loadStates()
+loadAttributes()
+loadCategories()
 
+// TODO Code mit Variabel übergabe Problem
+function display() {
+    console.log(categories);
+    console.log(states);
+}
+
+
+// TODO Code mit Variabel übergabe Problem END
 
 
 //TODO END
@@ -137,9 +148,6 @@ function initMap() {
 
 }
 
-loadStates()
-loadAttributes()
-loadCategories()
 
 window.initMap = initMap;
 
