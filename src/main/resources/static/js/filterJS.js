@@ -17,13 +17,11 @@ function closeForm() {
 }
 
 function searchText() {
+    console.log("erfolg funktion ausgeloest")
 
     var search = {
-        //vegan : document.getElementById('vegan').checked,
         stars: document.getElementById("stars").value,
         name: document.getElementById("name").value,
-        time: document.getElementById("time").value,
-        day: document.getElementById("day").value,
         state: document.getElementById("State").value,
         city: document.getElementById("City").value,
         plz: document.getElementById("PLZ").value,
@@ -62,24 +60,7 @@ async function fillDropdown() {
 
     let options = fruits.map(fruit => `<option value=${fruit.toLowerCase()}>${fruit}</option>`).join('\n');
     document.getElementById("State").innerHTML = options;
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

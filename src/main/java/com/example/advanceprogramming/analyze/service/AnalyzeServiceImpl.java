@@ -138,7 +138,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 break;
 
             case 1:
-
                 //falls es true ist, passiert nichts
                 //falls es false ist, wird es überschrieben
 
@@ -150,19 +149,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 }
 
                 break;
-
             case 2:
-
                 if (user.isFavorite()) {
                     user.setFavorite(false);
                     userBizRepo.save(user);
                 } else {
                     //nothing
                 }
-
                 break;
         }
-
 
         /*
             if (isFavorite){
@@ -171,67 +166,42 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to history!");
         }
         return ResponseEntity.status(HttpStatus.OK).body("This business is already selected as favorite!");
-
          */
         return null;
     }
 
     @Override
     public List<BusinessDTO> getMarkerFromFilter(FilterDTO input) {
+        String category = input.getCategory();
+        String attribute = input.getAttribute();
+        if (category.startsWith(" ")){
+            category = category.substring(1);
+        }
+        category = "%" + category + "%";
+
+        if (attribute.equals("")) {
+            attribute = "%";
+        } else {
+            attribute = "%" + attribute + "____True%";
+        }
+
         if (input.getCity().equals("")) {
-            log.debug("Ersetzen durch % ausgelöst");
             input.setCity("%");
         }
         if (input.getPlz().equals("")) {
-            log.debug("Ersetzen durch % ausgelöst");
             input.setPlz("%");
         }
         if (input.getState().equals("")) {
-            log.debug("Ersetzen durch % ausgelöst");
             input.setState("%");
         }
         if (input.getName().equals("")) {
-            log.debug("Ersetzen durch % ausgelöst");
             input.setName("%");
         }
 
-        List<Business> rawList = businessRepo.selectByFilter(Double.parseDouble(input.getStars()), input.getName(), "FL", input.getCity(), input.getPlz());
+        List<Business> rawList = businessRepo.selectByFilter(Double.parseDouble(input.getStars()), input.getName(), input.getState(), input.getCity(), input.getPlz(), category, attribute);
 
-        log.debug("Länger der sql-Antwort an Objekten " + rawList.size());
-
-        List<Business> filteredList = new ArrayList<>();
-
-        String[] splittedCategories;
-        boolean containsCategory;
-        for (Business b : rawList) {
-            containsCategory = false;
-            splittedCategories = b.getCategories().split(",");
-
-            for (String s : splittedCategories) {
-                //if (s.equals(input.getCategory())){ TODO Liste der Kategorieren an Front-End
-                if (s.equals(" Burgers")) {
-                    containsCategory = true;
-                }
-            }
-            if (containsCategory) {
-                filteredList.add(b);
-            }
-        }
-
-        log.debug("Länger der filteredList " + filteredList.size());
-
-        /*List<MarkerDTO> output = new ArrayList<>();
-
-        MarkerDTO temp;
-        for (Business b : rawList) {
-            temp = new MarkerDTO();
-            temp.setLatitude(b.getLatitude());
-            temp.setLongitude(b.getLongitude());
-            temp.setBusiness_id(b.getBusiness_id());
-            output.add(temp);
-        }*/
         List<BusinessDTO> output = new ArrayList<>();
-        for (Business b : filteredList) {
+        for (Business b : rawList) {
             output.add(parseBusinessToDTO(b));
         }
 

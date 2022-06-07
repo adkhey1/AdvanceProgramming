@@ -46,8 +46,8 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     List<String> selectStates();
 
 
-    @Query("SELECT b FROM Business b WHERE b.stars = ?1 AND b.name LIKE ?2 AND b.state LIKE ?3 AND b.city LIKE ?4 AND b.postal_code LIKE ?5")
-    List<Business> selectByFilter(double stars, String name, String state, String city, String plz);
+    @Query("SELECT b FROM Business b WHERE b.stars = ?1 AND b.name LIKE ?2 AND b.state LIKE ?3 AND b.city LIKE ?4 AND b.postal_code LIKE ?5 AND b.categories LIKE ?6 AND b.attributes LIKE ?7")
+    List<Business> selectByFilter(double stars, String name, String state, String city, String plz, String category, String attribute);
 
 
 
