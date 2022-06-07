@@ -114,6 +114,8 @@ public class AnalyzeController {
         return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(), 1);
     }
 
+    //TODO: Methode hat einen Error
+/*
     @PostMapping(value = "/favorites/get/")
     public ResponseEntity<?> getCalledBusiness(@RequestBody IdDTO id, HttpServletRequest request) {
 
@@ -126,7 +128,7 @@ public class AnalyzeController {
 
         return null;
     }
-
+*/
     public ResponseEntity<?> deleteBusinessFromFavorites(@RequestBody IdDTO id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         User user = userRepository.findByEmail(principal.getName());
