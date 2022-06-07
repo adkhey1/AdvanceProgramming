@@ -112,7 +112,7 @@ function initMap() {
 
                 sideView();
 
-            }, 15000);
+            }, 25000);
 
 
         })
@@ -171,6 +171,7 @@ console.log(json_data_LatLongArray)
 
 
 // Array mit 3 Placeholdern füllen damit es keine errors gibt evtl löschen
+/*
 var placeholder = {
     "spring": 0,
     "sommer": 0,
@@ -178,10 +179,17 @@ var placeholder = {
     "winter": 0,
     "placholder": true
 };
+
 var json_return_markerArrTemp = []
 json_return_markerArrTemp.unshift(placeholder);
 json_return_markerArrTemp.unshift(placeholder);
 json_return_markerArrTemp.unshift(placeholder);
+
+
+ */
+
+var json_return_markerArrTemp = [] //
+
 
 console.log(json_return_markerArrTemp)
 
@@ -253,6 +261,9 @@ function exampleChart1(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
+                options: {
+                    events: ['click']
+                },
                 backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
                 datalabels: {
                     color: 'blue',
@@ -269,12 +280,21 @@ function exampleChart1(div, values, keys) {
     if (myChart1 != null) {
         myChart1.destroy();
     }
+    const ctx = document.getElementById(div)
     myChart1 = new Chart(
-        document.getElementById(div),
+        ctx,
         config,
     );
 
+    function clickHandler(click){
+        const points = myChart1.getElementsAtEventForMode(click,'nearest',{
+            intersect: true},true);
+        console.log(points)
+        console.log(points[0].index)
+        console.log(keys[points[0].index])
 
+    }
+    ctx.onclick = clickHandler;
 }
 
 function exampleChart2(div, values, keys) {
@@ -349,10 +369,8 @@ function exampleChart3(div, values, keys) {
 
 let compChart = null;
 
-function addDataSetCompChart(labels) {
 
-}
-
+/*
 function comparisonChart(dataArr) {
 
     let run1 = false
@@ -424,7 +442,105 @@ function comparisonChart(dataArr) {
 
 
     compChart = new Chart(
-        document.getElementById('testChart'),
+        document.getElementById('lineComp1'),
+        config
+    );
+
+}
+
+ */
+
+function comparisonChart(dataArr) {
+
+
+    if (compChart != null) {
+        compChart.destroy();
+    }
+
+
+    const labels = [
+        'spring',
+        'summer',
+        'fall',
+        'winter'
+
+    ];
+
+    const data = {
+        labels: labels,
+
+
+        datasets: [
+
+            {
+                label: 'Dataset 1',
+                backgroundColor: getRandomColor(),
+                borderColor: getRandomColor(),
+                //data: [20,30,60,10],
+                data: [dataArr[0].spring, dataArr[0].summer, dataArr[0].fall, dataArr[0].winter] //0 durch die jeweiliges side view window nummer erstzen
+
+            },
+          ],
+        plugins: [ChartDataLabels]
+    };
+
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {}
+    };
+
+    compChart = new Chart(
+        document.getElementById('lineComp1'),
+        config
+    );
+
+}
+
+function loadClickedCategory(){
+    // TODO AJAX CALL und neues diagramm erstellen das beim click geladen wird
+}
+
+function comparisonChartWithCategory(dataArr,label,div) {
+
+
+
+
+    if (compChart != null) {
+        compChart.destroy();
+    }
+    const labels = [
+        'spring',
+        'summer',
+        'fall',
+        'winter'
+    ];
+
+    const data = {
+        labels: labels,
+
+
+        datasets: [
+
+            {
+                label: label,
+                backgroundColor: getRandomColor(),
+                borderColor: getRandomColor(),
+                //data: [20,30,60,10],
+                data: [dataArr[0].spring, dataArr[0].summer, dataArr[0].fall, dataArr[0].winter]
+
+            },
+        ],
+        plugins: [ChartDataLabels]
+    };
+    const config = {
+        type: 'line',
+        data: data,
+        options: {}
+    };
+    compChart = new Chart(
+        document.getElementById('lineComp1'),
         config
     );
 

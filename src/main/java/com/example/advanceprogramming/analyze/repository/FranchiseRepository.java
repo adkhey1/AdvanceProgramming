@@ -9,32 +9,28 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
-public interface FranchiseViewRepository extends JpaRepository<Franchise, Long> {
+public interface FranchiseRepository extends JpaRepository<Franchise, Long> {
 
 
-    @Query(value = "SELECT f.name as name, count(f.name) as counter FROM franchise f GROUP BY name ORDER BY counter DESC", nativeQuery = true)
+    @Query(value = "SELECT f.name as name1, count(f.name) as counter FROM franchise f GROUP BY name1 ORDER BY counter DESC", nativeQuery = true)
     List<FranchiseAnalyzeResult> findBiggestFranchises();
 
-    @Query(value = "SELECT avg(f.stars) FROM franchise f WHERE f.name = ?1",
-            nativeQuery = true)
-    double averageStars(String franchiseName);
-
-    @Query(value = "SELECT f.city as name, avg(f.stars) as counter FROM franchise f WHERE f.name = ?1 " +
-            "group by name order by counter DESC LIMIT 5",
+    @Query(value = "SELECT f.city as name1, avg(f.stars) as counter FROM franchise f WHERE f.name = ?1 " +
+            "group by name1 order by counter DESC LIMIT 5",
             nativeQuery = true)
     List<FranchiseAnalyzeResult> averageStarsByCity(String franchiseName);
 
-    @Query(value = "SELECT f.city as name, avg(f.stars) as counter FROM franchise f WHERE f.name = ?1 " +
-            "group by name order by counter ASC LIMIT 5",
+    @Query(value = "SELECT f.city as name1, avg(f.stars) as counter FROM franchise f WHERE f.name = ?1 " +
+            "group by name1 order by counter ASC LIMIT 5",
             nativeQuery = true)
     List<FranchiseAnalyzeResult> averageStarsByCityWorst(String franchiseName);
 
-    @Query(value = "SELECT count(*) as name, sum(f.review_count) as counter FROM franchise f WHERE f.name = ?1 " +
+    @Query(value = "SELECT count(*) as name1, sum(f.review_count) as counter FROM franchise f WHERE f.name = ?1 " +
             "and f.city IN (?2, ?3, ?4, ?5, ?6) ",
             nativeQuery = true)
     FranchiseAnalyzeResult countReviews(String franchiseName, String city1, String city2, String city3, String city4, String city5);
 
-    @Query(value = "SELECT f.city as name, count(*) as counter FROM franchise f WHERE f.name = ?1 group by name" +
+    @Query(value = "SELECT f.city as name1, count(*) as counter FROM franchise f WHERE f.name = ?1 group by name1" +
             " order by counter DESC LIMIT 10", nativeQuery = true)
     List<FranchiseAnalyzeResult> storesInCity(String franchiseName);
 
@@ -46,9 +42,8 @@ public interface FranchiseViewRepository extends JpaRepository<Franchise, Long> 
             nativeQuery = true)
     List<Franchise> selectFirst10(String franchiseName);
 
-    @Query(value = "SELECT f.name as name, avg(f.stars) as counter FROM franchise f group by name",
+    @Query(value = "SELECT f.name as name1, avg(f.stars) as counter FROM franchise f group by name1",
             nativeQuery = true)
     List<FranchiseAnalyzeResult> eachAverage();
-
 
 }
