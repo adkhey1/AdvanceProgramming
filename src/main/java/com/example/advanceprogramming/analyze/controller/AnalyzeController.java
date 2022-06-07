@@ -141,25 +141,14 @@ public class AnalyzeController {
             b.setHours(d);
         }
 
-        int test = 12;
-
-        model.addAttribute("calledBusinesses", allBusinesses);
-
-        return "history";
-    }
-
-    @GetMapping(value = "/delete/history/")
-    public String deleteCalledBusiness(Model model, HttpServletRequest request) {
-
-        //todo erst weiter machen, wenn gracjan security fertig hat
         Principal principal = request.getUserPrincipal();
         User user = userRepository.findByEmail(principal.getName());
 
-        userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
+        List<String> allBusinessesIds = userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
 
-        model.addAttribute("input", "successfully deleted");
+        List<Business> allBusinesses = businessRepository.findByBusinessIdInList(allBusinessesIds);
 
-        return "history";
+        return null;
     }
 
     public ResponseEntity<?> deleteBusinessFromFavorites(@RequestBody IdDTO id, HttpServletRequest request) {
