@@ -125,12 +125,60 @@ function barChart10(){
 
 
 function getMoreInfo(restaurant){
+    var tempList1 = []
+    var tempList2 = []
+
     for (let i = 0; i < 10; i++) {
         if(restaurant===franchiseList.eachAverage[i].name1){
             //console.log(franchiseList.eachAverage[i].counter)   // Die folge von top Franchise und review count ist unterschiedlich deswegen rausfinden welches restaurant angedrückt wurde und dieses finden
             document.getElementById('inputEachScore').innerHTML ="average Score: "+ franchiseList.eachAverage[i].counter
+            document.getElementById('inputBestReviewCount').innerHTML ="Anzahl der besten Reviews: "+ franchiseList.countBestReview
+
+            for (let j = 0; j < 10; j++) {
+                if(restaurant===franchiseList.countBestReview[j].franchise1){
+                    //console.log(franchiseList.countBestReview[j].liste[0].counter)
+                    document.getElementById('inputBestReviewCount').innerHTML ="Anzahl 5-Sterne Bewertung: "+ franchiseList.countBestReview[j].liste[0].counter
+                    document.getElementById('inputWorstReviewCount').innerHTML ="Anzahl 0-Sterne Bewertung: "+ franchiseList.countWorstReview[j].liste[0].counter
+                }
+            }
+            //console.log(franchiseList.countBestReview[i].liste[0].counter) //
+
+            let addTemp = ""
+            for (let j = 0; j < 10; j++) {
+                if (restaurant===franchiseList.countBestReview[j].franchise1){
+                    for (let k = 0; k < franchiseList.countCategories[j].liste.length; k++) {
+                        addTemp+=franchiseList.countCategories[j].liste[k].name1
+                        addTemp+=", "
+                    }
+                    console.log(franchiseList.countCategories[j].liste.length)
+                }
+
+
+
+
+            }
+            addTemp=addTemp.slice(0, -1)
+            addTemp=addTemp.slice(0, -1)
+            document.getElementById('inputCategories').innerHTML ="Kategorien: "+ addTemp
+
+        }
+
+
+    }
+    //console.log(franchiseList.bestCity[0].liste[0].name1)
+
+    //document.getElementById('1').innerHTML = franchiseList.bestCity[0].liste[0].name1
+    for (let x = 0; x <10 ; x++) {
+        //console.log(franchiseList.bestCity[x].franchise1)
+        if(restaurant===franchiseList.bestCity[x].franchise1){
+            for (let i = 0; i < 5; i++) {
+                document.getElementById((i+1).toString()).innerHTML =franchiseList.bestCity[x].liste[i].name1
+                document.getElementById((i+1).toString()+(i+1).toString()).innerHTML =franchiseList.bestCity[x].liste[i].counter
+            }
+
         }
     }
+
 
     //console.log(franchiseList.eachAverage[number].name1)
     //console.log(franchiseList.eachAverage[number].counter)

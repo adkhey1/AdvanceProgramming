@@ -1,7 +1,7 @@
 package com.example.advanceprogramming.analyze.repository;
 
 import com.example.advanceprogramming.analyze.model.Business;
-import com.example.advanceprogramming.analyze.model.PostalCodeView;
+import com.example.advanceprogramming.analyze.model.PostalCodeAnalyze;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-public interface PostalCodeViewRepository extends JpaRepository<PostalCodeView, Long> {
+public interface PostalCodeViewRepository extends JpaRepository<PostalCodeAnalyze, Long> {
 
     @Query(value = "SELECT count(*) FROM postalcodeview p WHERE p.categories LIKE %?1% " +
             "and p.postal_code LIKE %?2%",

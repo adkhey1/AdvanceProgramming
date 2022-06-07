@@ -146,7 +146,7 @@ public class AnalyzeController {
 
         List<String> allBusinessesIds = userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
 
-        List<Business> allBusinesses = businessRepository.findByBusinessIdInList(allBusinessesIds);
+        //List<Business> allBusinesses = businessRepository.findByBusinessIdInList(allBusinessesIds);
 
         return null;
     }
