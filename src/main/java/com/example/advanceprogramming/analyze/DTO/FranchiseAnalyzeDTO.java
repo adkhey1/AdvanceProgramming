@@ -1,6 +1,7 @@
 package com.example.advanceprogramming.analyze.DTO;
 
 import com.example.advanceprogramming.analyze.model.FranchiseAnalyzeResult;
+import com.example.advanceprogramming.analyze.model.FranchiseAnalyzeResult2;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,8 +15,8 @@ import java.util.List;
 public class FranchiseAnalyzeDTO {
 
     private String franchise;
-    private List<FranchiseAnalyzeResult> countFranchise, eachAverage, storesInCity, worstCity, bestCity;
-    private FranchiseAnalyzeResult countWorstReview, countBestReview;
-    private HashMap<String, Integer> countCategorie;
+    private List<FranchiseAnalyzeResult> countFranchise, eachAverage;
+    private List<FranchiseAnalyzeResult2> bestCity, countBestReview, worstCity, countWorstReview,
+            storesInCity, countCategories;
 
 }

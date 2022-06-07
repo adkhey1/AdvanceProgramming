@@ -114,17 +114,52 @@ public class AnalyzeController {
         return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(), 1);
     }
 
-    @PostMapping(value = "/favorites/get/")
-    public ResponseEntity<?> getCalledBusiness(@RequestBody IdDTO id, HttpServletRequest request) {
+    @GetMapping(value = "/get/history/")
+    public String getCalledBusiness(Model model, HttpServletRequest request) {
 
+        //todo erst weiter machen, wenn gracjan security fertig hat
+        //Principal principal = request.getUserPrincipal();
+        //User user = userRepository.findByEmail(principal.getName());
+
+        //List<String> allBusinessesIds = userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
+
+        List<String> testData = new ArrayList<>();
+        testData.add("LHSTtnW3YHCeUkRDGyJOyw");
+        testData.add("gebiRewfieSdtt17PTW6Zg");
+        testData.add("lj-E32x9_FA7GmUrBGBEWg");
+        testData.add("RZtGWDLCAtuipwaZ-UfjmQ");
+
+        List<Business> allBusinesses = businessRepository.findByBusinessIdInList(testData);
+
+        for (Business b : allBusinesses) {
+            String a = b.getHours().replaceAll("}", "");
+            String c = a;
+            c = c.replaceAll("'", "");
+            String d = c;
+            d = d.replace("{", "");
+
+            b.setHours(d);
+        }
+
+        int test = 12;
+
+        model.addAttribute("calledBusinesses", allBusinesses);
+
+        return "history";
+    }
+
+    @GetMapping(value = "/delete/history/")
+    public String deleteCalledBusiness(Model model, HttpServletRequest request) {
+
+        //todo erst weiter machen, wenn gracjan security fertig hat
         Principal principal = request.getUserPrincipal();
         User user = userRepository.findByEmail(principal.getName());
 
-        List<String> allBusinessesIds = userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
+        userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
 
-        List<Business> allBusinesses = businessRepository.findByBusinessIdInList(allBusinessesIds);
+        model.addAttribute("input", "successfully deleted");
 
-        return null;
+        return "history";
     }
 
     public ResponseEntity<?> deleteBusinessFromFavorites(@RequestBody IdDTO id, HttpServletRequest request) {

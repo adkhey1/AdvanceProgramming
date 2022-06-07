@@ -24,11 +24,14 @@ public interface UserBusinessRelationRepository extends JpaRepository<UserBusine
     @Query("UPDATE UserBusinessRelation SET isFavorite = ?3 WHERE userId = ?1 AND businessId = ?2")
     Void changeFavorite(long userId, String business_id, Boolean favorite);
 
-
+    @Query("SELECT u.businessId FROM UserBusinessRelation u WHERE u.userId = ?1")
+    List<String> selectAllBusinessIDFromUser(long userId);
     /*
     @Query("SELECT u FROM UserBusinessRelation u WHERE u.userId = ?1 ")
     List<UserBusinessRelation> checkFavortie(long userId);
 
      */
+
+    void deleteByUserId(int userId);
 }
 

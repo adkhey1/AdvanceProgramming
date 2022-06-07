@@ -340,10 +340,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise,
-                                                        List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult> storesInCity,
-                                                        List<FranchiseAnalyzeResult> worstCity, FranchiseAnalyzeResult countWorstReview,
-                                                        List<FranchiseAnalyzeResult> bestCity, FranchiseAnalyzeResult countBestReview,
-                                                        HashMap<String, Integer> countCategories) {
+                                                        List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult2> storesInCity,
+                                                        List<FranchiseAnalyzeResult2> worstCity, List<FranchiseAnalyzeResult2> countWorstReview,
+                                                        List<FranchiseAnalyzeResult2> bestCity, List<FranchiseAnalyzeResult2> countBestReview,
+                                                        List<FranchiseAnalyzeResult2> countCategories) {
         FranchiseAnalyzeDTO dto = new FranchiseAnalyzeDTO();
 
         if (franchise != null) {
@@ -355,7 +355,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             dto.setCountWorstReview(countWorstReview);
             dto.setCountBestReview(countBestReview);
             dto.setBestCity(bestCity);
-            dto.setCountCategorie(countCategories);
+            dto.setCountCategories(countCategories);
         }
 
         return dto;
@@ -369,59 +369,161 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     public FranchiseAnalyzeDTO franchiseCategorie(String franchise) {
 
-        List<Franchise> all = franchiseRepository.selectFirst10(franchise);
-        Set<String> allCategories = new HashSet<>();
-
-        HashMap<String, Integer> categorieCount = new HashMap<>();
-
-        for (Franchise x : all) {
-            String[] categories = splitCategorieFr(x);
-            for (String z : categories) {
-                if (z.startsWith(" ")) {
-                    z = z.replaceFirst("\\s+", "");
-                }
-                allCategories.add(z);
-            }
-        }
-
-        List<String> finalCategorie = new ArrayList<>(allCategories);
-
-        for (String i : finalCategorie) {
-            //todo performance probleme
-            int count = franchiseRepository.basicCategorie(franchise, i);
-            categorieCount.put(i, count);
-        }
-
-        List<FranchiseAnalyzeResult> storesInCity = franchiseRepository.storesInCity(franchise);
-
         List<FranchiseAnalyzeResult> countFranchise = franchiseRepository.findBiggestFranchises();
         List<FranchiseAnalyzeResult> eachAverage = franchiseRepository.eachAverage();
 
-        List<FranchiseAnalyzeResult> bestCity = franchiseRepository.averageStarsByCity(franchise);
+        List<FranchiseAnalyzeResult2> countCategorie = new ArrayList<>(10);
 
-        String best1 = bestCity.get(0).getName1();
-        String best2 = bestCity.get(1).getName1();
-        String best3 = bestCity.get(2).getName1();
-        String best4 = bestCity.get(3).getName1();
-        String best5 = bestCity.get(4).getName1();
+        //name = number of restaurants      counter = number of review
+        List<FranchiseAnalyzeResult2> countBestReviews = new ArrayList<>(10);
+        List<FranchiseAnalyzeResult2> bestCity = new ArrayList<>(10);
 
-        //name = number of restaurants      counter = number of reviews
-        FranchiseAnalyzeResult countBestReviews = franchiseRepository.countReviews(franchise, best1, best2, best3, best4, best5);
+        List<FranchiseAnalyzeResult2> countWorstReviews = new ArrayList<>(10);
+        List<FranchiseAnalyzeResult2> worstCity = new ArrayList<>(10);
 
-        List<FranchiseAnalyzeResult> worstCity = franchiseRepository.averageStarsByCityWorst(franchise);
+        List<FranchiseAnalyzeResult2> storesInCity = new ArrayList<>(10);
 
-        String worst1 = worstCity.get(0).getName1();
-        String worst2 = worstCity.get(1).getName1();
-        String worst3 = worstCity.get(2).getName1();
-        String worst4 = worstCity.get(3).getName1();
-        String worst5 = worstCity.get(4).getName1();
+        for(int i = 0; i<= countFranchise.size() -1 ; i++){
 
-        //name = number of restaurants      counter = number of reviews
-        FranchiseAnalyzeResult countWorstReviews = franchiseRepository.countReviews(franchise, worst1, worst2, worst3, worst4, worst5);
+            String input = countFranchise.get(i).getName1();
 
+
+
+            List<Franchise> all = franchiseRepository.selectFirst10(input);
+            Set<String> allCategories = new HashSet<>();
+
+            List<FranchiseAnalyzeResult> categorieCount = new ArrayList<>();
+
+            for (Franchise x : all) {
+                String[] categories = splitCategorieFr(x);
+                for (String z : categories) {
+                    if (z.startsWith(" ")) {
+                        z = z.replaceFirst("\\s+", "");
+                    }
+                    allCategories.add(z);
+                }
+            }
+
+            List<String> finalCategorie = new ArrayList<>(allCategories);
+
+            for (String z : finalCategorie) {
+                //todo performance probleme
+                FranchiseAnalyzeResult categorieModel = new FranchiseAnalyzeResult() {
+                    @Override
+                    public String getName1() {
+                        return z;
+                    }
+
+                    @Override
+                    public double getCounter() {
+                        return franchiseRepository.basicCategorie(input, z);
+                    }
+                };
+
+                categorieCount.add(categorieModel);
+            }
+
+            FranchiseAnalyzeResult2 categorie = new FranchiseAnalyzeResult2() {
+                @Override
+                public String getFranchise1() {
+                    return input;
+                }
+
+                @Override
+                public List<FranchiseAnalyzeResult> getListe() {
+                    return categorieCount;
+                }
+            };
+
+            countCategorie.add(categorie);
+
+
+
+            FranchiseAnalyzeResult2 test = new FranchiseAnalyzeResult2() {
+                @Override
+                public String getFranchise1() {
+                    return input;
+                }
+
+                @Override
+                public List<FranchiseAnalyzeResult> getListe() {
+                    return franchiseRepository.averageStarsByCity(input);
+                }
+            };
+
+            String best1 = test.getListe().get(0).getName1();
+            String best2 = test.getListe().get(1).getName1();
+            String best3 = test.getListe().get(2).getName1();
+            String best4 = test.getListe().get(3).getName1();
+            String best5 = test.getListe().get(4).getName1();
+
+            FranchiseAnalyzeResult2 test2 = new FranchiseAnalyzeResult2() {
+                @Override
+                public String getFranchise1() {
+                    return input;
+                }
+
+                @Override
+                public List<FranchiseAnalyzeResult> getListe() {
+                    return franchiseRepository.countReviews(input, best1, best2, best3, best4, best5);
+                }
+            };
+
+            countBestReviews.add(test2);
+            bestCity.add(test);
+
+
+
+            FranchiseAnalyzeResult2 test3 = new FranchiseAnalyzeResult2() {
+                @Override
+                public String getFranchise1() {
+                    return input;
+                }
+
+                @Override
+                public List<FranchiseAnalyzeResult> getListe() {
+                    return franchiseRepository.averageStarsByCityWorst(input);
+                }
+            };
+
+            String worst1 = test.getListe().get(0).getName1();
+            String worst2 = test.getListe().get(1).getName1();
+            String worst3 = test.getListe().get(2).getName1();
+            String worst4 = test.getListe().get(3).getName1();
+            String worst5 = test.getListe().get(4).getName1();
+
+            FranchiseAnalyzeResult2 test4 = new FranchiseAnalyzeResult2() {
+                @Override
+                public String getFranchise1() {
+                    return input;
+                }
+
+                @Override
+                public List<FranchiseAnalyzeResult> getListe() {
+                    return franchiseRepository.countReviews(input, worst1, worst2, worst3, worst4, worst5);
+                }
+            };
+            worstCity.add(test3);
+            countWorstReviews.add(test4);
+
+
+            FranchiseAnalyzeResult2 test5 = new FranchiseAnalyzeResult2() {
+                @Override
+                public String getFranchise1() {
+                    return input;
+                }
+
+                @Override
+                public List<FranchiseAnalyzeResult> getListe() {
+                    return franchiseRepository.storesInCity(input);
+                }
+            };
+
+            storesInCity.add(test5);
+        }
 
         FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage,
-                storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, categorieCount);
+                storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, countCategorie);
 
 
         return output;
