@@ -29,11 +29,11 @@ public class Franchise {
     @Column(name = "stars")
     private double stars;
 
-    @Column(name = "review_count")
-    private int review_count;
-
     @Column(name = "is_open")
     private int is_open;
+
+    @Column(name = "review_count")
+    private int review_count;
 
     @Column(name = "attributes")
     private String attributes;

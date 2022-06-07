@@ -3,7 +3,6 @@ package com.example.advanceprogramming.analyze.controller;
 
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
-import com.example.advanceprogramming.analyze.model.FranchiseAnalyzeResult;
 import com.example.advanceprogramming.analyze.repository.*;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
 import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
@@ -33,10 +32,13 @@ public class AnalyzeController {
     private BusinessRepository businessRepository;
 
     @Autowired
+    private UserBusinessRelationRepository userBusinessRelationRepository;
+
+    @Autowired
     private AttributesRepository attributesRepository;
 
     @Autowired
-    private FranchiseViewRepository franchiseViewRepository;
+    private FranchiseRepository franchiseRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -112,6 +114,19 @@ public class AnalyzeController {
         return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(), 1);
     }
 
+    @PostMapping(value = "/favorites/get/")
+    public ResponseEntity<?> getCalledBusiness(@RequestBody IdDTO id, HttpServletRequest request) {
+
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByEmail(principal.getName());
+
+        List<String> allBusinessesIds = userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
+
+        List<Business> allBusinesses = businessRepository.findByBusinessIdInList(allBusinessesIds);
+
+        return null;
+    }
+
     public ResponseEntity<?> deleteBusinessFromFavorites(@RequestBody IdDTO id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         User user = userRepository.findByEmail(principal.getName());
@@ -133,14 +148,13 @@ public class AnalyzeController {
     }
 
     @GetMapping(value = "/analyze/franchise/")
-    public ResponseEntity<?> franchiseAnalyze(/*@RequestParam String franchiseName*/){
+    public ResponseEntity<?> franchiseAnalyze(/*@RequestParam String franchiseName*/) {
 
-        String franchise = "Burger King";
+        String franchise = "McDonald's";
         FranchiseAnalyzeDTO output = analyzeServiceImpl.franchiseCategorie(franchise);
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
-
 
 
     @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -180,6 +194,13 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
+    @RequestMapping(value = "/list/attributes/")
+    public ResponseEntity<?> listAttributes() {
+        List<String> output = attributesRepository.selectAllAttributes("True", "False");
+
+        return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
+
     @RequestMapping("/split/attributes")
     public String splitAttributesToDB() {
         ArrayList<Business> listRaw = businessRepository.selectAll();
@@ -215,20 +236,12 @@ public class AnalyzeController {
         return "splitBusiness";
     }
 
-    /*@RequestMapping(value = "/test/andi/")
-    public String testingstuff(){
-        analyzeService.addIntIdBusiness();
+    @RequestMapping(value = "/test/andi/")
+    public String testingstuff() {
+        //analyzeService.sentimentToCSV();
 
         return "Andistests";
-    }*/
-
-    @RequestMapping(value = "/test/simon/")
-    public void testingMethod(/* @RequestBody FilterDTO filterInput*/) {
-
-        List<String> all = attributesRepository.selectAllAttributes("True", "False");
-
     }
-
 
     @RequestMapping("/franchise")
     private String getMap() {
