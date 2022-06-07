@@ -25,4 +25,6 @@ function getFranchiseData(){
 
 }
 
-document.getElementById("data").innerHTML = franchiseList
+console.log(franchiseList)
+
+document.getElementById("data").innerText = franchiseList
