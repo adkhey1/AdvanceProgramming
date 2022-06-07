@@ -179,6 +179,17 @@ function getMoreInfo(restaurant){
         }
     }
 
+    for (let x = 0; x <10 ; x++) {
+        //console.log(franchiseList.bestCity[x].franchise1)
+        if(restaurant===franchiseList.worstCity[x].franchise1){
+            for (let i = 0; i < 5; i++) {
+                document.getElementById((9).toString()+(i+1).toString()).innerHTML =franchiseList.worstCity[x].liste[i].name1
+                document.getElementById((9).toString()+(i+1).toString()+(i+1).toString()).innerHTML =franchiseList.worstCity[x].liste[i].counter
+            }
+
+        }
+    }
+
 
     //console.log(franchiseList.eachAverage[number].name1)
     //console.log(franchiseList.eachAverage[number].counter)
