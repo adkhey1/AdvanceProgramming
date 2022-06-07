@@ -375,7 +375,7 @@ function exampleChart3(div, values, keys) {
 }
 
 
-let compChart = null;
+
 
 
 /*
@@ -458,8 +458,12 @@ function comparisonChart(dataArr) {
 
  */
 
+var compChart = null;
+
 function comparisonChart(dataArr) {
 
+
+    console.log(compChart)
 
     if (compChart != null) {
         compChart.destroy();
