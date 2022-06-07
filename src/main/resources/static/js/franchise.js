@@ -33,8 +33,8 @@ async function getFranchiseData() {
 $.when(getFranchiseData()).done(function() {
     console.log(franchiseList)
 
-    document.getElementById("data").innerHTML = franchiseList.bestCity[0].counter
-    document.getElementById("data").innerHTML = franchiseList.countFranchise[0].name1
+    //document.getElementById("data").innerHTML = franchiseList.bestCity[0].counter
+    //document.getElementById("data").innerHTML = franchiseList.countFranchise[0].name1
 
 
 
