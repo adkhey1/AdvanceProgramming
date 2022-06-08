@@ -22,6 +22,7 @@ async function loadStates() {
     }
 
     console.log(states);
+    fillDropdown()
 }
 
 async function loadCategories() {
@@ -77,15 +78,22 @@ function display() {
 //TODO END
 
 
+
+
 var json_return_marker;
 
+//let map = google.maps.Map;
+//let marker = google.maps.Marker = [];
 
 // map
 function initMap() {
-    const map = new google.maps.Map(document.getElementById("map"), {
+     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 4,
         center: {lat: 40.560109, lng: -100.573589}
     })
+
+
+
 
 
     function addMarker(latLongPos, businessID) {
@@ -134,11 +142,16 @@ function initMap() {
 
     //add all marker
     var myLatlng;
-    for (let i = 0; i < json_data_LatLongArray.length; i++) {
-        myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].longitude);
-        addMarker(myLatlng, json_data_LatLongArray[i].business_id)
 
-    }
+        for (let i = 0; i < json_data_LatLongArray.length; i++) {
+            myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].longitude);
+            addMarker(myLatlng, json_data_LatLongArray[i].business_id)
+
+        }
+
+
+
+
 
     //var myLatlng = new google.maps.LatLng(json_data_LatLongArray[1].latitude, json_data_LatLongArray[1].latitude);
     //addMarker(myLatlng);
@@ -146,10 +159,21 @@ function initMap() {
     //addMarker({lat: 51.5072, lng: 0.1276});
     //addMarker({lat: 50.16026, lng: 8.52174});
 
+    function deleteMarkers(){
+        console.log("deletet")
+        json_data_LatLongArray=[]
+        console.log(json_data_LatLongArray)
+        pushMarker()
+    }
+
+
 }
 
 
-window.initMap = initMap;
+    window.initMap = initMap;
+
+
+
 
 
 //get Markers

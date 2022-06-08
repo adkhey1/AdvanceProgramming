@@ -9,7 +9,7 @@ async function getFranchiseData() {
 
 
     await $.ajax({
-        'async': "true",
+        'async': "false",
         'type': "GET",
         'global': false,
         'url': "/analyze/franchise/",
@@ -186,6 +186,20 @@ function getMoreInfo(restaurant){
                 document.getElementById((9).toString()+(i+1).toString()).innerHTML =franchiseList.worstCity[x].liste[i].name1
                 document.getElementById((9).toString()+(i+1).toString()+(i+1).toString()).innerHTML =franchiseList.worstCity[x].liste[i].counter
             }
+
+        }
+    }
+
+    for (let x = 0; x <10 ; x++) {
+        //console.log(franchiseList.bestCity[x].franchise1)
+        if(restaurant===franchiseList.storesInCity[x].franchise1){
+            for (let i = 0; i < 9; i++) {
+                document.getElementById((8).toString()+(i+1).toString()).innerHTML =franchiseList.storesInCity[x].liste[i].name1
+                document.getElementById((8).toString()+(i+1).toString()+(i+1).toString()).innerHTML =franchiseList.storesInCity[x].liste[i].counter
+                document.getElementById("80").innerHTML = franchiseList.storesInCity[x].liste[i+1].name1
+                document.getElementById("800").innerHTML = franchiseList.storesInCity[x].liste[i+1].counter
+            }
+
 
         }
     }
