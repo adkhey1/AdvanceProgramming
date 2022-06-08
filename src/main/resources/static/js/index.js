@@ -22,6 +22,7 @@ async function loadStates() {
     }
 
     console.log(states);
+    fillDropdown()
 }
 
 async function loadCategories() {
