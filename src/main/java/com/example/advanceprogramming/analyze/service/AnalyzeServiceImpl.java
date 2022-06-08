@@ -525,7 +525,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     public void sentimentToCSV() {
-        //List<Sentiments> inputList = sentimentRepo.findAll();
 
         List<tempModel> resultsList = new ArrayList<>();
         tempModel vergleich;
@@ -534,7 +533,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         double stars, sent;
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE") + "\\Downloads\\sentimentTableNew.csv"));
+            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE") + "\\Downloads\\sentimentTableNew1.csv"));
 
             int monat, index;
             int counter = 0;
@@ -544,11 +543,14 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 counter++;
 
                 splitted = line.split(",");
-                stars = Double.parseDouble(splitted[5]);
-                sent = Double.parseDouble(splitted[6]);
+                stars = Double.parseDouble(splitted[6]);
+                sent = Double.parseDouble(splitted[7]);
                 vergleich = new tempModel(splitted[3]);
 
-                //monat = splitted[7];
+                int indexstart = splitted[5].indexOf("-");
+                int indexlast = splitted[5].indexOf("-",indexstart+1);
+
+                monat = Integer.parseInt(splitted[5].substring(indexstart+1,indexlast));
 
 
                 if (!resultsList.contains(vergleich)) {
@@ -556,8 +558,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 }
                 index = resultsList.indexOf(vergleich);
 
-                //resultsList.get(index).addScore(monat, stars, sent);
-                System.out.println("Durchlauf mit review-id: " + splitted[1]);
+                resultsList.get(index).addScore(monat, stars, sent);
+                System.out.println("Durchlauf NR. "+ counter +"mit review-id: " + splitted[1]);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Fehler ist aufgetreten");
