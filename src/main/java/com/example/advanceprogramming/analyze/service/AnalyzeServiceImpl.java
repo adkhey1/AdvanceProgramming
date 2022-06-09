@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -28,6 +27,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private BusinessRepository businessRepo;
 
     @Autowired
+    private StateAnalyzeRepository stateAnalyzeRepository;
+
+    @Autowired
     private SentimentsRepository sentimentRepo;
 
     @Autowired
@@ -37,7 +39,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private UserBusinessRelationRepository userBizRepo;
 
     @Autowired
-    private PostalCodeViewRepository postalCodeViewRepository;
+    private PostalCodeAnalyzeRepository postalCodeAnalyzeRepository;
 
     @Autowired
     private ReviewsRepository reviewsRepo;
@@ -57,7 +59,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2) {
+    public BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, List<HashMap<String, Integer>> input2) {
         BasicAnalysisDTO dto = new BasicAnalysisDTO();
 
         if (input != null) {
@@ -174,7 +176,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     public List<BusinessDTO> getMarkerFromFilter(FilterDTO input) {
         String category = input.getCategory();
         String attribute = input.getAttribute();
-        if (category.startsWith(" ")){
+        if (category.startsWith(" ")) {
             category = category.substring(1);
         }
         category = "%" + category + "%";
@@ -214,27 +216,24 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return categories;
     }
 
-    public HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/) {
+    public List<HashMap<String, Integer>> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/) {
 
         //Testing categorie by PostCode
         String[] categories = splitCategorie(business);
-        String[] attributes = {"'GoodForKids': 'True'", "'BusinessAcceptsCreditCards': 'True'", "'RestaurantsDelivery': 'True'"};
-        HashMap<String, Integer> countCategorie = new HashMap<>();
-        int counter = 0;
+        List<HashMap<String, Integer>> countCategorie = new ArrayList<>();
+        HashMap<String, Integer> eachPostal = new HashMap<>();
+        HashMap<String, Integer> eachState = new HashMap<>();
 
 
         for (String x : categories) {
-            int i = postalCodeViewRepository.selectAllCategories(x, business.getPostal_code());
-            countCategorie.put(x, i);
-
-            /*
-            for (String z : attributes){
-                int anzahl = postalCodeViewRepository.selectAllAttributes(z, business.getPostal_code(), x);
-                countCategorie.put(z + Integer.toString(counter), anzahl);
-            }
-             */
-            counter++;
+            int i = postalCodeAnalyzeRepository.selectAllCategories(x, business.getPostal_code());
+            int z = stateAnalyzeRepository.selectAllState(x, business.getState());
+            eachPostal.put(x, i);
+            eachState.put(x, z);
         }
+
+        countCategorie.add(eachPostal);
+        countCategorie.add(eachState);
 
         return countCategorie;
     }
@@ -351,10 +350,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         List<FranchiseAnalyzeResult2> storesInCity = new ArrayList<>(10);
 
-        for(int i = 0; i<= countFranchise.size() -1 ; i++){
+        for (int i = 0; i <= countFranchise.size() - 1; i++) {
 
             String input = countFranchise.get(i).getName1();
-
 
 
             List<Franchise> all = franchiseRepository.selectFirst10(input);
@@ -406,7 +404,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             countCategorie.add(categorie);
 
 
-
             FranchiseAnalyzeResult2 test = new FranchiseAnalyzeResult2() {
                 @Override
                 public String getFranchise1() {
@@ -441,7 +438,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             bestCity.add(test);
 
 
-
             FranchiseAnalyzeResult2 test3 = new FranchiseAnalyzeResult2() {
                 @Override
                 public String getFranchise1() {
@@ -454,11 +450,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 }
             };
 
-            String worst1 = test.getListe().get(0).getName1();
-            String worst2 = test.getListe().get(1).getName1();
-            String worst3 = test.getListe().get(2).getName1();
-            String worst4 = test.getListe().get(3).getName1();
-            String worst5 = test.getListe().get(4).getName1();
+            String worst1 = test3.getListe().get(0).getName1();
+            String worst2 = test3.getListe().get(1).getName1();
+            String worst3 = test3.getListe().get(2).getName1();
+            String worst4 = test3.getListe().get(3).getName1();
+            String worst5 = test3.getListe().get(4).getName1();
 
             FranchiseAnalyzeResult2 test4 = new FranchiseAnalyzeResult2() {
                 @Override
@@ -548,9 +544,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 vergleich = new tempModel(splitted[3]);
 
                 int indexstart = splitted[5].indexOf("-");
-                int indexlast = splitted[5].indexOf("-",indexstart+1);
+                int indexlast = splitted[5].indexOf("-", indexstart + 1);
 
-                monat = Integer.parseInt(splitted[5].substring(indexstart+1,indexlast));
+                monat = Integer.parseInt(splitted[5].substring(indexstart + 1, indexlast));
 
 
                 if (!resultsList.contains(vergleich)) {
@@ -559,7 +555,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 index = resultsList.indexOf(vergleich);
 
                 resultsList.get(index).addScore(monat, stars, sent);
-                System.out.println("Durchlauf NR. "+ counter +"mit review-id: " + splitted[1]);
+                System.out.println("Durchlauf NR. " + counter + "mit review-id: " + splitted[1]);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Fehler ist aufgetreten");

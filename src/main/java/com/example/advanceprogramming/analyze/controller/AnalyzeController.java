@@ -70,7 +70,7 @@ public class AnalyzeController {
 
 
         log.debug(">>>> Service 'Categories in Postcode started");
-        HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
+        List<HashMap<String, Integer>> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
         log.debug(">>>> Service 'Categories in Postcode finished");
 
 
@@ -262,7 +262,7 @@ public class AnalyzeController {
 
     @RequestMapping(value = "/test/andi/")
     public String testingstuff() {
-        analyzeService.sentimentToCSV();
+        //analyzeService.sentimentToCSV();
 
         return "Andistests";
     }
@@ -271,5 +271,17 @@ public class AnalyzeController {
     private String getMap() {
         return "franchise";
     }
+
+    /*@GetMapping("/test/simon")
+    private void testSimon(){
+
+        Business business = businessRepository.findByBusiness_id("__CYdei4W4pVb4SThJ-HYg");
+        List<HashMap<String, Integer>> categorie = analyzeServiceImpl.getCategorieInPostCode(business);
+
+        int test = 23;
+
+    }
+
+     */
 
 }
