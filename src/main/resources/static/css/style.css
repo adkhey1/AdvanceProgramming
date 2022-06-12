@@ -4,9 +4,174 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /* Set the size of the div element that contains the map */
+
+
+h1 {
+    margin-left: 10%;
+}
+
+h2 {
+    margin-left: 10%;
+}
+.headl {
+
+    display:flex;
+justify-content: space-around;
+
+
+}
+h3 {
+
+
+}
+h4 {
+
+}
+
+h5 { margin-left: 10%;}
+
+#franchise{
+    background-color: lightskyblue;
+}
+
+.reviews {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    display:inline-block;
+    box-shadow: 4mm 4mm 4mm grey;
+
+}
+
+.categories {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    display:inline-block;
+    box-shadow: 4mm 4mm 4mm grey;
+}
+
+
+.citywithrating {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-left: 10%;
+    margin-right: 60%;
+    margin-bottom: 5%;
+    box-shadow: 4mm 4mm 4mm grey;
+}
+.NEUEKLASSE {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-left: 10%;
+    margin-right: 60%;
+    margin-bottom: 5%;
+    box-shadow: 4mm 4mm 4mm grey;
+}
+
+#worstcity {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-left: 10%;
+    margin-right: 15%;
+    margin-bottom: 5%;
+    display:inline-block;
+    box-shadow: 4mm 4mm 4mm grey;
+
+}
+
+#topratedcity {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-left: 15%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    display:inline-block;
+    box-shadow: 4mm 4mm 4mm grey;
+}
+#mostrating1 {
+
+    margin-left: 15%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    display:inline-block;
+
+}
+#mostrating2 {
+    margin-left: 15%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    display:inline-block;
+
+}
+#mostratings {
+
+
+}
+
+
+.flex-container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns:1fr 20% 20% 20% 20% 1fr;
+    grid-template-rows: 150px 150px 150px 150px 150px;
+
+    column-gap: 14px;
+    row-gap: 15px;
+
+}
+
+.filter {
+    grid-column-start: 2;
+    grid-column-end: 6;
+    justify-self: stretch;
+    align-self: stretch;
+}
+
+.map {
+
+    grid-column: 2 / 6;
+    justify-self: stretch;
+    align-self: stretch;
+}
+
+.chart1 {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    justify-self: stretch;
+    align-self: stretch;
+}
+
+.chart2 {
+    grid-column-start: 4;
+    grid-column-end: 6;
+    justify-self: stretch;
+    align-self: stretch;
+}
+
+.chart3 {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    justify-self: stretch;
+    align-self: stretch;
+
+}
+
+.chart4 {
+    grid-column-start: 4;
+    grid-column-end: 6;
+    justify-self: stretch;
+    align-self: stretch;
+}
+
 #map {
 
-    padding-top: 50px;
+
     height: 450px;
     width: 1500px;
     box-shadow: 20px 20px 20px grey;
@@ -15,14 +180,22 @@
 }
 
 
-
 #filter {
 
     height: 500px;
     width: 1500px;
     background-color: powderblue;
     font-size: 14px;
-    border:2px solid gray;
+    border: 2px solid gray;
+
+
+}
+
+#barChart10 {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    margin-bottom: 5%;
 
 
 }
@@ -62,23 +235,26 @@
     border-bottom: 3px solid blue;
 }
 
-#Formular , #signin {
+#Formular, #signin {
     padding-left: 200px;
     padding-right: 200px;
     padding-bottom: 200px;
     padding-top: 50px;
-    background-color: rgba(3, 93, 147, 0.07) ;
+    background-color: rgba(3, 93, 147, 0.07);
 
 }
+
 body {
     background-color: rgba(3, 93, 147, 0.07);
 
 }
+
 .ref {
     background-color: rgba(3, 93, 147, 0.07);
     position: -ms-device-fixed;
 
 }
+
 .speech {
     display: flex;
     justify-content: space-between;
@@ -88,7 +264,8 @@ body {
 
 .headline {
 
-    color: black;}
+    color: black;
+}
 
 #carouselExampleDark {
     position: sticky;
@@ -98,7 +275,7 @@ body {
 
 
 #container {
-    width:  100vw;
+    width: 100vw;
     height: 100vh;
 
     display: grid;
@@ -111,12 +288,11 @@ body {
     box-sizing: border-box;
 
 }
+
 #container {
     padding: 10px;
     border: 1px solid black;
 }
-
-
 
 
 .choose {
@@ -131,26 +307,24 @@ body {
     grid-column-start: 2;
     grid-column-end: 4;
 }
-.map {
-    grid-column-start: 1;
-    grid-column-end: 2;
 
-}
+
 .chart {
     grid-column-start: 2;
     grid-column-end: 4;
 }
+
 #selection {
     padding-top: 30px;
     padding-right: 200px;
     font-size: 10px;
 
 }
+
 #table {
-   font-size: 12px;
+    font-size: 12px;
 
 }
-
 
 
 /*
@@ -319,6 +493,7 @@ input[type=submit] {
     height: 60px;
     justify-content: space-between;
 }
+
 select {
     width: 120px;
 }
