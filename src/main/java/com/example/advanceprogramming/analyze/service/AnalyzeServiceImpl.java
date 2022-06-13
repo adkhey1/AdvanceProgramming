@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -28,7 +27,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private BusinessRepository businessRepo;
 
     @Autowired
-    private SentimentsRepository sentimentRepo;
+    private avgScoreRepository avgScoreRepo;
 
     @Autowired
     private FranchiseRepository franchiseRepository;
@@ -71,7 +70,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             dto.setCategories(input.getCategories());
             dto.setAttributes(input.getAttributes());
             dto.setIs_open(input.getIs_open());
-            dto.setStars(input.getStars());
+            //dto.setStars(input.getStars());
             dto.setReview_count(input.getReview_count());
             dto.setCountCategorie(input2);
         }
@@ -174,7 +173,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     public List<BusinessDTO> getMarkerFromFilter(FilterDTO input) {
         String category = input.getCategory();
         String attribute = input.getAttribute();
-        if (category.startsWith(" ")){
+        if (category.startsWith(" ")) {
             category = category.substring(1);
         }
         category = "%" + category + "%";
@@ -241,77 +240,22 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO, String bID) {
-        double spring = 0.0;
-        double summer = 0.0;
-        double fall = 0.0;
-        double winter = 0.0;
 
-        /*log.debug(">>>> In Service query started!");
-        //List<Review> allReviews = reviewsRepo.selectReviewsWithBusinessId(bID);
-        log.debug(">>>> In Service query finished");
+        AvgScore average = avgScoreRepo.selectById(bID);
 
-        for (Review r : allReviews) {
-            switch (r.getDate().getMonthValue()) {
-                case 1, 2, 3:
-                    counterSpring++;
-                    spring += r.getStars();
-                    break;
-                case 4, 5, 6:
-                    counterSummer++;
-                    summer += r.getStars();
-                    break;
-                case 7, 8, 9:
-                    counterFall++;
-                    fall += r.getStars();
-                    break;
-                case 10, 11, 12:
-                    counterWinter++;
-                    winter += r.getStars();
-                    break;
-                default:
-                    System.out.println("Error im switch-case");
-            }
-        }
-
-        spring = spring / counterSpring;
-        summer = summer / counterSummer;
-        fall = fall / counterFall;
-        winter = winter / counterWinter;
-
-        if (Double.isNaN(spring)) {
-            spring = 0;
-        }
-        if (Double.isNaN(summer)) {
-            summer = 0;
-        }
-        if (Double.isNaN(fall)) {
-            fall = 0;
-        }
-        if (Double.isNaN(winter)) {
-            winter = 0;
-        }
-
-
-        inputDTO.setSpring(spring);
-        inputDTO.setSummer(summer);
-        inputDTO.setFall(fall);
-        inputDTO.setWinter(winter);
-*/
-
-
-        inputDTO.setSpring(0.0);
-        inputDTO.setSummer(0.0);
-        inputDTO.setFall(0.0);
-        inputDTO.setWinter(0.0);
+        inputDTO.setSpring(average.getSpringReviews());
+        inputDTO.setSummer(average.getSummerReviews());
+        inputDTO.setFall(average.getFallReviews());
+        inputDTO.setWinter(average.getWinterReviews());
+        inputDTO.setSentSpring(average.getSentSpring());
+        inputDTO.setSentSummer(average.getSentSummer());
+        inputDTO.setSentFall(average.getSentfall());
+        inputDTO.setSentWinter(average.getSentWinter());
 
         return inputDTO;
     }
 
-    public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise,
-                                                        List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult2> storesInCity,
-                                                        List<FranchiseAnalyzeResult2> worstCity, List<FranchiseAnalyzeResult2> countWorstReview,
-                                                        List<FranchiseAnalyzeResult2> bestCity, List<FranchiseAnalyzeResult2> countBestReview,
-                                                        List<FranchiseAnalyzeResult2> countCategories) {
+    public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise, List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult2> storesInCity, List<FranchiseAnalyzeResult2> worstCity, List<FranchiseAnalyzeResult2> countWorstReview, List<FranchiseAnalyzeResult2> bestCity, List<FranchiseAnalyzeResult2> countBestReview, List<FranchiseAnalyzeResult2> countCategories) {
         FranchiseAnalyzeDTO dto = new FranchiseAnalyzeDTO();
 
         if (franchise != null) {
@@ -351,11 +295,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         List<FranchiseAnalyzeResult2> storesInCity = new ArrayList<>(10);
 
-        for(int i = 0; i<= countFranchise.size() -1 ; i++){
+        for (int i = 0; i <= countFranchise.size() - 1; i++) {
 
             String input = countFranchise.get(i).getName1();
-
-
 
             List<Franchise> all = franchiseRepository.selectFirst10(input);
             Set<String> allCategories = new HashSet<>();
@@ -404,9 +346,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             };
 
             countCategorie.add(categorie);
-
-
-
             FranchiseAnalyzeResult2 test = new FranchiseAnalyzeResult2() {
                 @Override
                 public String getFranchise1() {
@@ -439,7 +378,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
             countBestReviews.add(test2);
             bestCity.add(test);
-
 
 
             FranchiseAnalyzeResult2 test3 = new FranchiseAnalyzeResult2() {
@@ -490,8 +428,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             storesInCity.add(test5);
         }
 
-        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage,
-                storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, countCategorie);
+        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage, storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, countCategorie);
 
 
         return output;
@@ -524,349 +461,37 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return outputList;
     }
 
-    public void sentimentToCSV() {
-        //List<Sentiments> inputList = sentimentRepo.findAll();
+    @Override
+    public CorrelationAnalysisDTO calcCorrelation(String attibute) {
+        //TODO Werte berechnen und in DB überführen ?
+        int n, attributeCount;
+        double avgAttributeCount = 0.0, avgScore = 0.0, varCount = 0.0, varScore = 0.0;
+        Business temp;
+        String[] splittedAttributes;
 
-        List<tempModel> resultsList = new ArrayList<>();
-        tempModel vergleich;
-        String line;
-        String[] splitted;
-        double stars, sent;
+        ArrayList<Business> allBusinesses = businessRepo.selectAll();
+
+        n = allBusinesses.size();
+
+        for(int i = 0; i < allBusinesses.size(); i++){
+            avgAttributeCount = 0;
+
+            temp = allBusinesses.get(i);
+            avgScore += temp.getStars();
+            splittedAttributes = temp.getAttributes().split("");
+
+            //TODO 'splitAttributesToCSV' Algorithmus kopieren oder aus 'Attributes' Table ziehen (content_is_table=false, content=True/False)
+            //TODO ausnahme für wifi = free ??
+
+        }
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE") + "\\Downloads\\sentimentTableNew.csv"));
+            String headline = "title,corr,";
 
-            int monat, index;
-            int counter = 0;
-            line = reader.readLine();
-
-            while ((line = reader.readLine()) != null) {
-                counter++;
-
-                splitted = line.split(",");
-                stars = Double.parseDouble(splitted[5]);
-                sent = Double.parseDouble(splitted[6]);
-                vergleich = new tempModel(splitted[3]);
-
-                //monat = splitted[7];
-
-
-                if (!resultsList.contains(vergleich)) {
-                    resultsList.add(vergleich);
-                }
-                index = resultsList.indexOf(vergleich);
-
-                //resultsList.get(index).addScore(monat, stars, sent);
-                System.out.println("Durchlauf mit review-id: " + splitted[1]);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Fehler ist aufgetreten");
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            System.out.println("Fehler ist aufgetreten");
-            throw new RuntimeException(e);
+        }catch (Exception e){
+            System.out.println("Ein Fehler ist aufgetreten");
         }
 
-        File outputCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\reducedReviews.csv");
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputCSV));
-
-            writer.write("business_id,countSpring,countSummer,countFall,countWinter,revSpring,revSummer,revFall,revWinter,sentSpring,sentSummer,sentFall,sentWinter");
-            writer.newLine();
-            for (tempModel t : resultsList) {
-                writer.write(t.getBID() + ",");
-                writer.write(t.getSpringCounter() + ",");
-                writer.write(t.getSummerCounter() + ",");
-                writer.write(t.getFallCounter() + ",");
-                writer.write(t.getWinterCounter() + ",");
-                writer.write(t.getRevSpring() + ",");
-                writer.write(t.getRevSummer() + ",");
-                writer.write(t.getRevFall() + ",");
-                writer.write(t.getRevWinter() + ",");
-                writer.write(t.getSentSpring() + ",");
-                writer.write(t.getSentSummer() + ",");
-                writer.write(t.getSentFall() + ",");
-                writer.write(t.getSentWinter() + ",");
-
-                writer.newLine();
-            }
-            writer.close();
-        } catch (Exception e) {
-            System.out.println("Fehler aufgetreten");
-        }
-
-
-    }
-
-    public void splitReviewsToCSV() {
-
-        File reviewsCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Reviews.csv");
-
-        JsonFactory factory = new JsonFactory();
-        factory.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
-        ObjectMapper objectMapper = new ObjectMapper(factory);
-        ReviewMapping tempReview;
-
-        String replaceLineBreaks;
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(System.getenv("USERPROFILE") + "\\Downloads\\yelp_dataset\\yelp_academic_dataset_review.json"));
-            String line;
-            BufferedWriter writer = new BufferedWriter(new FileWriter(reviewsCSV));
-
-            writer.write("review_id,user_id,business_id,stars,useful,funny,cool,date");
-            writer.newLine();
-
-            while ((line = reader.readLine()) != null) {
-                tempReview = objectMapper.readValue(line, ReviewMapping.class);
-
-                /*replaceLineBreaks = tempReview.getText();
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\n", "");
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n", "");
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\r","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\r\r","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\r\n","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll("\n\r","");
-                replaceLineBreaks = replaceLineBreaks.replaceAll(",", "+");
-                replaceLineBreaks = replaceLineBreaks.replaceAll(";","+");
-*/
-                writer.write(tempReview.getReview_id() + ",");
-                writer.write(tempReview.getUser_id() + ",");
-                writer.write(tempReview.getBusiness_id() + ",");
-                writer.write(tempReview.getStars() + ",");
-                writer.write(tempReview.getUseful() + ",");
-                writer.write(tempReview.getFunny() + ",");
-                writer.write(tempReview.getCool() + ",");
-                //writer.write(replaceLineBreaks + ",");
-                writer.write(tempReview.getDate());
-                writer.newLine();
-
-            }
-            writer.close();
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-
-    public void splitCategoriesToCSV(List<Business> input) {
-
-        File categoriesCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Categories.csv");
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(categoriesCSV));
-            writer.write("business_id,category");
-            writer.newLine();
-
-            String line, categories;
-            String[] splitted;
-            for (Business b : input) {
-                categories = b.getCategories().replaceAll("§", ",");
-                splitted = categories.split(",");
-
-                for (String s : splitted) {
-                    line = b.getBusiness_id() + "," + s;
-                    writer.write(line);
-                    writer.newLine();
-                }
-            }
-            writer.close();
-            System.out.println("CSV erstellt");
-        } catch (IOException e) {
-            System.out.println("Ein Fehler ist aufgetreten" + e);
-        }
-    }
-
-    public void splitBusinessToCSV() {
-        String userpath = System.getenv("USERPROFILE");
-
-        File businessCSV = new File(userpath + "\\Downloads\\" + "Business.csv");
-        BufferedWriter writer;
-
-        JsonFactory factory = new JsonFactory();
-        factory.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
-        ObjectMapper objectMapper = new ObjectMapper(factory);
-        BusinessMapping mapping;
-
-        String line;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(userpath + "\\Downloads\\yelp_dataset\\yelp_academic_dataset_business.json"));
-
-            writer = new BufferedWriter(new FileWriter(businessCSV));
-            writer.write("business_id,name,address,city,state,postal_code,latitude,longitude,stars,review_count,is_open,attributes,categories,hours,");
-            writer.newLine();
-
-            String attributes;
-            String hours;
-            String categories;
-            String name;
-            String address, city, state;
-            while ((line = reader.readLine()) != null) {
-                mapping = objectMapper.readValue(line, BusinessMapping.class);
-
-                writer.write(mapping.getBusiness_id() + ",");
-                name = mapping.getName().replaceAll(",", "");
-                writer.write(name + ",");
-                address = mapping.getAddress().replaceAll(",", "");
-                writer.write(address + ",");
-                city = mapping.getCity().replaceAll(",", "");
-                writer.write(city + ",");
-                state = mapping.getState().replaceAll(",", "");
-                writer.write(state + ",");
-                writer.write(mapping.getPostal_code() + ",");
-                writer.write(mapping.getLatitude() + ",");
-                writer.write(mapping.getLongitude() + ",");
-                writer.write(mapping.getStars() + ",");
-                writer.write(mapping.getReview_count() + ",");
-                writer.write(mapping.getIs_open() + ",");
-                if (mapping.getAttributes() != null) {
-                    attributes = mapping.getAttributes().toString().replaceAll(",", "§");
-                } else {
-                    attributes = "nan";
-                }
-                writer.write(attributes + ",");
-                if (mapping.getCategories() != null) {
-                    categories = mapping.getCategories().replaceAll(",", "§");
-                } else {
-                    categories = "nan";
-                }
-                writer.write(categories + ",");
-                if (mapping.getHours() != null) {
-                    hours = mapping.getHours().toString().replaceAll(",", "§");
-                } else {
-                    hours = "nan";
-                }
-                writer.write(hours + ",");
-                writer.newLine();
-
-            }
-            writer.close();
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File nicht gefunden + \n " + e);
-        } catch (IOException e) {
-            System.out.println("Ein Fehler ist aufgetreten +\n" + e);
-        }
-    }
-
-   /* public void addIntIdBusiness(){
-        List<Business> list = businessRepo.selectAll();
-
-        BusinessNew temp;
-
-        int counter = 0;
-
-        for (Business b : list){
-            counter++;
-            temp = new BusinessNew();
-
-            temp.setBusiness_id(b.getBusiness_id());
-            temp.setName(b.getName());
-            temp.setAddress(b.getAddress());
-            temp.setCity(b.getCity());
-            temp.setState(b.getState());
-            temp.setPostal_code(b.getPostal_code());
-            temp.setLatitude(b.getLatitude());
-            temp.setLongitude(b.getLongitude());
-            temp.setStars(b.getStars());
-            temp.setReview_count(b.getReview_count());
-            temp.setIs_open(b.getIs_open());
-            temp.setAttributes(b.getAttributes());
-            temp.setCategories(b.getCategories());
-            temp.setHours(b.getHours());
-
-            businessNewRepo.save(temp);
-
-            System.out.println("Business Nr. " + counter + "erstellt!");
-        }
-
-        /*File newBusinessCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "NewBusiness.csv");
-        BufferedWriter writer;
-
-        String oldId, name, address, city, state, postal_code, latitude, longitude, attributes, categories, hours;
-        double stars;
-        int review_count, is_open, bId;
-        bId = 0;
-        try {
-            writer = new BufferedWriter(new FileWriter(newBusinessCSV));
-            writer.write("business_id,bId,name,address,city,state,postal_code,latitude,longitude,stars,review_count,is_open,attributes,categories,hours,");
-            writer.newLine();
-            String content;
-            for (Business b : list){
-                bId++;
-
-                writer.write(b.getBusiness_id() + ";");
-                writer.write(bId + ";");
-                writer.write(b.getName() + ";");
-                writer.write(b.getAddress() + ";");
-                writer.write(b.getCity() + ";");
-                writer.write(b.getState() + ";");
-                writer.write(b.getPostal_code() + ";");
-                writer.write(b.getState() + ";");
-                writer.write(b.getPostal_code() + ";");
-                writer.write(b.getLatitude() + ";");
-                writer.write(b.getLongitude() + ";");
-                writer.write(b.getStars() + ";");
-                writer.write(b.getReview_count() + ";");
-                writer.write(b.getIs_open() + ";");
-                writer.write(b.getAttributes() + ";");
-                writer.write(b.getCategories() + ";");
-                writer.write(b.getHours() + ";");
-
-                writer.newLine();
-            }
-
-        } catch (Exception e){
-            System.out.println("Some ERROR happend mate!");
-        }
-*/
-
-    public void splitAttributesToCSV(List<Business> input) {
-        //if (attributes.length() > 2) {//Attribute sind vorhanden
-        File attributesCSV = new File(System.getenv("USERPROFILE") + "\\Downloads\\" + "Attributes.csv");
-        BufferedWriter writer;
-
-        JsonFactory factory = new JsonFactory();
-        factory.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
-        ObjectMapper objectMapper = new ObjectMapper(factory);
-        Map<String, Object> jsonMap;
-
-        String bId, attributes;
-        String attributeLine;
-        try {
-            writer = new BufferedWriter(new FileWriter(attributesCSV));
-            writer.write("bId,aName,content,content_is_table");
-            writer.newLine();
-            String content;
-            for (Business b : input) {
-                if (b.getAttributes().length() > 2) {
-                    bId = b.getBusiness_id();
-
-                    attributes = b.getAttributes().replaceAll("§", ",");
-                    jsonMap = objectMapper.readValue(b.getAttributes(), new TypeReference<Map<String, Object>>() {
-                    });
-                    //Todo über alle Keys iterieren, pro key eine Zeile in der CSV schreiben
-                    for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
-                        content = entry.getValue().toString().replace(",", "+");
-
-                        if (entry.getValue().toString().contains(":")) {
-                            writer.write(bId + "," + entry.getKey() + "," + content + ",true");
-                        } else {
-                            writer.write(bId + "," + entry.getKey() + "," + content + ",false");
-                        }
-                        writer.newLine();
-                    }
-                    System.out.println("id-" + bId + " | attributes-> \n \t" + jsonMap.toString());
-                }
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Ein Fehler ist aufgetreten und wurde gecatcht!" + e);
-        }
+        return null;
     }
 }

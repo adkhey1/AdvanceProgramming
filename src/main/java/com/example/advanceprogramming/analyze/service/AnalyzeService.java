@@ -16,8 +16,6 @@ public interface AnalyzeService {
 
     List<BusinessDTO> getMarkerFromFilter(FilterDTO input);
 
-    void sentimentToCSV();
-
     HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/);
 
     BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2);
@@ -27,4 +25,6 @@ public interface AnalyzeService {
     ResponseEntity<?> addBusinessToList(String bId, long userId, int change);
 
     List<String> getPopularCategories();
+
+    CorrelationAnalysisDTO calcCorrelation(String attibute);
 }

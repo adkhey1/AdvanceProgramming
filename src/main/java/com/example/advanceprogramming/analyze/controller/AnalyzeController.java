@@ -225,6 +225,11 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
 
+    /**
+     * Deprecated Stuff to get csv etc.
+     * @return
+     */
+    /*
     @RequestMapping("/split/attributes")
     public String splitAttributesToDB() {
         ArrayList<Business> listRaw = businessRepository.selectAll();
@@ -265,7 +270,7 @@ public class AnalyzeController {
         analyzeService.sentimentToCSV();
 
         return "Andistests";
-    }
+    }*/
 
     @RequestMapping("/franchise")
     private String getMap() {
