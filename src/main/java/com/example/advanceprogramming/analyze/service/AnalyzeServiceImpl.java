@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -27,6 +28,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private BusinessRepository businessRepo;
 
     @Autowired
+    private StateAnalyzeRepository stateAnalyzeRepository;
+
+    @Autowired
+    private CityAnalyzeRepository cityAnalyzeRepository;
+
+    @Autowired
     private avgScoreRepository avgScoreRepo;
 
     @Autowired
@@ -36,7 +43,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private UserBusinessRelationRepository userBizRepo;
 
     @Autowired
-    private PostalCodeViewRepository postalCodeViewRepository;
+    private PostalCodeAnalyzeRepository postalCodeAnalyzeRepository;
 
     @Autowired
     private ReviewsRepository reviewsRepo;
@@ -56,7 +63,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2) {
+    public BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> countPostalcode,
+                                                    HashMap<String, Integer> countState,  HashMap<String, Integer> countCity) {
         BasicAnalysisDTO dto = new BasicAnalysisDTO();
 
         if (input != null) {
@@ -70,9 +78,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             dto.setCategories(input.getCategories());
             dto.setAttributes(input.getAttributes());
             dto.setIs_open(input.getIs_open());
-            //dto.setStars(input.getStars());
+            dto.setStars(input.getStars());
             dto.setReview_count(input.getReview_count());
-            dto.setCountCategorie(input2);
+            dto.setCountPostalcode(countPostalcode);
+            dto.setCountState(countState);
+            dto.setCountCity(countCity);
         }
 
         return dto;
@@ -213,27 +223,27 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return categories;
     }
 
-    public HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/) {
+    public List<HashMap<String, Integer>> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/) {
 
         //Testing categorie by PostCode
         String[] categories = splitCategorie(business);
-        String[] attributes = {"'GoodForKids': 'True'", "'BusinessAcceptsCreditCards': 'True'", "'RestaurantsDelivery': 'True'"};
-        HashMap<String, Integer> countCategorie = new HashMap<>();
-        int counter = 0;
-
+        List<HashMap<String, Integer>> countCategorie = new ArrayList<>();
+        HashMap<String, Integer> eachPostal = new HashMap<>();
+        HashMap<String, Integer> eachState = new HashMap<>();
+        HashMap<String, Integer> eachCity = new HashMap<>();
 
         for (String x : categories) {
-            int i = postalCodeViewRepository.selectAllCategories(x, business.getPostal_code());
-            countCategorie.put(x, i);
-
-            /*
-            for (String z : attributes){
-                int anzahl = postalCodeViewRepository.selectAllAttributes(z, business.getPostal_code(), x);
-                countCategorie.put(z + Integer.toString(counter), anzahl);
-            }
-             */
-            counter++;
+            int i = postalCodeAnalyzeRepository.selectAllCategories(x, business.getPostal_code());
+            int z = stateAnalyzeRepository.selectAllState(x, business.getState());
+            int y = cityAnalyzeRepository.selectAllCity(x, business.getCity());
+            eachPostal.put(x, i);
+            eachState.put(x, z);
+            eachCity.put(x, y);
         }
+
+        countCategorie.add(eachPostal);
+        countCategorie.add(eachState);
+        countCategorie.add(eachCity);
 
         return countCategorie;
     }
@@ -255,7 +265,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return inputDTO;
     }
 
-    public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise, List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult2> storesInCity, List<FranchiseAnalyzeResult2> worstCity, List<FranchiseAnalyzeResult2> countWorstReview, List<FranchiseAnalyzeResult2> bestCity, List<FranchiseAnalyzeResult2> countBestReview, List<FranchiseAnalyzeResult2> countCategories) {
+    public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise,
+                                                        List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult2> storesInCity,
+                                                        List<FranchiseAnalyzeResult2> worstCity, List<FranchiseAnalyzeResult2> countWorstReview,
+                                                        List<FranchiseAnalyzeResult2> bestCity, List<FranchiseAnalyzeResult2> countBestReview,
+                                                        List<FranchiseAnalyzeResult2> countCategories) {
         FranchiseAnalyzeDTO dto = new FranchiseAnalyzeDTO();
 
         if (franchise != null) {
@@ -295,9 +309,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         List<FranchiseAnalyzeResult2> storesInCity = new ArrayList<>(10);
 
-        for (int i = 0; i <= countFranchise.size() - 1; i++) {
+        for(int i = 0; i<= countFranchise.size() -1 ; i++){
 
             String input = countFranchise.get(i).getName1();
+
 
             List<Franchise> all = franchiseRepository.selectFirst10(input);
             Set<String> allCategories = new HashSet<>();
@@ -346,6 +361,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             };
 
             countCategorie.add(categorie);
+
+
+
             FranchiseAnalyzeResult2 test = new FranchiseAnalyzeResult2() {
                 @Override
                 public String getFranchise1() {
@@ -380,6 +398,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             bestCity.add(test);
 
 
+
             FranchiseAnalyzeResult2 test3 = new FranchiseAnalyzeResult2() {
                 @Override
                 public String getFranchise1() {
@@ -392,11 +411,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 }
             };
 
-            String worst1 = test.getListe().get(0).getName1();
-            String worst2 = test.getListe().get(1).getName1();
-            String worst3 = test.getListe().get(2).getName1();
-            String worst4 = test.getListe().get(3).getName1();
-            String worst5 = test.getListe().get(4).getName1();
+            String worst1 = test3.getListe().get(0).getName1();
+            String worst2 = test3.getListe().get(1).getName1();
+            String worst3 = test3.getListe().get(2).getName1();
+            String worst4 = test3.getListe().get(3).getName1();
+            String worst5 = test3.getListe().get(4).getName1();
 
             FranchiseAnalyzeResult2 test4 = new FranchiseAnalyzeResult2() {
                 @Override
@@ -428,7 +447,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             storesInCity.add(test5);
         }
 
-        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage, storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, countCategorie);
+        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage,
+                storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, countCategorie);
 
 
         return output;

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashMap;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -20,7 +21,7 @@ public class BasicAnalysisDTO {
 
     //analysis
 
-    private HashMap<String, Integer> countCategorie;
+    private HashMap<String, Integer> countPostalcode, countState, countCity;
     //categorie und wie gut es in dieser ist (mit sternen schauen)
 
 

@@ -70,11 +70,15 @@ public class AnalyzeController {
 
 
         log.debug(">>>> Service 'Categories in Postcode started");
-        HashMap<String, Integer> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
+        List<HashMap<String, Integer>> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
         log.debug(">>>> Service 'Categories in Postcode finished");
 
+        HashMap<String, Integer> postalcode = countCategorie.get(0);
+        HashMap<String, Integer> state = countCategorie.get(1);
+        HashMap<String, Integer> city = countCategorie.get(2);
 
-        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
+
+        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, postalcode, state, city);
 
         log.debug(">>>> Service 'Average Reviews started");
         output = analyzeService.getAverageScorePerSeason(output, input.getBusiness_id());
@@ -267,7 +271,7 @@ public class AnalyzeController {
 
     @RequestMapping(value = "/test/andi/")
     public String testingstuff() {
-        analyzeService.sentimentToCSV();
+        //analyzeService.sentimentToCSV();
 
         return "Andistests";
     }*/
@@ -276,5 +280,17 @@ public class AnalyzeController {
     private String getMap() {
         return "franchise";
     }
+
+    /*@GetMapping("/test/simon")
+    private void testSimon(){
+
+        Business business = businessRepository.findByBusiness_id("__CYdei4W4pVb4SThJ-HYg");
+        List<HashMap<String, Integer>> categorie = analyzeServiceImpl.getCategorieInPostCode(business);
+
+        int test = 23;
+
+    }
+
+     */
 
 }

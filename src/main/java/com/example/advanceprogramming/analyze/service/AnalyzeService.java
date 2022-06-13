@@ -18,7 +18,8 @@ public interface AnalyzeService {
 
     HashMap<String, Integer> getCategorieInPostCode(Business business/* @RequestBody FilterDTO filterInput*/);
 
-    BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> input2);
+    BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> countPostalcode,
+                                             HashMap<String, Integer> countState,  HashMap<String, Integer> countCity);
 
     BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO,String bID);
 

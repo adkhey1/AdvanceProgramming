@@ -131,7 +131,7 @@ function initMap() {
 
                 sideView();
 
-            }, 25000);
+            }, 15000);
 
 
         })
@@ -253,6 +253,7 @@ function sideView() {
     //console.log(chart);
 
     exampleChart1('chartWindow1', values, keys);
+    show1()
 
     //Window2
     if (json_return_markerArrTemp[1] != null) {
@@ -262,6 +263,7 @@ function sideView() {
         keys = Array.from(hsMap.keys());
 
         exampleChart2('chartWindow2', values, keys);
+        show2()
     }
 
     //window3
@@ -272,6 +274,7 @@ function sideView() {
         keys = Array.from(hsMap.keys());
 
         exampleChart3('chartWindow3', values, keys);
+        show3()
     }
     console.log(json_return_markerArrTemp)
 
@@ -281,6 +284,76 @@ let myChart1 = null;
 let myChart2 = null;
 let myChart3 = null;
 
+document.getElementById('dropMenu1').style.display = 'none';
+document.getElementById('dropMenu2').style.display = 'none';
+document.getElementById('dropMenu3').style.display = 'none';
+
+function show1() {
+    document.getElementById('dropMenu1').style.display = 'inline';
+}
+function show2() {
+    document.getElementById('dropMenu2').style.display = 'inline';
+}
+function show3() {
+    document.getElementById('dropMenu3').style.display = 'inline';
+}
+
+//TODO Chart für jeden case, vom Value rausfinden welches Chart// Values aus der Hashmap Rausfiltern
+function updateChartbyDropdown1(){
+
+    var valueDropdown = document.getElementById('AreaDropDown1')
+    console.log(valueDropdown.value)
+
+    //document.getElementById('dropMenu1').style.display = 'none'; //TODO Dropdown Menu Hidden Standartmäßig außer es wird auf einen marker gedrückt
+
+
+
+    //TODO: Values an die Methode Übergeben
+    if(valueDropdown.value==1.1){
+        exampleChart1('chartWindow1',[20,30,40],[10,20,0])
+    }
+    if(valueDropdown.value==1.2){
+        exampleChart1('chartWindow1',[0,0,0],[10,20,0])
+    }
+    if(valueDropdown.value==1.3){
+        exampleChart1('chartWindow1',[10,10,10],[10,20,0])
+    }
+
+}
+
+function updateChartbyDropdown2(){
+
+    var valueDropdown = document.getElementById('AreaDropDown2')
+    console.log(valueDropdown.value)
+
+    if(valueDropdown.value==2.1){
+        exampleChart2('chartWindow2',[20,30,40],[10,20,0])
+    }
+    if(valueDropdown.value==2.2){
+        exampleChart2('chartWindow2',[0,0,0],[10,20,0])
+    }
+    if(valueDropdown.value==2.3){
+        exampleChart2('chartWindow2',[10,10,10],[10,20,0])
+    }
+
+}
+
+function updateChartbyDropdown3(){
+
+    var valueDropdown = document.getElementById('AreaDropDown3')
+    console.log(valueDropdown.value)
+
+    if(valueDropdown.value==3.1){
+        exampleChart3('chartWindow3',[20,30,40],[10,20,0])
+    }
+    if(valueDropdown.value==3.2){
+        exampleChart3('chartWindow3',[0,0,0],[10,20,0])
+    }
+    if(valueDropdown.value==3.3){
+        exampleChart3('chartWindow3',[10,10,10],[10,20,0])
+    }
+
+}
 
 function exampleChart1(div, values, keys) {
 
@@ -397,6 +470,8 @@ function exampleChart3(div, values, keys) {
     );
 
 }
+
+
 
 
 

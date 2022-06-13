@@ -5,22 +5,20 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@Table(name = "postalcodeanalyze")
-@IdClass(PostalCodeAnalyzeID.class)
-public class PostalCodeAnalyze implements Serializable {
+@Table(name = "stateanalyze")
+public class StateAnalyze{
 
     @Id
     @Column(name = "business_id")
     private String business_id;
 
-    @Column(name = "postal_code")
-    private String postal_code;
+    @Column(name = "state")
+    private String state;
 
     @Column(name = "categories")
     private String categories;

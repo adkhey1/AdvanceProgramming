@@ -27,7 +27,7 @@
 </head>
 <body>
 
-<button type="button" onclick="deleteMarkers()">test</button>
+
 <div id="map"></div>
 <div id="test"></div>
 <div id="filter">
@@ -100,6 +100,15 @@
 
 
 <div id="sideWindow1">
+    <div id="dropMenu1" >
+        <label for="AreaDropDown1"></label>
+        <select id="AreaDropDown1" onchange="updateChartbyDropdown1()">
+            <option value="1.1">Postal Code</option>
+            <option value="1.2">City</option>
+            <option value="1.3">State</option>
+
+        </select>
+    </div>
     <div id="sideWindow1inner"></div>
     <canvas id="chartWindow1"></canvas>
     <canvas id="lineComp1"></canvas>
@@ -108,12 +117,32 @@
 </div>
 
 <div id="sideWindow2">
+    <div id="dropMenu2" >
+        <label for="AreaDropDown2"></label>
+        <select id="AreaDropDown2" onchange="updateChartbyDropdown2()">
+            <option value="2.1">Postal Code</option>
+            <option value="2.2">City</option>
+            <option value="2.3">State</option>
+
+        </select>
+    </div>
     <div id="sideWindow2inner"></div>
     <canvas id="chartWindow2"></canvas>
     <canvas id="lineComp2"></canvas>
 </div>
 
 <div id="sideWindow3">
+
+    <div id="dropMenu3" >
+        <label for="AreaDropDown3"></label>
+        <select id="AreaDropDown3" onchange="updateChartbyDropdown3()">
+            <option value="3.1">Postal Code</option>
+            <option value="3.2">City</option>
+            <option value="3.3">State</option>
+
+        </select>
+    </div>
+
     <div id="sideWindow3inner"></div>
     <canvas id="chartWindow3"></canvas>
     <canvas id="lineComp3"></canvas>
