@@ -20,7 +20,7 @@ public class BasicAnalysisDTO {
 
     //analysis
 
-    private List<HashMap<String, Integer>> countCategorie;
+    private HashMap<String, Integer> countPostalcode, countState, countCity;
     //categorie und wie gut es in dieser ist (mit sternen schauen)
 
 

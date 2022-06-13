@@ -30,6 +30,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private StateAnalyzeRepository stateAnalyzeRepository;
 
     @Autowired
+    private CityAnalyzeRepository cityAnalyzeRepository;
+
+    @Autowired
     private SentimentsRepository sentimentRepo;
 
     @Autowired
@@ -59,7 +62,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, List<HashMap<String, Integer>> input2) {
+    public BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> countPostalcode,
+                                                    HashMap<String, Integer> countState,  HashMap<String, Integer> countCity) {
         BasicAnalysisDTO dto = new BasicAnalysisDTO();
 
         if (input != null) {
@@ -75,7 +79,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             dto.setIs_open(input.getIs_open());
             dto.setStars(input.getStars());
             dto.setReview_count(input.getReview_count());
-            dto.setCountCategorie(input2);
+            dto.setCountPostalcode(countPostalcode);
+            dto.setCountState(countState);
+            dto.setCountCity(countCity);
         }
 
         return dto;
@@ -223,17 +229,20 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         List<HashMap<String, Integer>> countCategorie = new ArrayList<>();
         HashMap<String, Integer> eachPostal = new HashMap<>();
         HashMap<String, Integer> eachState = new HashMap<>();
-
+        HashMap<String, Integer> eachCity = new HashMap<>();
 
         for (String x : categories) {
             int i = postalCodeAnalyzeRepository.selectAllCategories(x, business.getPostal_code());
             int z = stateAnalyzeRepository.selectAllState(x, business.getState());
+            int y = cityAnalyzeRepository.selectAllCity(x, business.getCity());
             eachPostal.put(x, i);
             eachState.put(x, z);
+            eachCity.put(x, y);
         }
 
         countCategorie.add(eachPostal);
         countCategorie.add(eachState);
+        countCategorie.add(eachCity);
 
         return countCategorie;
     }

@@ -73,8 +73,12 @@ public class AnalyzeController {
         List<HashMap<String, Integer>> countCategorie = analyzeService.getCategorieInPostCode(businessByBusinessID);
         log.debug(">>>> Service 'Categories in Postcode finished");
 
+        HashMap<String, Integer> postalcode = countCategorie.get(0);
+        HashMap<String, Integer> state = countCategorie.get(1);
+        HashMap<String, Integer> city = countCategorie.get(2);
 
-        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, countCategorie);
+
+        BasicAnalysisDTO output = analyzeService.parseBasicAnalysisToDTO(businessByBusinessID, postalcode, state, city);
 
         log.debug(">>>> Service 'Average Reviews started");
         output = analyzeService.getAverageScorePerSeason(output, input.getBusiness_id());
