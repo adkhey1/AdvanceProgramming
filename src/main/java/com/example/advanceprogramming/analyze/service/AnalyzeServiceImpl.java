@@ -3,20 +3,12 @@ package com.example.advanceprogramming.analyze.service;
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.*;
 import com.example.advanceprogramming.analyze.repository.*;
-import com.example.advanceprogramming.analyze.temp.BusinessMapping;
-import com.example.advanceprogramming.analyze.temp.ReviewMapping;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -253,14 +245,14 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         AvgScore average = avgScoreRepo.selectById(bID);
 
-        inputDTO.setSpring(average.getSpringReviews());
-        inputDTO.setSummer(average.getSummerReviews());
-        inputDTO.setFall(average.getFallReviews());
-        inputDTO.setWinter(average.getWinterReviews());
-        inputDTO.setSentSpring(average.getSentSpring());
-        inputDTO.setSentSummer(average.getSentSummer());
+        inputDTO.setSpring(average.getRevspring());
+        inputDTO.setSummer(average.getRevsummer());
+        inputDTO.setFall(average.getRevfall());
+        inputDTO.setWinter(average.getRevwinter());
+        inputDTO.setSentSpring(average.getSentspring());
+        inputDTO.setSentSummer(average.getSentsummer());
         inputDTO.setSentFall(average.getSentfall());
-        inputDTO.setSentWinter(average.getSentWinter());
+        inputDTO.setSentWinter(average.getSentwinter());
 
         return inputDTO;
     }

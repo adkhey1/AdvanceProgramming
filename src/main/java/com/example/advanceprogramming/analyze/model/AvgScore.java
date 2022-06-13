@@ -1,47 +1,61 @@
 package com.example.advanceprogramming.analyze.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@Table(name = "avgscores")
 @ToString
 public class AvgScore {
 
     @Id
-    @Column(name = "bID")
+    @Column(name = "business_id")
     private String bId;
 
-    @Column(name = "springRev")
-    private double springReviews;
+    @Column(name = "countspring")
+    private int countspring;
 
-    @Column(name = "summerRev")
-    private double summerReviews;
+    @Column(name = "countsummer")
+    private int countsummer;
 
-    @Column(name = "fallRev")
-    private double fallReviews;
+    @Column(name = "countfall")
+    private int countfall;
 
-    @Column(name = "winterRev")
-    private double winterReviews;
+    @Column(name = "countwinter")
+    private int countwinter;
 
-    @Column(name = "sentSpring")
-    private double sentSpring;
+    @Column(name = "revspring")
+    private double revspring;
 
-    @Column(name = "sentSummer")
-    private double sentSummer;
+    @Column(name = "revsummer")
+    private double revsummer;
 
-    @Column(name = "sentFall")
+    @Column(name = "revfall")
+    private double revfall;
+
+    @Column(name = "revwinter")
+    private double revwinter;
+
+    @Column(name = "sentspring")
+    private double sentspring;
+
+    @Column(name = "sentsummer")
+    private double sentsummer;
+
+    @Column(name = "sentfall")
     private double sentfall;
 
-    @Column(name = "sentWinter")
-    private double sentWinter;
+    @Column(name = "sentwinter")
+    private double sentwinter;
 
 }
