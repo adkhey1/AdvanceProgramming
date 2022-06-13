@@ -32,6 +32,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private FranchiseRepository franchiseRepository;
 
     @Autowired
+    private SentimentFranchiseRepository sentimentFranchiseRepository;
+
+    @Autowired
     private UserBusinessRelationRepository userBizRepo;
 
     @Autowired
@@ -258,7 +261,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     public FranchiseAnalyzeDTO parseFranchiseAnalyzeDTO(String franchise, List<FranchiseAnalyzeResult> countFranchise,
-                                                        List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult2> storesInCity,
+                                                        List<FranchiseAnalyzeResult> eachAverage, List<FranchiseAnalyzeResult> avgSentiment,
+                                                        List<FranchiseAnalyzeResult2> storesInCity,
                                                         List<FranchiseAnalyzeResult2> worstCity, List<FranchiseAnalyzeResult2> countWorstReview,
                                                         List<FranchiseAnalyzeResult2> bestCity, List<FranchiseAnalyzeResult2> countBestReview,
                                                         List<FranchiseAnalyzeResult2> countCategories) {
@@ -268,6 +272,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             dto.setFranchise(franchise);
             dto.setCountFranchise(countFranchise);
             dto.setEachAverage(eachAverage);
+            dto.setAvgSentiment(avgSentiment);
             dto.setStoresInCity(storesInCity);
             dto.setWorstCity(worstCity);
             dto.setCountWorstReview(countWorstReview);
@@ -290,6 +295,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         List<FranchiseAnalyzeResult> countFranchise = franchiseRepository.findBiggestFranchises();
         List<FranchiseAnalyzeResult> eachAverage = franchiseRepository.eachAverage();
 
+        List<FranchiseAnalyzeResult> sentimentScore = new ArrayList<>(10);
+
         List<FranchiseAnalyzeResult2> countCategorie = new ArrayList<>(10);
 
         //name = number of restaurants      counter = number of review
@@ -305,6 +312,21 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
             String input = countFranchise.get(i).getName1();
 
+            double avg = sentimentFranchiseRepository.getAvgSentiment(input);
+
+            FranchiseAnalyzeResult eachSentiment = new FranchiseAnalyzeResult() {
+                @Override
+                public String getName1() {
+                    return input;
+                }
+
+                @Override
+                public double getCounter() {
+                    return avg;
+                }
+            };
+
+            sentimentScore.add(eachSentiment);
 
             List<Franchise> all = franchiseRepository.selectFirst10(input);
             Set<String> allCategories = new HashSet<>();
@@ -439,7 +461,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             storesInCity.add(test5);
         }
 
-        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage,
+        FranchiseAnalyzeDTO output = parseFranchiseAnalyzeDTO(franchise, countFranchise, eachAverage, sentimentScore,
                 storesInCity, worstCity, countWorstReviews, bestCity, countBestReviews, countCategorie);
 
 

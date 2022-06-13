@@ -3,6 +3,7 @@ package com.example.advanceprogramming.analyze.controller;
 
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
+import com.example.advanceprogramming.analyze.model.Franchise;
 import com.example.advanceprogramming.analyze.repository.*;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
 import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
@@ -44,7 +45,7 @@ public class AnalyzeController {
     private UserRepository userRepository;
 
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private SentimentFranchiseRepository sentimentFranchiseRepository;
 
     @Autowired
     private UserBusinessRelationRepository userBizRepo;
@@ -284,6 +285,11 @@ public class AnalyzeController {
     /*@GetMapping("/test/simon")
     private void testSimon(){
 
+
+        double avg = sentimentFranchiseRepository.getAvgSentiment("McDonald's");
+        double avg1 = sentimentFranchiseRepository.getAvgSentiment("Subway");
+        double avg2 = sentimentFranchiseRepository.getAvgSentiment("Starbucks");
+
         Business business = businessRepository.findByBusiness_id("__CYdei4W4pVb4SThJ-HYg");
         List<HashMap<String, Integer>> categorie = analyzeServiceImpl.getCategorieInPostCode(business);
 
@@ -292,5 +298,7 @@ public class AnalyzeController {
     }
 
      */
+
+
 
 }
