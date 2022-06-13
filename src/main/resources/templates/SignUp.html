@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>SignUp</title>
@@ -56,23 +56,24 @@
         </div>
     </div>
 </nav>
-<form class="row g-3 container-fluid" id="Formular">
+
+<form class="row g-3 container-fluid" id="Formular" th:action="@{/registering}" th:object="${user}" method="post">
     <div class="col-md-6">
         <label for="inputFirstname" class="form-label">Firstname</label>
-        <input type="Firstname" class="form-control" id="inputFirstname">
+        <input type="text" class="form-control" id="inputFirstname" th:field="*{firstName}" placeholder="Oliver">
     </div>
     <div class="col-md-6">
-            <label for="inputLastname" class="form-label">Lastname</label>
-            <input type="Name" class="form-control" id="inputLastname">
-        </div>
+        <label for="inputLastname" class="form-label">Lastname</label>
+        <input type="text" class="form-control" id="inputLastname" th:field="*{lastName}" placeholder="Trump">
+    </div>
 
-        <div>
+    <div>
         <label for="inputEmail4" class="form-label">Email</label>
-        <input type="email" class="form-control" id="inputEmail4" placeholder="example@yahoo.com" onkeypress="return rescticteAlphabet(event)">
+        <input type="email" class="form-control" id="inputEmail4" th:field="*{email}" placeholder="example@hotmail.com">
     </div>
     <div class="col-md-6">
         <label for="inputPassword4" class="form-label">Password</label>
-        <input type="password" class="form-control" id="inputPassword4">
+        <input type="password" class="form-control" id="inputPassword4" th:field="*{password}" placeholder="*****">
     </div>
     <div class="col-12">
         <div class="form-check">
@@ -90,18 +91,17 @@
 
 <script>
 
-function rescticteAlphabet(e){
+    function rescticteAlphabet(e) {
 
 
-var x = e.which || e.keycode;
-if((x>=48 && x<=57))
-return true;
-else
-return false;
-}
+        var x = e.which || e.keycode;
+        if ((x >= 48 && x <= 57))
+            return true;
+        else
+            return false;
+    }
 
 </script>
-
 
 
 </body>
