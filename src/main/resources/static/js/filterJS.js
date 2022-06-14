@@ -59,7 +59,7 @@ async function fillDropdown() {
     let fruits = states;
 
     let options = fruits.map(fruit => `<option value=${fruit.toLowerCase()}>${fruit}</option>`).join('\n');
-    document.getElementById("State").innerHTML = options;
+    document.getElementById("state").innerHTML = options;
 }
 
 

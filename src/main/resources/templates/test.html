@@ -26,6 +26,7 @@
     <select id="2"></select>
 
 </div>
+
 <script>
 
     function fillDropdown() {
@@ -40,6 +41,16 @@
 
 
     }
+
+
+    data(SaratogaHouses, package="mosaicData")
+
+    # select numeric variables
+    df <- dplyr::select_if(SaratogaHouses, is.numeric)
+
+    # calulate the correlations
+    r <- cor(df, use="complete.obs")
+    round(r,2)
 </script>
 
 
