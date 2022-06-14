@@ -131,7 +131,7 @@ function initMap() {
 
                 sideView();
 
-            }, 15000);
+            }, 10000);
 
 
         })
@@ -245,7 +245,7 @@ function sideView() {
     document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
 
     //transform to hashmap and get keys and values
-    var hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countCategorie))
+    var hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countPostalcode))
     var values = Array.from(hsMap.values());
     var keys = Array.from(hsMap.keys());
     console.log(values) //33,33,2
@@ -258,7 +258,7 @@ function sideView() {
     //Window2
     if (json_return_markerArrTemp[1] != null) {
         document.getElementById('sideWindow2inner').innerText = JSON.stringify(json_return_markerArrTemp[1]);
-        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countCategorie))
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
 
@@ -269,7 +269,7 @@ function sideView() {
     //window3
     if (json_return_markerArrTemp[2] != null) {
         document.getElementById('sideWindow3inner').innerText = JSON.stringify(json_return_markerArrTemp[2]);
-        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countCategorie))
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
 
@@ -300,6 +300,10 @@ function show3() {
 
 //TODO Chart für jeden case, vom Value rausfinden welches Chart// Values aus der Hashmap Rausfiltern
 function updateChartbyDropdown1(){
+    var hsMap;
+    var values;
+    var keys;
+
 
     var valueDropdown = document.getElementById('AreaDropDown1')
     console.log(valueDropdown.value)
@@ -310,47 +314,83 @@ function updateChartbyDropdown1(){
 
     //TODO: Values an die Methode Übergeben
     if(valueDropdown.value==1.1){
-        exampleChart1('chartWindow1',[20,30,40],[10,20,0])
+         hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countPostalcode))
+         values = Array.from(hsMap.values());
+         keys = Array.from(hsMap.keys());
+        exampleChart1('chartWindow1',values,keys)
     }
     if(valueDropdown.value==1.2){
-        exampleChart1('chartWindow1',[0,0,0],[10,20,0])
+         hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countCity))
+         values = Array.from(hsMap.values());
+         keys = Array.from(hsMap.keys());
+        exampleChart1('chartWindow1',values,keys)
     }
     if(valueDropdown.value==1.3){
-        exampleChart1('chartWindow1',[10,10,10],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countState))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart1('chartWindow1',values,keys)
     }
 
 }
 
 function updateChartbyDropdown2(){
 
+    var hsMap;
+    var values;
+    var keys;
+
     var valueDropdown = document.getElementById('AreaDropDown2')
     console.log(valueDropdown.value)
 
     if(valueDropdown.value==2.1){
-        exampleChart2('chartWindow2',[20,30,40],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countPostalcode))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart2('chartWindow2',values,keys)
     }
     if(valueDropdown.value==2.2){
-        exampleChart2('chartWindow2',[0,0,0],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countCity))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart2('chartWindow2',values,keys)
     }
     if(valueDropdown.value==2.3){
-        exampleChart2('chartWindow2',[10,10,10],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countState))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart2('chartWindow2',values,keys)
+
     }
 
 }
 
 function updateChartbyDropdown3(){
 
+    var hsMap;
+    var values;
+    var keys;
+
     var valueDropdown = document.getElementById('AreaDropDown3')
     console.log(valueDropdown.value)
 
     if(valueDropdown.value==3.1){
-        exampleChart3('chartWindow3',[20,30,40],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countPostalcode))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart3('chartWindow3',values,keys)
     }
     if(valueDropdown.value==3.2){
-        exampleChart3('chartWindow3',[0,0,0],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countCity))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart3('chartWindow3',values,keys)
     }
     if(valueDropdown.value==3.3){
-        exampleChart3('chartWindow3',[10,10,10],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countState))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart3('chartWindow3',values,keys)
     }
 
 }
