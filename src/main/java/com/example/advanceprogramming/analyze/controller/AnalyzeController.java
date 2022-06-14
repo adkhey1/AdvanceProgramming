@@ -119,6 +119,19 @@ public class AnalyzeController {
         return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(), 1);
     }
 
+    @PostMapping(value = "/categorieMap")
+    public ResponseEntity<?> categorieMap(/*@RequestBody String business_id, @RequestBody String categorie, @RequestBody int choice*/){
+
+        HashMap<Double, Double> output1 = new HashMap<>();
+        output1.put(40.041639063, -75.5428394303);
+        output1.put(39.9565961073, -75.1650238037);
+
+        OnlyLatLongDTO output = new OnlyLatLongDTO();
+        output.setOutput(output1);
+
+        return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
+
     @GetMapping(value = "/get/history/")
     public String getCalledBusiness(Model model, HttpServletRequest request) {
 
