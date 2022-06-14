@@ -131,7 +131,7 @@ function initMap() {
 
                 sideView();
 
-            }, 15000);
+            }, 10000);
 
 
         })
@@ -238,14 +238,14 @@ function sideView() {
     console.log(json_return_markerArrTemp)
 
     //Evtl löschen
-    comparisonChart(json_return_markerArrTemp)
+
 
     console.log(json_return_markerArrTemp[0])
     //Window1
     document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
 
     //transform to hashmap and get keys and values
-    var hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countCategorie))
+    var hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countPostalcode))
     var values = Array.from(hsMap.values());
     var keys = Array.from(hsMap.keys());
     console.log(values) //33,33,2
@@ -253,12 +253,15 @@ function sideView() {
     //console.log(chart);
 
     exampleChart1('chartWindow1', values, keys);
+    comparisonChartWithCategory(json_return_markerArrTemp,"test",'lineComp1',0)
+    //comparisonChart(json_return_markerArrTemp)
     show1()
 
     //Window2
     if (json_return_markerArrTemp[1] != null) {
+        comparisonChartWithCategory(json_return_markerArrTemp,"test",'lineComp2',1)
         document.getElementById('sideWindow2inner').innerText = JSON.stringify(json_return_markerArrTemp[1]);
-        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countCategorie))
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
 
@@ -268,8 +271,9 @@ function sideView() {
 
     //window3
     if (json_return_markerArrTemp[2] != null) {
+        comparisonChartWithCategory(json_return_markerArrTemp,"test",'lineComp3',2)
         document.getElementById('sideWindow3inner').innerText = JSON.stringify(json_return_markerArrTemp[2]);
-        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countCategorie))
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
 
@@ -300,6 +304,10 @@ function show3() {
 
 //TODO Chart für jeden case, vom Value rausfinden welches Chart// Values aus der Hashmap Rausfiltern
 function updateChartbyDropdown1(){
+    var hsMap;
+    var values;
+    var keys;
+
 
     var valueDropdown = document.getElementById('AreaDropDown1')
     console.log(valueDropdown.value)
@@ -310,47 +318,83 @@ function updateChartbyDropdown1(){
 
     //TODO: Values an die Methode Übergeben
     if(valueDropdown.value==1.1){
-        exampleChart1('chartWindow1',[20,30,40],[10,20,0])
+         hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countPostalcode))
+         values = Array.from(hsMap.values());
+         keys = Array.from(hsMap.keys());
+        exampleChart1('chartWindow1',values,keys)
     }
     if(valueDropdown.value==1.2){
-        exampleChart1('chartWindow1',[0,0,0],[10,20,0])
+         hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countCity))
+         values = Array.from(hsMap.values());
+         keys = Array.from(hsMap.keys());
+        exampleChart1('chartWindow1',values,keys)
     }
     if(valueDropdown.value==1.3){
-        exampleChart1('chartWindow1',[10,10,10],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countState))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart1('chartWindow1',values,keys)
     }
 
 }
 
 function updateChartbyDropdown2(){
 
+    var hsMap;
+    var values;
+    var keys;
+
     var valueDropdown = document.getElementById('AreaDropDown2')
     console.log(valueDropdown.value)
 
     if(valueDropdown.value==2.1){
-        exampleChart2('chartWindow2',[20,30,40],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countPostalcode))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart2('chartWindow2',values,keys)
     }
     if(valueDropdown.value==2.2){
-        exampleChart2('chartWindow2',[0,0,0],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countCity))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart2('chartWindow2',values,keys)
     }
     if(valueDropdown.value==2.3){
-        exampleChart2('chartWindow2',[10,10,10],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countState))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart2('chartWindow2',values,keys)
+
     }
 
 }
 
 function updateChartbyDropdown3(){
 
+    var hsMap;
+    var values;
+    var keys;
+
     var valueDropdown = document.getElementById('AreaDropDown3')
     console.log(valueDropdown.value)
 
     if(valueDropdown.value==3.1){
-        exampleChart3('chartWindow3',[20,30,40],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countPostalcode))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart3('chartWindow3',values,keys)
     }
     if(valueDropdown.value==3.2){
-        exampleChart3('chartWindow3',[0,0,0],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countCity))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart3('chartWindow3',values,keys)
     }
     if(valueDropdown.value==3.3){
-        exampleChart3('chartWindow3',[10,10,10],[10,20,0])
+        hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countState))
+        values = Array.from(hsMap.values());
+        keys = Array.from(hsMap.keys());
+        exampleChart3('chartWindow3',values,keys)
     }
 
 }
@@ -364,7 +408,6 @@ function exampleChart1(div, values, keys) {
 
             labels: keys,
             datasets: [{
-                label: 'count',
                 data: values,
                 options: {
                     events: ['click']
@@ -377,7 +420,26 @@ function exampleChart1(div, values, keys) {
                 }
             }]
         },
-        plugins: [ChartDataLabels]
+        plugins: [ChartDataLabels],
+        options: {
+
+
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Categories in a certain area'
+                },
+            }
+        },
 
 
     }
@@ -421,7 +483,26 @@ function exampleChart2(div, values, keys) {
                 }
             }]
         },
-        plugins: [ChartDataLabels]
+        plugins: [ChartDataLabels],
+        options: {
+
+
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Categories in a certain area'
+                },
+            }
+        },
 
 
     }
@@ -455,7 +536,26 @@ function exampleChart3(div, values, keys) {
                 }
             }]
         },
-        plugins: [ChartDataLabels]
+        plugins: [ChartDataLabels],
+        options: {
+
+
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Categories in a certain area'
+                },
+            }
+        },
 
 
     }
@@ -558,6 +658,8 @@ function comparisonChart(dataArr) {
  */
 
 var compChart = null;
+var compChart2 = null;
+var compChart3 = null;
 
 function comparisonChart(dataArr) {
 
@@ -613,14 +715,33 @@ function loadClickedCategory(){
     // TODO AJAX CALL und neues diagramm erstellen das beim click geladen wird
 }
 
-function comparisonChartWithCategory(dataArr,label,div) {
+function comparisonChartWithCategory(dataArr,label,div,position) {
 
 
 
-
+/*
     if (compChart != null) {
         compChart.destroy();
     }
+
+
+    if (compChart2 != null) {
+        compChart2.destroy();
+    }
+
+    if (compChart3 != null) {
+        compChart3.destroy();
+    }
+
+
+ */
+
+
+
+
+
+
+
     const labels = [
         'spring',
         'summer',
@@ -635,25 +756,75 @@ function comparisonChartWithCategory(dataArr,label,div) {
         datasets: [
 
             {
-                label: label,
-                backgroundColor: getRandomColor(),
-                borderColor: getRandomColor(),
+                label: 'Score by stars',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
                 //data: [20,30,60,10],
-                data: [dataArr[0].spring, dataArr[0].summer, dataArr[0].fall, dataArr[0].winter]
+                data: [dataArr[position].spring, dataArr[position].summer, dataArr[position].fall, dataArr[position].winter]
 
             },
+            {
+                label: 'Score by Sentiment Analysis',
+                backgroundColor: 'rgb(54, 162, 235)',
+                borderColor: 'rgb(54, 162, 235)',
+                //data: [20,30,60,10],
+                data: [dataArr[position].sentSpring, dataArr[position].sentSummer, dataArr[position].sentFall, dataArr[position].sentWinter]
+
+
+            }
         ],
         plugins: [ChartDataLabels]
     };
     const config = {
         type: 'line',
         data: data,
-        options: {}
+        options: {
+
+
+        responsive: true,
+            interaction: {
+        mode: 'index',
+            intersect: false,
+    },
+
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Comparison between Stars and Sentiment Analysis - Normalized(0-1)'
+                },
+            }
+        },
+
     };
-    compChart = new Chart(
-        document.getElementById('lineComp1'),
-        config
-    );
+
+    if(position==0){
+        if (compChart != null) {
+            compChart.destroy();
+        }
+        compChart = new Chart(
+            document.getElementById(div),
+            config
+        );
+    }
+    if(position==1){
+        if (compChart2 != null) {
+            compChart2.destroy();
+        }
+        compChart2 = new Chart(
+            document.getElementById(div),
+            config
+        );
+    }
+    if(position==2){
+        if (compChart3 != null) {
+            compChart3.destroy();
+        }
+        compChart3 = new Chart(
+            document.getElementById(div),
+            config
+        );
+    }
+
 
 }
 

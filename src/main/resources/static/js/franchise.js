@@ -96,7 +96,27 @@ function barChart10(){
                 }
             }]
         },
-        plugins: [ChartDataLabels]
+        plugins: [ChartDataLabels],
+
+        options: {
+
+
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Top 10 Franchise'
+                },
+            }
+        },
 
 
     }
@@ -190,23 +210,92 @@ function getMoreInfo(restaurant){
         }
     }
 
+
+    var tempArrKeys = []
+    var tempArrValues = []
     for (let x = 0; x <10 ; x++) {
         //console.log(franchiseList.bestCity[x].franchise1)
         if(restaurant===franchiseList.storesInCity[x].franchise1){
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < 10; i++) {
+                //console.log(franchiseList.storesInCity[x].liste[i].name1)
+                //console.log(franchiseList.storesInCity[x].liste[i].counter)
+                tempArrKeys.push(franchiseList.storesInCity[x].liste[i].name1)
+                tempArrValues.push(franchiseList.storesInCity[x].liste[i].counter)
+                /*
                 document.getElementById((8).toString()+(i+1).toString()).innerHTML =franchiseList.storesInCity[x].liste[i].name1
                 document.getElementById((8).toString()+(i+1).toString()+(i+1).toString()).innerHTML =franchiseList.storesInCity[x].liste[i].counter
                 document.getElementById("80").innerHTML = franchiseList.storesInCity[x].liste[i+1].name1
                 document.getElementById("800").innerHTML = franchiseList.storesInCity[x].liste[i+1].counter
+
+                 */
             }
 
 
         }
     }
 
+    console.log(tempArrKeys)
+    exampleChart2('clickChart',tempArrValues,tempArrKeys)
 
     //console.log(franchiseList.eachAverage[number].name1)
     //console.log(franchiseList.eachAverage[number].counter)
+}
+
+
+var myChart2 = null;
+
+function exampleChart2(div, values, keys) {
+
+
+    var config = {
+        type: "bar",
+        data: {
+
+            labels: keys,
+            datasets: [{
+                label: 'count',
+                data: values,
+                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                datalabels: {
+                    color: 'blue',
+                    anchor: 'end',
+                    align: 'top'
+                }
+            }]
+        },
+        plugins: [ChartDataLabels],
+        options: {
+
+
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Cities with the most stores'
+                },
+            }
+        },
+
+
+    }
+
+    if (myChart2 != null) {
+        myChart2.destroy();
+    }
+    myChart2 = new Chart(
+        document.getElementById(div),
+        config
+    );
+
+
 }
 
 
