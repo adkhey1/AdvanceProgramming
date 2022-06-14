@@ -32,7 +32,7 @@
                     <a class="nav-link text-white active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="analyze.html">Analyze</a>
+                    <a class="nav-link" th:href="@{/map}">Analyze</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="about.html">About</a>
@@ -44,8 +44,8 @@
                         Account
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="SignUp.html">Sign Up</a></li>
-                        <li><a class="dropdown-item" href="SignIn.html">Sign In</a></li>
+                        <li><a class="dropdown-item" th:href="@{/register}">Sign Up</a></li>
+                        <li><a class="dropdown-item" th:href="@{/login}">Sign In</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -62,8 +62,8 @@
         JOIN US<br> and analyze data
     </h1>
     <div class="ref">
-        <a class="btn btn-primary" href="SignUp.html" role="button">Join Us</a>
-        <a class="btn btn-secondary" href="SignIn.html" role="button">Sign In</a>
+        <a class="btn btn-primary" th:href="@{/register}" role="button">Join Us</a>
+        <a class="btn btn-secondary" th:href="@{/login}" role="button">Sign In</a>
     </div>
 </div>
 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -101,13 +101,6 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
-</div>
-
-<div class="form-center">
-    <div class="link">
-        <h4><a th:href="@{/register}">Registrieren</a></h4>
-        <h4><a th:href="@{/login}">Login</a></h4>
-    </div>
 </div>
 
 
