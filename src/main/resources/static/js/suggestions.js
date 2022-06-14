@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    let inputField = document.getElementById('kategorie');
+    let inputField = document.getElementById('category');
     let ulField = document.getElementById('suggestionsKa');
     inputField.addEventListener('input', changeAutoComplete);
     ulField.addEventListener('click', selectItem);
@@ -39,7 +39,7 @@
 
 (function () {
     "use strict";
-    let inputField = document.getElementById('atribute');
+    let inputField = document.getElementById('attribute');
     let ulField = document.getElementById('suggestionsAt');
     inputField.addEventListener('input', changeAutoComplete);
     ulField.addEventListener('click', selectItem);

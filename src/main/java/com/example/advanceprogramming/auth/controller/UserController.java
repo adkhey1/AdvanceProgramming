@@ -37,16 +37,15 @@ public class UserController {
         return "index";
     }
 
-    //Register page
+    /*
     @GetMapping("/register1")
     public String registerPage1(Model model) {
         model.addAttribute("user", new User());
         return "register_page";
-    }
+    }*/
 
     @GetMapping("/register")
     public String registerPage(Model model) {
-        //TODO übernehmen als Haupt ?!
         model.addAttribute("user", new User());
         return "SignUp";
     }
@@ -102,8 +101,6 @@ public class UserController {
     public String index() {
         return "index";
     }
-
-
 
 }
 
