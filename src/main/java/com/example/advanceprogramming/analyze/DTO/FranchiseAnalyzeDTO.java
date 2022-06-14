@@ -15,7 +15,7 @@ import java.util.List;
 public class FranchiseAnalyzeDTO {
 
     private String franchise;
-    private List<FranchiseAnalyzeResult> countFranchise, eachAverage;
+    private List<FranchiseAnalyzeResult> countFranchise, eachAverage, avgSentiment;
     private List<FranchiseAnalyzeResult2> bestCity, countBestReview, worstCity, countWorstReview,
             storesInCity, countCategories;
 
