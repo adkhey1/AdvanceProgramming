@@ -110,7 +110,6 @@ h5 { margin-left: 10%;}
 }
 #mostratings {
 
-
 }
 
 
@@ -126,48 +125,12 @@ h5 { margin-left: 10%;}
 
 }
 
-.filter {
-    grid-column-start: 2;
-    grid-column-end: 6;
-    justify-self: stretch;
-    align-self: stretch;
-}
 
-.map {
 
-    grid-column: 2 / 6;
-    justify-self: stretch;
-    align-self: stretch;
-}
 
-.chart1 {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    justify-self: stretch;
-    align-self: stretch;
-}
 
-.chart2 {
-    grid-column-start: 4;
-    grid-column-end: 6;
-    justify-self: stretch;
-    align-self: stretch;
-}
 
-.chart3 {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    justify-self: stretch;
-    align-self: stretch;
 
-}
-
-.chart4 {
-    grid-column-start: 4;
-    grid-column-end: 6;
-    justify-self: stretch;
-    align-self: stretch;
-}
 
 #map {
 
@@ -181,14 +144,88 @@ h5 { margin-left: 10%;}
 
 
 #filter {
+    position:relative;
+    margin-left: 10%;
+    margin-right: 10%;
 
-    height: 500px;
-    width: 1500px;
-    background-color: powderblue;
+
+    height: auto;
+    width: auto;
+
+    background-color: lightgrey;
     font-size: 14px;
     border: 2px solid gray;
 
 
+}
+
+#State {
+    position: relative;
+    top:50%;
+}
+#stars   {
+    position: absolute;
+    right: 15%;
+    top:19%
+}
+#starss {
+
+    position: absolute;
+    right:25%;
+    top:19%
+}
+#states {
+    position: absolute;
+    right: 41%;
+    top:19%
+}
+
+
+#state {
+    position: absolute;
+    right:31%;
+    top:19%
+}
+#name {
+    border: 1px solid black;
+}
+
+#namee {
+    padding-right: 60%;
+    padding-left: 5%;
+}
+#cityy {
+    padding-right: 60%;
+    padding-left: 5%;
+}
+#City {
+    border: 1px solid black;
+}
+
+
+#plzz {
+    padding-right: 60%;
+    padding-left: 5%;
+}
+#PLZ {
+    border: 1px solid black;
+}
+
+
+#categoryy {
+
+    padding-right: 60%;
+    padding-left: 5%;
+}
+#category {
+    border: 1px solid black;
+}
+#attributes {
+    padding-right: 60%;
+    padding-left: 5%;
+}
+#atribute {
+    border: 1px solid black;
 }
 
 #barChart10 {
@@ -325,7 +362,6 @@ body {
     font-size: 12px;
 
 }
-
 
 /*
 * {
