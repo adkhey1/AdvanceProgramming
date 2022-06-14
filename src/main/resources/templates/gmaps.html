@@ -4,7 +4,6 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     <script type="module" th:src="@{/js/index.js}"></script>
     <script type="module" th:src="@{/js/chart1.js}"></script>
     <script type="module" th:src="@{/js/index.js}"></script>
@@ -16,7 +15,7 @@
     <script th:src="@{/js/index.js}"></script>
 
 
-    <script
+    <script href="/css/style.css"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA40cGYwJwf8sG2QdRAWO0eTzACUsnJYpc&callback=initMap&v=weekly"
             async
     ></script>
@@ -27,11 +26,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+
+
 
 </head>
-<body>
+<body >
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav  class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand fs-1" href="TopRest">TopRest</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -55,7 +57,7 @@
                        data-bs-toggle="dropdown" aria-expanded="false">
                         Account
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <ul href="/static/css/style.css" class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="SignUp.html">Sign Up</a></li>
                         <li><a class="dropdown-item" href="SignIn.html">Sign In</a></li>
                         <li>
