@@ -62,41 +62,13 @@
     </div>
 </nav>
 
-    <div id="data"></div>
-    <canvas id="barChart10"></canvas>
-
-
-
-<h2>Categories</h2>
-<div class="categories">
-    <div class="row">
-        <div id="inputCategories"></div>
-        <div class="col order-first">
-
-        </div>
-    </div>
-</div>
-
-<h1>Reviews</h1>
-
-
-        <div class="reviews">
-            <div id="inputEachScore"></div>
-            <div id="inputBestCity"></div>
-            <div id="inputBestReviewCount"></div>
-            <div id="inputWorstReviewCount"></div>
-        </div>
 
 
 
 
-<p> </p>
-<div class="headl">
-<h3 class="top">Top rated citys</h3>
-    <div> <h4>Flop rated city </h4>
-    </div></div>
 
 
+<!--
     <div class="row">
         <div class="col order-first" id="topratedcity">
             <table>
@@ -124,7 +96,9 @@
                 </tbody>
             </table>
         </div>
+-->
 
+<!--
         <div class="col border-secondary" id="worstcity">
             <table>
                 <tbody>
@@ -152,7 +126,8 @@
             </table>
 
         </div>
-
+        -->
+<!--
         <div class="row"  id="mostratings">
             <div class="col order-first" id="mostrating1">
                 <table>
@@ -180,16 +155,52 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="col order-2" id="mostrating2">
-            <canvas id="clickChart"></canvas>
-        </div>
+-->
 
 
 
-</table>
+
+
+<div>
+
+    <canvas id="barChart10"></canvas>
+
 </div>
+
+<div>
+    <div id="inputEachScore"></div>
+    <div id="inputEachScoreSent"></div>
+    <div id="inputBestCity"></div>
 </div>
+
+<div>
+    <div class="col order-2" id="mostrating1">
+        <canvas id="catChart"></canvas>
+    </div>
 </div>
+
+<div>
+    <div class="col order-2" id="mostrating2">
+        <canvas id="clickChart"></canvas>
+    </div>
+</div>
+
+<div>
+
+    <div class="col order-2" id="mostrating3">
+        <canvas id="clickChart1"></canvas>
+    </div>
+    <div id="inputWorstReviewCount"></div>
+</div>
+
+<div>
+
+    <div class="col order-2" id="mostrating4">
+        <canvas id="clickChart2"></canvas>
+    </div>
+    <div id="inputBestReviewCount"></div>
+</div>
+
+
 </body>
 </html>
