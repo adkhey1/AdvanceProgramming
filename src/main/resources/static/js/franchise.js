@@ -32,24 +32,11 @@ async function getFranchiseData() {
 // Wartet auf die antwort der AJAX calls !!!
 $.when(getFranchiseData()).done(function() {
     console.log(franchiseList)
-
-    //document.getElementById("data").innerHTML = franchiseList.bestCity[0].counter
-    //document.getElementById("data").innerHTML = franchiseList.countFranchise[0].name1
-
-
-
-
     getTop10Keys()
     getTop10Data()
     // BAr Chart for Top 10
 
     barChart10()
-
-
-
-
-
-
 
 });
 
@@ -151,7 +138,8 @@ function getMoreInfo(restaurant){
     for (let i = 0; i < 10; i++) {
         if(restaurant===franchiseList.eachAverage[i].name1){
             //console.log(franchiseList.eachAverage[i].counter)   // Die folge von top Franchise und review count ist unterschiedlich deswegen rausfinden welches restaurant angedrückt wurde und dieses finden
-            document.getElementById('inputEachScore').innerHTML ="average Score: "+ franchiseList.eachAverage[i].counter
+            document.getElementById('inputEachScore').innerHTML ="average score: "+ franchiseList.eachAverage[i].counter
+            document.getElementById('inputEachScoreSent').innerHTML ="average score Sentiment analysis: "+ franchiseList.avgSentiment[i].counter
             document.getElementById('inputBestReviewCount').innerHTML ="Anzahl der besten Reviews: "+ franchiseList.countBestReview
 
             for (let j = 0; j < 10; j++) {
@@ -163,23 +151,29 @@ function getMoreInfo(restaurant){
             }
             //console.log(franchiseList.countBestReview[i].liste[0].counter) //
 
-            let addTemp = ""
+            var tempArrKeysCategory = [];
+            var tempArrValuesCategory =[];
+
+
+            //let addTemp = ""
             for (let j = 0; j < 10; j++) {
                 if (restaurant===franchiseList.countBestReview[j].franchise1){
                     for (let k = 0; k < franchiseList.countCategories[j].liste.length; k++) {
-                        addTemp+=franchiseList.countCategories[j].liste[k].name1
-                        addTemp+=", "
+                        //addTemp+=franchiseList.countCategories[j].liste[k].name1
+                        //addTemp+=", "
+                        tempArrKeysCategory.push(franchiseList.countCategories[j].liste[k].name1)
+                        tempArrValuesCategory.push(franchiseList.countCategories[j].liste[k].counter)
                     }
-                    console.log(franchiseList.countCategories[j].liste.length)
+                    //console.log(franchiseList.countCategories[j].liste.length)
                 }
 
 
 
 
             }
-            addTemp=addTemp.slice(0, -1)
-            addTemp=addTemp.slice(0, -1)
-            document.getElementById('inputCategories').innerHTML ="Kategorien: "+ addTemp
+            //addTemp=addTemp.slice(0, -1)
+            //addTemp=addTemp.slice(0, -1)
+            //document.getElementById('inputCategories').innerHTML ="Kategorien: "+ addTemp
 
         }
 
@@ -188,27 +182,41 @@ function getMoreInfo(restaurant){
     //console.log(franchiseList.bestCity[0].liste[0].name1)
 
     //document.getElementById('1').innerHTML = franchiseList.bestCity[0].liste[0].name1
+    var tempArrKeys2 = []
+    var tempArrValues2 = []
+
     for (let x = 0; x <10 ; x++) {
         //console.log(franchiseList.bestCity[x].franchise1)
         if(restaurant===franchiseList.bestCity[x].franchise1){
             for (let i = 0; i < 5; i++) {
-                document.getElementById((i+1).toString()).innerHTML =franchiseList.bestCity[x].liste[i].name1
-                document.getElementById((i+1).toString()+(i+1).toString()).innerHTML =franchiseList.bestCity[x].liste[i].counter
+                tempArrKeys2.push(franchiseList.bestCity[x].liste[i].name1)
+                tempArrValues2.push(franchiseList.bestCity[x].liste[i].counter)
+                //document.getElementById((i+1).toString()).innerHTML =franchiseList.bestCity[x].liste[i].name1
+                //document.getElementById((i+1).toString()+(i+1).toString()).innerHTML =franchiseList.bestCity[x].liste[i].counter
             }
 
         }
     }
+
+    var tempArrKeys1 = []
+    var tempArrValues1 = []
 
     for (let x = 0; x <10 ; x++) {
         //console.log(franchiseList.bestCity[x].franchise1)
         if(restaurant===franchiseList.worstCity[x].franchise1){
             for (let i = 0; i < 5; i++) {
-                document.getElementById((9).toString()+(i+1).toString()).innerHTML =franchiseList.worstCity[x].liste[i].name1
-                document.getElementById((9).toString()+(i+1).toString()+(i+1).toString()).innerHTML =franchiseList.worstCity[x].liste[i].counter
+                tempArrKeys1.push(franchiseList.worstCity[x].liste[i].name1)
+                tempArrValues1.push(franchiseList.worstCity[x].liste[i].counter)
+                //document.getElementById((9).toString()+(i+1).toString()).innerHTML =franchiseList.worstCity[x].liste[i].name1
+                //document.getElementById((9).toString()+(i+1).toString()+(i+1).toString()).innerHTML =franchiseList.worstCity[x].liste[i].counter
             }
 
         }
     }
+    console.log(tempArrKeys1)
+    console.log(tempArrValues1)
+    //exampleChart3(div, values, keys)
+
 
 
     var tempArrKeys = []
@@ -236,6 +244,9 @@ function getMoreInfo(restaurant){
 
     console.log(tempArrKeys)
     exampleChart2('clickChart',tempArrValues,tempArrKeys)
+    exampleChart3('clickChart1',tempArrValues1,tempArrKeys1)
+    exampleChart4('clickChart2',tempArrValues2,tempArrKeys2)
+    exampleChart5('catChart', tempArrValuesCategory, tempArrKeysCategory)
 
     //console.log(franchiseList.eachAverage[number].name1)
     //console.log(franchiseList.eachAverage[number].counter)
@@ -291,6 +302,176 @@ function exampleChart2(div, values, keys) {
         myChart2.destroy();
     }
     myChart2 = new Chart(
+        document.getElementById(div),
+        config
+    );
+
+
+}
+
+var myChart3 = null;
+
+function exampleChart3(div, values, keys) {
+
+
+    var config = {
+        type: "bar",
+        data: {
+
+            labels: keys,
+            datasets: [{
+                label: 'count',
+                data: values,
+                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                datalabels: {
+                    color: 'blue',
+                    anchor: 'end',
+                    align: 'top'
+                }
+            }]
+        },
+        plugins: [ChartDataLabels],
+        options: {
+
+
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Worst rated cities'
+                },
+            }
+        },
+
+
+    }
+
+    if (myChart3 != null) {
+        myChart3.destroy();
+    }
+    myChart3 = new Chart(
+        document.getElementById(div),
+        config
+    );
+
+
+}
+
+var myChart4 = null;
+
+function exampleChart4(div, values, keys) {
+
+
+    var config = {
+        type: "bar",
+        data: {
+
+            labels: keys,
+            datasets: [{
+                label: 'count',
+                data: values,
+                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                datalabels: {
+                    color: 'blue',
+                    anchor: 'end',
+                    align: 'top'
+                }
+            }]
+        },
+        plugins: [ChartDataLabels],
+        options: {
+
+
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Best rated cities'
+                },
+            }
+        },
+
+
+    }
+
+    if (myChart4 != null) {
+        myChart4.destroy();
+    }
+    myChart4 = new Chart(
+        document.getElementById(div),
+        config
+    );
+
+
+}
+
+
+
+var myChart5 = null;
+
+function exampleChart5(div, values, keys) {
+
+
+    var config = {
+        type: "bar",
+        data: {
+
+            labels: keys,
+            datasets: [{
+                label: 'count',
+                data: values,
+                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                datalabels: {
+                    color: 'blue',
+                    anchor: 'end',
+                    align: 'top'
+                }
+            }]
+        },
+        plugins: [ChartDataLabels],
+        options: {
+
+
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Categories counted'
+                },
+            }
+        },
+
+
+    }
+
+    if (myChart5 != null) {
+        myChart5.destroy();
+    }
+    myChart5 = new Chart(
         document.getElementById(div),
         config
     );
