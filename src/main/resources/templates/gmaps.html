@@ -1,6 +1,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+
+
     <title>Add Map</title>
+
+    <meta charset="ISO-8859-1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!--
+    <link href="{% static 'AdvanceProgramming/css/bootstrap.min.css' %}" rel="stylesheet">
+-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -9,31 +26,32 @@
     <script type="module" th:src="@{/js/index.js}"></script>
     <script type="module" th:src="@{/js/suggestions.js}"></script>
     <script type="module" th:src="@{static/js/filterJS.js}"></script>
-
     <script th:src="@{/js/filterJS.js}"></script>
     <script th:src="@{/js/suggestions.js}"></script>
     <script th:src="@{/js/index.js}"></script>
 
-
-    <script href="/css/style.css"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA40cGYwJwf8sG2QdRAWO0eTzACUsnJYpc&callback=initMap&v=weekly"
-            async
-    ></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA40cGYwJwf8sG2QdRAWO0eTzACUsnJYpc&callback=initMap&v=weekly"
+            async></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+
+
+
+
+
+
+    <!--
+    <script>window.onload = closeForm();</script>
+-->
+
+
 
 
 
 </head>
-<body >
+<body>
 
-<nav  class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand fs-1" href="TopRest">TopRest</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -57,7 +75,7 @@
                        data-bs-toggle="dropdown" aria-expanded="false">
                         Account
                     </a>
-                    <ul href="/static/css/style.css" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="SignUp.html">Sign Up</a></li>
                         <li><a class="dropdown-item" href="SignIn.html">Sign In</a></li>
                         <li>
@@ -72,71 +90,71 @@
     </div>
 </nav>
 
-<button type="button" onclick="deleteMarkers()">test</button>
 
-<div id="map"></div>
-<div id="test"></div>
-<div id="filter">
-    <button class="openButton" onclick="openForm()">Open Filter</button>
+<form id="filterNew">
+    <button class="openButton" id="open" onclick="openForm(), hiddenOpenButton()">Open Filter</button>
 
     <div class="loginPopup">
         <div class="formPopup" id="popupForm">
-            <a class="close" onclick="closeForm()">&times;</a>
-            <form class="formContainer">
-                <h2>Select your filter</h2>
+            <button class="close" id="close" onclick="showOpenButton(),closeForm()">Close Filter</button>
+            <h2>Select your filter</h2>
 
-                <label for="stars" id="starss">Stars:</label>
-                <select name="stars" id="stars">
-                    <option value="1.0">1.0</option>
-                    <option value="1.5">1.5</option>
-                    <option value="2.0">2.0</option>
-                    <option value="2.5">2.5</option>
-                    <option value="3.0">3.0</option>
-                    <option value="3.5">3.5</option>
-                    <option value="4.0">4.0</option>
-                    <option value="4.5">4.5</option>
-                    <option value="5.0">5.0</option>
-                </select>
+            <div class="row">
+                <div  class="col">
 
-                <div id="namee">
-                    <label for="Name">Name</label>
-                    <input type="text" id="name" name="name">
+                    <input class="form-control" type="text" placeholder="Name" id="name" name="name">
                 </div>
-
-                <div>
-                    <label for="State" id="states">State:</label>
-                    <select name="State" id="state" >
-                    </select>
+                <div class="col">
+                    <input type="text" id="City" name="City" class="form-control" placeholder="City" >
                 </div>
-
-                <div id="cityy">
-                    <label for="City">City:</label>
-                    <input type="text" id="City" name="City">
+                <div class="col">
+                    <input type="text" id="PLZ" name="PLZ" maxlength="6" onkeypress="return rescticteAlphabet(event)" class="form-control" placeholder="Postal code">
                 </div>
-
-                <div id="plzz">
-                    <label for="PLZ">Postal code:</label>
-                    <input type="text" id="PLZ" name="PLZ" maxlength="6" onkeypress="return rescticteAlphabet(event)"/>
-                </div>
-
-                <div id="categoryy">
-                    <label for="category">Category:</label>
-                    <input type="text" name="category" id="category"/>
+                <div class="col">
+                    <input type="text" name="category" id="category" class="form-control" placeholder="Category">
                     <ul id="suggestionsKa"></ul>
                 </div>
-
-                <div id="attributes">
-                    <label for="attribute">Attribute:</label>
-                    <input type="text" name="attribute" id="attribute"/>
+                <div class="col">
+                    <input type="text" name="attribute" id="attribute" class="form-control" placeholder="Attribute">
                     <ul id="suggestionsAt"></ul>
+
                 </div>
 
+                <div class="col">
+                    <label for="stars" id="starss">Stars:</label>
+                    <select name="stars" id="stars">
+                        <option value="1.0">1.0</option>
+                        <option value="1.5">1.5</option>
+                        <option value="2.0">2.0</option>
+                        <option value="2.5">2.5</option>
+                        <option value="3.0">3.0</option>
+                        <option value="3.5">3.5</option>
+                        <option value="4.0">4.0</option>
+                        <option value="4.5">4.5</option>
+                        <option value="5.0">5.0</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="State" id="states">State:</label>
+                    <select name="State" id="state">
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="button" onclick="searchText()">Search</button>
+                </div>
 
-                <button type="button" onclick="searchText()">Search</button>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</form>
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css"/>
+
+<div id="map"></div>
+<div id="test"></div>
+
+
 <div id="input"></div>
 <canvas id="testChart"></canvas>
 <canvas id="testBar"></canvas>
@@ -146,7 +164,7 @@
 
 
 <div id="sideWindow1">
-    <div id="dropMenu1" >
+    <div id="dropMenu1">
         <label for="AreaDropDown1"></label>
         <select id="AreaDropDown1" onchange="updateChartbyDropdown1()">
             <option value="1.1">Postal Code</option>
@@ -163,7 +181,7 @@
 </div>
 
 <div id="sideWindow2">
-    <div id="dropMenu2" >
+    <div id="dropMenu2">
         <label for="AreaDropDown2"></label>
         <select id="AreaDropDown2" onchange="updateChartbyDropdown2()">
             <option value="2.1">Postal Code</option>
@@ -179,7 +197,7 @@
 
 <div id="sideWindow3">
 
-    <div id="dropMenu3" >
+    <div id="dropMenu3">
         <label for="AreaDropDown3"></label>
         <select id="AreaDropDown3" onchange="updateChartbyDropdown3()">
             <option value="3.1">Postal Code</option>
@@ -195,12 +213,18 @@
 </div>
 
 
-<!--
-<canvas id="chart1" width="50%" height="50%"></canvas>
-<canvas id="chart2" width="50%" height="50%"></canvas>
+<script>
 
--->
+    function hiddenOpenButton(){
+        document.getElementById("open").style.visibility = "hidden";
 
+    }
+    function showOpenButton(){
+        document.getElementById("open").style.visibility = "visible";
+
+    }
+
+</script>
 
 </body>
 </html>

@@ -11,26 +11,31 @@ h1 {
 }
 
 h2 {
-    margin-left: 10%;
+
 }
+
 .headl {
 
-    display:flex;
-justify-content: space-around;
+    display: flex;
+    justify-content: space-around;
 
 
 }
+
 h3 {
 
 
 }
+
 h4 {
 
 }
 
-h5 { margin-left: 10%;}
+h5 {
+    margin-left: 10%;
+}
 
-#franchise{
+#franchise {
     background-color: lightskyblue;
 }
 
@@ -40,7 +45,7 @@ h5 { margin-left: 10%;}
     margin-left: 10%;
     margin-right: 10%;
     margin-bottom: 5%;
-    display:inline-block;
+    display: inline-block;
     box-shadow: 4mm 4mm 4mm grey;
 
 }
@@ -51,7 +56,7 @@ h5 { margin-left: 10%;}
     margin-left: 10%;
     margin-right: 10%;
     margin-bottom: 5%;
-    display:inline-block;
+    display: inline-block;
     box-shadow: 4mm 4mm 4mm grey;
 }
 
@@ -64,6 +69,7 @@ h5 { margin-left: 10%;}
     margin-bottom: 5%;
     box-shadow: 4mm 4mm 4mm grey;
 }
+
 .NEUEKLASSE {
     border: 2px solid black;
     border-radius: 5px;
@@ -79,7 +85,7 @@ h5 { margin-left: 10%;}
     margin-left: 10%;
     margin-right: 15%;
     margin-bottom: 5%;
-    display:inline-block;
+    display: inline-block;
     box-shadow: 4mm 4mm 4mm grey;
 
 }
@@ -90,143 +96,60 @@ h5 { margin-left: 10%;}
     margin-left: 15%;
     margin-right: 10%;
     margin-bottom: 5%;
-    display:inline-block;
+    display: inline-block;
     box-shadow: 4mm 4mm 4mm grey;
 }
+
 #mostrating1 {
 
     margin-left: 15%;
     margin-right: 10%;
     margin-bottom: 5%;
-    display:inline-block;
+    display: inline-block;
 
 }
+
 #mostrating2 {
     margin-left: 15%;
     margin-right: 10%;
     margin-bottom: 5%;
-    display:inline-block;
+    display: inline-block;
 
 }
+
 #mostratings {
 
 }
-
-
-.flex-container {
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    grid-template-columns:1fr 20% 20% 20% 20% 1fr;
-    grid-template-rows: 150px 150px 150px 150px 150px;
-
-    column-gap: 14px;
-    row-gap: 15px;
-
-}
-
-
-
-
-
-
 
 
 #map {
 
 
     height: 450px;
-    width: 1500px;
+    width: 2000px;
     box-shadow: 20px 20px 20px grey;
 
 
 }
 
 
-#filter {
-    position:relative;
-    margin-left: 10%;
-    margin-right: 10%;
+#filterNew {
+
+    position: relative;
 
 
     height: auto;
     width: auto;
 
     background-color: lightgrey;
-    font-size: 14px;
-    border: 2px solid gray;
+    font-size: 16px;
+    border: 2px solid black;
 
 
 }
 
-#State {
-    position: relative;
-    top:50%;
-}
-#stars   {
-    position: absolute;
-    right: 15%;
-    top:19%
-}
-#starss {
-
-    position: absolute;
-    right:25%;
-    top:19%
-}
-#states {
-    position: absolute;
-    right: 41%;
-    top:19%
-}
 
 
-#state {
-    position: absolute;
-    right:31%;
-    top:19%
-}
-#name {
-    border: 1px solid black;
-}
-
-#namee {
-    padding-right: 60%;
-    padding-left: 5%;
-}
-#cityy {
-    padding-right: 60%;
-    padding-left: 5%;
-}
-#City {
-    border: 1px solid black;
-}
-
-
-#plzz {
-    padding-right: 60%;
-    padding-left: 5%;
-}
-#PLZ {
-    border: 1px solid black;
-}
-
-
-#categoryy {
-
-    padding-right: 60%;
-    padding-left: 5%;
-}
-#category {
-    border: 1px solid black;
-}
-#attributes {
-    padding-right: 60%;
-    padding-left: 5%;
-}
-#atribute {
-    border: 1px solid black;
-}
 
 #barChart10 {
     margin-left: 10%;
