@@ -22,11 +22,11 @@ function searchText() {
     var search = {
         stars: document.getElementById("stars").value,
         name: document.getElementById("name").value,
-        state: document.getElementById("State").value,
+        state: document.getElementById("state").value,
         city: document.getElementById("City").value,
         plz: document.getElementById("PLZ").value,
-        category: document.getElementById("kategorie").value,
-        attribute: document.getElementById("atribute").value
+        category: document.getElementById("category").value,
+        attribute: document.getElementById("attribute").value
 
     }
 

@@ -247,6 +247,7 @@ public class AnalyzeController {
      * Deprecated Stuff to get csv etc.
      * @return
      */
+
     /*
     @RequestMapping("/split/attributes")
     public String splitAttributesToDB() {
@@ -311,7 +312,4 @@ public class AnalyzeController {
     }
 
      */
-
-
-
 }
