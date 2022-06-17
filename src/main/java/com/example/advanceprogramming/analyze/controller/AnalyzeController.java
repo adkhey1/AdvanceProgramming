@@ -4,6 +4,7 @@ package com.example.advanceprogramming.analyze.controller;
 import com.example.advanceprogramming.analyze.DTO.*;
 import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.model.Franchise;
+import com.example.advanceprogramming.analyze.model.LongLatResult;
 import com.example.advanceprogramming.analyze.repository.*;
 import com.example.advanceprogramming.analyze.service.AnalyzeService;
 import com.example.advanceprogramming.analyze.service.AnalyzeServiceImpl;
@@ -119,17 +120,39 @@ public class AnalyzeController {
         return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(), 1);
     }
 
-    @PostMapping(value = "/categorieMap")
-    public ResponseEntity<?> categorieMap(/*@RequestBody String business_id, @RequestBody String categorie, @RequestBody int choice*/){
+    @GetMapping(value = "/categorieMap")
+    public ResponseEntity<?> categorieMap(/*@RequestBody String business_id, @RequestBody String categorie, @RequestBody int choice*/) {
 
-        HashMap<Double, Double> output1 = new HashMap<>();
-        output1.put(40.041639063, -75.5428394303);
-        output1.put(39.9565961073, -75.1650238037);
+        String business_id = "_Gygd2tnDo3t1adE2bsUtQ";
+        String categorie = "Burgers";
+        int choice = 2;
 
-        OnlyLatLongDTO output = new OnlyLatLongDTO();
-        output.setOutput(output1);
+        Business business = businessRepository.findByBusiness_id(business_id);
+        List<LongLatResult> output = new ArrayList<>();
 
-        return ResponseEntity.status(HttpStatus.OK).body(output);
+        //choice: 0 = postalcode / 1 = city / 2 = state
+        switch (choice) {
+            case 0:
+                String postalcode = business.getPostal_code();
+                output.addAll(businessRepository.selectBusinessPostalCode(categorie, postalcode));
+                break;
+            case 1:
+                String city = business.getCity();
+                output.addAll(businessRepository.selectBusinessCity(categorie, city));
+                break;
+            case 2:
+                String state = business.getState();
+                output.addAll(businessRepository.selectBusinessState(categorie, state));
+                break;
+            default:
+                //nothing
+                break;
+        }
+
+        OnlyLatLongDTO output2 = new OnlyLatLongDTO();
+        output2.setOutput(output);
+
+        return ResponseEntity.status(HttpStatus.OK).body(output2);
     }
 
     @GetMapping(value = "/get/history/")
@@ -245,6 +268,7 @@ public class AnalyzeController {
 
     /**
      * Deprecated Stuff to get csv etc.
+     *
      * @return
      */
 
@@ -290,7 +314,6 @@ public class AnalyzeController {
 
         return "Andistests";
     }*/
-
     @RequestMapping("/franchise")
     private String getMap() {
         return "franchise";

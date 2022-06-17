@@ -1,11 +1,13 @@
 package com.example.advanceprogramming.analyze.repository;
 
 import com.example.advanceprogramming.analyze.model.Business;
+import com.example.advanceprogramming.analyze.model.LongLatResult;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,6 +51,19 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     @Query("SELECT b FROM Business b WHERE b.stars = ?1 AND b.name LIKE ?2 AND b.state LIKE ?3 AND b.city LIKE ?4 AND b.postal_code LIKE ?5 AND b.categories LIKE ?6 AND b.attributes LIKE ?7")
     List<Business> selectByFilter(double stars, String name, String state, String city, String plz, String category, String attribute);
 
+
+
+    @Query(value = "SELECT b.latitude as latitude1, b.longitude as longitude1 FROM Business b WHERE b.categories LIKE %?1%" +
+            " and b.postal_code LIKE %?2%", nativeQuery = true)
+    List<LongLatResult> selectBusinessPostalCode(String categorie, String postalcode);
+
+    @Query(value = "SELECT b.latitude as latitude1, b.longitude as longitude1 FROM Business b WHERE b.categories LIKE %?1% and b.city LIKE %?2%",
+            nativeQuery = true)
+    List<LongLatResult> selectBusinessCity(String categorie, String city);
+
+    @Query(value = "SELECT b.latitude as latitude1, b.longitude as longitude1 FROM Business b WHERE b.categories LIKE %?1% and b.state LIKE %?2%",
+            nativeQuery = true)
+    List<LongLatResult> selectBusinessState(String categorie, String state);
 
 
     //TODO  Create View hier in Java mit allen Restaurantes in der Postleitzahl mit dem den folgenden Attributen

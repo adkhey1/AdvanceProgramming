@@ -20,6 +20,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private BusinessRepository businessRepo;
 
     @Autowired
+    private AnalyzeCategorieRepository analyzeCategorieRepository;
+
+    @Autowired
     private StateAnalyzeRepository stateAnalyzeRepository;
 
     @Autowired
@@ -227,7 +230,18 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         HashMap<String, Integer> eachState = new HashMap<>();
         HashMap<String, Integer> eachCity = new HashMap<>();
 
+        HashMap<String, Integer> eachPostal1 = new HashMap<>();
+        HashMap<String, Integer> eachState1 = new HashMap<>();
+        HashMap<String, Integer> eachCity1 = new HashMap<>();
+
         for (String x : categories) {
+
+            //CategorieAnaylzeResult psi = analyzeCategorieRepository.selectAllCounts(x, business.getCity(), business.getState(), business.getPostal_code());
+
+            //eachPostal1.put(x, psi.getPostalCode());
+            //eachState1.put(x, psi.getState());
+            //eachCity1.put(x, psi.getCity());
+
             int i = postalCodeAnalyzeRepository.selectAllCategories(x, business.getPostal_code());
             int z = stateAnalyzeRepository.selectAllState(x, business.getState());
             int y = cityAnalyzeRepository.selectAllCity(x, business.getCity());
