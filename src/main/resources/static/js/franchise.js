@@ -1,6 +1,3 @@
-
-
-
 var franchiseList = null;
 
 getFranchiseData()
@@ -30,7 +27,7 @@ async function getFranchiseData() {
 
 
 // Wartet auf die antwort der AJAX calls !!!
-$.when(getFranchiseData()).done(function() {
+$.when(getFranchiseData()).done(function () {
     console.log(franchiseList)
     getTop10Keys()
     getTop10Data()
@@ -41,7 +38,7 @@ $.when(getFranchiseData()).done(function() {
 });
 
 
-function getTop10Keys(){
+function getTop10Keys() {
     var tempArray = [];
     for (let i = 0; i < 10; i++) {
         tempArray.push(franchiseList.countFranchise[i].name1)
@@ -50,7 +47,7 @@ function getTop10Keys(){
     return tempArray
 }
 
-function getTop10Data(){
+function getTop10Data() {
     var tempArray = [];
     for (let i = 0; i < 10; i++) {
         tempArray.push(franchiseList.countFranchise[i].counter)
@@ -60,8 +57,9 @@ function getTop10Data(){
 }
 
 
+function barChart10() {
 
-function barChart10(){
+    let backgroundColor = ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"]
 
     var config = {
         type: "bar",
@@ -73,9 +71,13 @@ function barChart10(){
                 data: getTop10Data(),
                 options: {
                     // This chart will not respond to mousemove, etc
-                    events: ['click']
+                    events: ['click'],
+
+                    onclick
                 },
-                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),getRandomColor(),getRandomColor()],
+                backgroundColor: backgroundColor,
+                borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
+                borderWidth: 1,
                 datalabels: {
                     color: 'blue',
                     anchor: 'end',
@@ -86,7 +88,26 @@ function barChart10(){
         plugins: [ChartDataLabels],
 
         options: {
-
+            onclick: function (e) {
+                console.log(e);
+                for (var i = 0; i < backgroundColor.length; i++) {
+                    backgroundColor[i] = 'red';
+                }
+                backgroundColor[e[0]._index] = 'red';
+                this.update();
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: '#fff'
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: '#fff'
+                    }
+                }],
+            },
 
             responsive: true,
             interaction: {
@@ -114,10 +135,11 @@ function barChart10(){
         config,
     );
 
-    function clickHandler(click){
+    function clickHandler(click) {
         //console.log("click")
-        const points = myChart1.getElementsAtEventForMode(click,'nearest',{
-            intersect: true},true);
+        const points = myChart1.getElementsAtEventForMode(click, 'nearest', {
+            intersect: true
+        }, true);
         //console.log(points)
         //console.log(points[0].index)
         //console.log(franchiseList.countFranchise[points[0].index].name1)
@@ -128,36 +150,47 @@ function barChart10(){
 
     ctx.onclick = clickHandler;
 
+    document.getElementById('pac-man').hidden = true;
+
+    document.getElementById('main-page').hidden = false;
 }
 
 
-function getMoreInfo(restaurant){
+function getMoreInfo(restaurant) {
     var tempList1 = []
     var tempList2 = []
 
     for (let i = 0; i < 10; i++) {
-        if(restaurant===franchiseList.eachAverage[i].name1){
+        if (restaurant === franchiseList.eachAverage[i].name1) {
             //console.log(franchiseList.eachAverage[i].counter)   // Die folge von top Franchise und review count ist unterschiedlich deswegen rausfinden welches restaurant angedrückt wurde und dieses finden
-            document.getElementById('inputEachScore').innerHTML ="average score: "+ franchiseList.eachAverage[i].counter
-            document.getElementById('inputEachScoreSent').innerHTML ="average score Sentiment analysis: "+ franchiseList.avgSentiment[i].counter
-            document.getElementById('inputBestReviewCount').innerHTML ="Anzahl der besten Reviews: "+ franchiseList.countBestReview
+
+            document.getElementById('inputEachScore').value = franchiseList.eachAverage[i].counter.toFixed(4)
+            document.getElementById('inputEachScoreLbl').innerText = "Average Rating: " + franchiseList.eachAverage[i].counter.toFixed(4)
+            document.getElementById('inputEachScoreSent').value = franchiseList.avgSentiment[i].counter.toFixed(4)
+            document.getElementById('inputEachScoreSentLbl').innerText = "Average sentient Rating: " + franchiseList.avgSentiment[i].counter.toFixed(4)
+
+            document.getElementById('inputBestReviewCount').innerHTML = "Anzahl der besten Reviews: " + franchiseList.countBestReview
 
             for (let j = 0; j < 10; j++) {
-                if(restaurant===franchiseList.countBestReview[j].franchise1){
+                if (restaurant === franchiseList.countBestReview[j].franchise1) {
                     //console.log(franchiseList.countBestReview[j].liste[0].counter)
-                    document.getElementById('inputBestReviewCount').innerHTML ="Anzahl 5-Sterne Bewertung: "+ franchiseList.countBestReview[j].liste[0].counter
-                    document.getElementById('inputWorstReviewCount').innerHTML ="Anzahl 0-Sterne Bewertung: "+ franchiseList.countWorstReview[j].liste[0].counter
+                    document.getElementById('inputBestReviewCount').innerHTML = "Number of Restaurants in Top 5 City: " + franchiseList.countBestReview[j].liste[0].name1 +
+                        "              Numbers of Reviews: " + franchiseList.countBestReview[j].liste[0].counter
+                    document.getElementById('inputWorstReviewCount').innerHTML = "Number of Restaurants in Worst 5 City: " + franchiseList.countWorstReview[j].liste[0].name1 +
+                        "              Numbers of Reviews: " + franchiseList.countWorstReview[j].liste[0].counter
                 }
             }
             //console.log(franchiseList.countBestReview[i].liste[0].counter) //
 
+
+            //Todo Key = name / Value = number - for each categorie
             var tempArrKeysCategory = [];
-            var tempArrValuesCategory =[];
+            var tempArrValuesCategory = [];
 
 
             //let addTemp = ""
             for (let j = 0; j < 10; j++) {
-                if (restaurant===franchiseList.countBestReview[j].franchise1){
+                if (restaurant === franchiseList.countBestReview[j].franchise1) {
                     for (let k = 0; k < franchiseList.countCategories[j].liste.length; k++) {
                         //addTemp+=franchiseList.countCategories[j].liste[k].name1
                         //addTemp+=", "
@@ -166,8 +199,6 @@ function getMoreInfo(restaurant){
                     }
                     //console.log(franchiseList.countCategories[j].liste.length)
                 }
-
-
 
 
             }
@@ -182,12 +213,14 @@ function getMoreInfo(restaurant){
     //console.log(franchiseList.bestCity[0].liste[0].name1)
 
     //document.getElementById('1').innerHTML = franchiseList.bestCity[0].liste[0].name1
+
+    //Todo Key = name / Value = number - for 5 best cities
     var tempArrKeys2 = []
     var tempArrValues2 = []
 
-    for (let x = 0; x <10 ; x++) {
+    for (let x = 0; x < 10; x++) {
         //console.log(franchiseList.bestCity[x].franchise1)
-        if(restaurant===franchiseList.bestCity[x].franchise1){
+        if (restaurant === franchiseList.bestCity[x].franchise1) {
             for (let i = 0; i < 5; i++) {
                 tempArrKeys2.push(franchiseList.bestCity[x].liste[i].name1)
                 tempArrValues2.push(franchiseList.bestCity[x].liste[i].counter)
@@ -198,12 +231,13 @@ function getMoreInfo(restaurant){
         }
     }
 
+    //Todo Key = name / Value = number - for 5 worst cities
     var tempArrKeys1 = []
     var tempArrValues1 = []
 
-    for (let x = 0; x <10 ; x++) {
+    for (let x = 0; x < 10; x++) {
         //console.log(franchiseList.bestCity[x].franchise1)
-        if(restaurant===franchiseList.worstCity[x].franchise1){
+        if (restaurant === franchiseList.worstCity[x].franchise1) {
             for (let i = 0; i < 5; i++) {
                 tempArrKeys1.push(franchiseList.worstCity[x].liste[i].name1)
                 tempArrValues1.push(franchiseList.worstCity[x].liste[i].counter)
@@ -218,12 +252,12 @@ function getMoreInfo(restaurant){
     //exampleChart3(div, values, keys)
 
 
-
+    //Todo Key = name / Value = number - for 10 cities with most restaurants
     var tempArrKeys = []
     var tempArrValues = []
-    for (let x = 0; x <10 ; x++) {
+    for (let x = 0; x < 10; x++) {
         //console.log(franchiseList.bestCity[x].franchise1)
-        if(restaurant===franchiseList.storesInCity[x].franchise1){
+        if (restaurant === franchiseList.storesInCity[x].franchise1) {
             for (let i = 0; i < 10; i++) {
                 //console.log(franchiseList.storesInCity[x].liste[i].name1)
                 //console.log(franchiseList.storesInCity[x].liste[i].counter)
@@ -242,19 +276,24 @@ function getMoreInfo(restaurant){
         }
     }
 
+    //Todo Gives the charts a name
     console.log(tempArrKeys)
-    exampleChart2('clickChart',tempArrValues,tempArrKeys)
-    exampleChart3('clickChart1',tempArrValues1,tempArrKeys1)
-    exampleChart4('clickChart2',tempArrValues2,tempArrKeys2)
-    exampleChart5('catChart', tempArrValuesCategory, tempArrKeysCategory)
+    exampleChart2('clickChart', tempArrValues, tempArrKeys) //10 cities with most restaurants
+    exampleChart3('clickChart1', tempArrValues1, tempArrKeys1) //worst 5
+    exampleChart4('clickChart2', tempArrValues2, tempArrKeys2) //best 5
+    exampleChart5('catChart', tempArrValuesCategory, tempArrKeysCategory) //categories
 
     //console.log(franchiseList.eachAverage[number].name1)
     //console.log(franchiseList.eachAverage[number].counter)
+
+    document.getElementById('sub-page').hidden = false;
+
 }
 
 
 var myChart2 = null;
 
+//Todo design for 10 cities with most restaurants
 function exampleChart2(div, values, keys) {
 
 
@@ -266,7 +305,9 @@ function exampleChart2(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
-                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                backgroundColor: ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"],
+                borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
+                borderWidth: 1,
                 datalabels: {
                     color: 'blue',
                     anchor: 'end',
@@ -311,6 +352,7 @@ function exampleChart2(div, values, keys) {
 
 var myChart3 = null;
 
+//Todo 5 worst cities
 function exampleChart3(div, values, keys) {
 
 
@@ -322,7 +364,9 @@ function exampleChart3(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
-                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                backgroundColor: ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"],
+                borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
+                borderWidth: 1,
                 datalabels: {
                     color: 'blue',
                     anchor: 'end',
@@ -367,6 +411,7 @@ function exampleChart3(div, values, keys) {
 
 var myChart4 = null;
 
+//Todo 5 best rated cities
 function exampleChart4(div, values, keys) {
 
 
@@ -378,7 +423,9 @@ function exampleChart4(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
-                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                backgroundColor: ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"],
+                borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
+                borderWidth: 1,
                 datalabels: {
                     color: 'blue',
                     anchor: 'end',
@@ -422,9 +469,9 @@ function exampleChart4(div, values, keys) {
 }
 
 
-
 var myChart5 = null;
 
+//Todo Categories
 function exampleChart5(div, values, keys) {
 
 
@@ -436,7 +483,9 @@ function exampleChart5(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
-                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                backgroundColor: ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"],
+                borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
+                borderWidth: 1,
                 datalabels: {
                     color: 'blue',
                     anchor: 'end',
