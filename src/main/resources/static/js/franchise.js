@@ -165,7 +165,7 @@ function getMoreInfo(restaurant) {
             //console.log(franchiseList.eachAverage[i].counter)   // Die folge von top Franchise und review count ist unterschiedlich deswegen rausfinden welches restaurant angedrückt wurde und dieses finden
 
             document.getElementById('inputEachScore').value = franchiseList.eachAverage[i].counter.toFixed(4)
-            document.getElementById('inputEachScoreLbl').innerText = "Average Rating: " + franchiseList.eachAverage[i].counter.toFixed(4)
+            document.getElementById('inputEachScoreLbl').innerText = "Average star Rating: " + franchiseList.eachAverage[i].counter.toFixed(4)
             document.getElementById('inputEachScoreSent').value = franchiseList.avgSentiment[i].counter.toFixed(4)
             document.getElementById('inputEachScoreSentLbl').innerText = "Average sentient Rating: " + franchiseList.avgSentiment[i].counter.toFixed(4)
 
@@ -377,7 +377,12 @@ function exampleChart3(div, values, keys) {
         plugins: [ChartDataLabels],
         options: {
 
-
+            scales: {
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 5
+                }
+            },
             responsive: true,
             interaction: {
                 mode: 'index',
@@ -436,7 +441,12 @@ function exampleChart4(div, values, keys) {
         plugins: [ChartDataLabels],
         options: {
 
-
+            scales: {
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 5
+                }
+            },
             responsive: true,
             interaction: {
                 mode: 'index',
