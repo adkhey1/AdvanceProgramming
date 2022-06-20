@@ -116,27 +116,42 @@ function initMap() {
 
         marker.addListener("click", () => {
             detailWindow.open(map, marker);
-            $.ajax({
-                'async': "true", 'type': "POST",
-                'global': false,
-                'url': "/map/viewMarker/",
-                //'contentType': "text",
-                //'data':businessID.toString(),
-                'contentType': "application/json; charset=utf-8",
-                'data': JSON.stringify({business_id: businessID}),
-                //dataType: "json",
-                'success': function (data) {
-                    //console.log("test")
-                    //console.log(data)
-                    json_return_marker = data
-                    console.log(businessID)
-                }
-            });
-            setTimeout(function () {
 
-                sideView();
+
+            getInfoOnClick()
+            let run = false
+            function getInfoOnClick(){
+                $.ajax({
+                    'async': "true", 'type': "POST",
+                    'global': false,
+                    'url': "/map/viewMarker/",
+                    //'contentType': "text",
+                    //'data':businessID.toString(),
+                    'contentType': "application/json; charset=utf-8",
+                    'data': JSON.stringify({business_id: businessID}),
+                    //dataType: "json",
+                    'success': function (data) {
+                        //console.log("test")
+                        //console.log(data)
+                        json_return_marker = data
+                        console.log(businessID)
+                        sideView()
+                    }
+                });
+            }
+
+            //console.log(json_return_marker)
+
+            /*
+            setTimeout(function () {
+                console.log(json_return_marker)
+
 
             }, 10000);
+
+
+
+             */
 
 
         })
