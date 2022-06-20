@@ -121,28 +121,28 @@ public class AnalyzeController {
     }
 
     @GetMapping(value = "/categorieMap")
-    public ResponseEntity<?> categorieMap(@RequestBody String business_id, @RequestBody String categorie, @RequestBody int choice) {
+    public ResponseEntity<?> categorieMap(@RequestBody PeersInAreaDTO input) {
 
         //String business_id = "_Gygd2tnDo3t1adE2bsUtQ";
         //String categorie = "Burgers";
         //int choice = 2;
 
-        Business business = businessRepository.findByBusiness_id(business_id);
+        Business business = businessRepository.findByBusiness_id(input.getBusiness_id());
         List<LongLatResult> output = new ArrayList<>();
 
         //choice: 0 = postalcode / 1 = city / 2 = state
-        switch (choice) {
+        switch (input.getChoice()) {
             case 0:
                 String postalcode = business.getPostal_code();
-                output.addAll(businessRepository.selectBusinessPostalCode(categorie, postalcode));
+                output.addAll(businessRepository.selectBusinessPostalCode(input.getCategorie(), postalcode));
                 break;
             case 1:
                 String city = business.getCity();
-                output.addAll(businessRepository.selectBusinessCity(categorie, city));
+                output.addAll(businessRepository.selectBusinessCity(input.getCategorie(), city));
                 break;
             case 2:
                 String state = business.getState();
-                output.addAll(businessRepository.selectBusinessState(categorie, state));
+                output.addAll(businessRepository.selectBusinessState(input.getCategorie(), state));
                 break;
             default:
                 //nothing
