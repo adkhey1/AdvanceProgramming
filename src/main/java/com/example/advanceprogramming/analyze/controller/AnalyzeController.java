@@ -120,7 +120,7 @@ public class AnalyzeController {
         return analyzeService.addBusinessToList(id.getBusiness_id(), user.getId(), 1);
     }
 
-    @GetMapping(value = "/categorieMap")
+    @GetMapping(value = "/categorieMap", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> categorieMap(@RequestBody PeersInAreaDTO input) {
 
         //String business_id = "_Gygd2tnDo3t1adE2bsUtQ";
