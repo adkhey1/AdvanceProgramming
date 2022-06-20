@@ -1,0 +1,62 @@
+
+#gmaps {
+    background-color: lightskyblue;
+}
+
+#map {
+    height: 500px;
+    width: auto;
+
+    margin-left: 24px;
+    margin-right: 24px;
+    box-shadow: 20px 20px 20px grey;
+
+
+}
+
+#map1 {
+
+
+    height: 500px;
+    width: 500px;
+    box-shadow: 20px 20px 20px grey;
+
+
+}
+
+#map2 {
+
+
+    height: 500px;
+    width: 500px;
+    box-shadow: 20px 20px 20px grey;
+
+
+}
+
+#map3 {
+
+
+    height: 500px;
+    width: 500px;
+    box-shadow: 20px 20px 20px grey;
+
+
+}
+
+
+#filterNew {
+
+    position: relative;
+
+
+    height: auto;
+    width: auto;
+
+    background-color: lightgrey;
+    font-size: 16px;
+    border: 2px solid black;
+    box-shadow: 20px 20px 20px grey;
+
+
+}

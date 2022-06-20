@@ -145,7 +145,7 @@
 <button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
 </div>
 
-<link rel="stylesheet" type="text/css" href="/css/style.css"/>
+<link rel="stylesheet" type="text/css" href="/css/map.css"/>
 
 <div id="map"></div>
 <div id="test"></div>
@@ -169,9 +169,25 @@
 
         </select>
     </div>
-    <div id="sideWindow1inner"></div>
-    <canvas id="chartWindow1"></canvas>
-    <canvas id="lineComp1"></canvas>
+    <div class="container">
+    <div class="row">
+         <div class="col order first">
+        <div id="sideWindow1inner" width="400" height="200">
+    </div>
+
+    <div class="col order-2" id="chartwindow11">
+        <canvas id="chartWindow1" width="400" height="200"></canvas>
+    </div>
+
+    <div class="col order-3" id="lineComp11">
+        <canvas id="lineComp1" width="400" height="200"></canvas>
+    </div>
+         </div></div>
+    </div>
+
+
+
+
     <div id="map1"></div>
 
 
