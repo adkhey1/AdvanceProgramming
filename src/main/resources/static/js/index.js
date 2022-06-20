@@ -331,6 +331,7 @@ function updateChartbyDropdown1(){
          values = Array.from(hsMap.values());
          keys = Array.from(hsMap.keys());
         currCoice1=0
+        document.getElementById('map1').style.display = 'none';
         exampleChart1('chartWindow1',values,keys)
     }
     if(valueDropdown.value==1.2){
@@ -338,6 +339,7 @@ function updateChartbyDropdown1(){
          values = Array.from(hsMap.values());
          keys = Array.from(hsMap.keys());
         currCoice1=1
+        document.getElementById('map1').style.display = 'none';
         exampleChart1('chartWindow1',values,keys)
     }
     if(valueDropdown.value==1.3){
@@ -345,6 +347,7 @@ function updateChartbyDropdown1(){
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
         currCoice1=2
+        document.getElementById('map1').style.display = 'none';
         exampleChart1('chartWindow1',values,keys)
     }
 
@@ -364,6 +367,7 @@ function updateChartbyDropdown2(){
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
         currCoice2=0
+        document.getElementById('map2').style.display = 'none';
         exampleChart2('chartWindow2',values,keys)
     }
     if(valueDropdown.value==2.2){
@@ -371,6 +375,7 @@ function updateChartbyDropdown2(){
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
         currCoice2=1
+        document.getElementById('map2').style.display = 'none';
         exampleChart2('chartWindow2',values,keys)
     }
     if(valueDropdown.value==2.3){
@@ -378,6 +383,7 @@ function updateChartbyDropdown2(){
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
         currCoice2=2
+        document.getElementById('map2').style.display = 'none';
         exampleChart2('chartWindow2',values,keys)
 
     }
@@ -398,6 +404,7 @@ function updateChartbyDropdown3(){
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
         currCoice3=0
+        document.getElementById('map3').style.display = 'none';
         exampleChart3('chartWindow3',values,keys)
     }
     if(valueDropdown.value==3.2){
@@ -405,6 +412,7 @@ function updateChartbyDropdown3(){
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
         currCoice3=1
+        document.getElementById('map3').style.display = 'none';
         exampleChart3('chartWindow3',values,keys)
     }
     if(valueDropdown.value==3.3){
@@ -412,6 +420,7 @@ function updateChartbyDropdown3(){
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
         currCoice3=2
+        document.getElementById('map3').style.display = 'none';
         exampleChart3('chartWindow3',values,keys)
     }
 
@@ -478,7 +487,7 @@ function exampleChart1(div, values, keys) {
         console.log(points)
         console.log(points[0].index)
         console.log(keys[points[0].index])
-        initializeMap(json_return_markerArrTemp[0].business_id,keys[points[0].index],currCoice1)
+        initializeMap1(json_return_markerArrTemp[0].business_id,keys[points[0].index],currCoice1,'map1')
 
 
         //console.log(keys[points[0].index])
@@ -553,7 +562,8 @@ function exampleChart2(div, values, keys) {
         console.log(points)
         console.log(points[0].index)
         console.log(keys[points[0].index])
-        initializeMap(json_return_markerArrTemp[1].business_id,keys[points[0].index],currCoice2)
+        initializeMap2(json_return_markerArrTemp[1].business_id,keys[points[0].index],currCoice2,'map2')
+
 
 
         //console.log(keys[points[0].index])
@@ -628,7 +638,7 @@ function exampleChart3(div, values, keys) {
         console.log(points)
         console.log(points[0].index)
         console.log(keys[points[0].index])
-        initializeMap(json_return_markerArrTemp[2].business_id,keys[points[0].index],currCoice2)
+        initializeMap3(json_return_markerArrTemp[2].business_id,keys[points[0].index],currCoice3,'map3')
 
 
         //console.log(keys[points[0].index])
@@ -904,8 +914,11 @@ function comparisonChartWithCategory(dataArr,label,div,position) {
 
 
 document.getElementById('map1').style.display = 'none';
+document.getElementById('map2').style.display = 'none';
+document.getElementById('map3').style.display = 'none';
 
-function initializeMap(business_id,categorie,choice) {
+//TODO ---- div --- windownumber---
+function initializeMap1(business_id,categorie,choice,div) {
 
     var latLongMap;
 
@@ -920,7 +933,9 @@ function initializeMap(business_id,categorie,choice) {
             center: new google.maps.LatLng(40.560109, -100.573589),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-        var map1 = new google.maps.Map(document.getElementById("map1"), myOptions);
+
+
+        var map1 = new google.maps.Map(document.getElementById(div), myOptions);
 
 
 
@@ -940,7 +955,7 @@ function initializeMap(business_id,categorie,choice) {
         }
 
 
-        document.getElementById('map1').style.display = 'block';
+        document.getElementById(div).style.display = 'block';
 
     });
 
@@ -967,13 +982,137 @@ function initializeMap(business_id,categorie,choice) {
         });
     }
 
+}
+
+function initializeMap2(business_id,categorie,choice,div) {
+
+    var latLongMap;
+
+    getLatLongAjax()
+
+    $.when(getLatLongAjax()).done(function () {
+        var myLatlngSideView
+        console.log(latLongMap)
+
+        var myOptions = {
+            zoom: 4,
+            center: new google.maps.LatLng(40.560109, -100.573589),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+
+        var map1 = new google.maps.Map(document.getElementById(div), myOptions);
 
 
 
 
+        for (let i = 0; i < latLongMap.output.length; i++) {
+            myLatlngSideView = new google.maps.LatLng(latLongMap.output[i].latitude1, latLongMap.output[i].longitude1);
+            addMarkerSideViewMap(myLatlngSideView)
+            //console.log(myLatlngSideView)
+        }
+
+        function addMarkerSideViewMap(latLongPos) {
+            const marker = new google.maps.Marker({
+                position: latLongPos,
+                map: map1
+            });
+
+        }
+
+
+        document.getElementById(div).style.display = 'block';
+
+    });
+
+    async function getLatLongAjax() {
+
+        await $.ajax({
+            'async': "false",
+            'type': "POST",
+            'global': false,
+            'url': "/categorieMap",
+            //'contentType': "text",
+            //data:'business_id'+ business_id+'categorie'+categorie+'choice'+choice,
+            'data':JSON.stringify({"business_id" : business_id, "categorie" : categorie,"choice" : choice}),
+            'contentType': "application/json; charset=utf-8",
+            //'data': JSON.stringify({business_id: businessID}),
+            //dataType: "json",
+            'success': function (data) {
+                //console.log("test")
+                //console.log(data)
+                latLongMap = data
+
+
+            }
+        });
+    }
+
+}
+
+function initializeMap3(business_id,categorie,choice,div) {
+
+    var latLongMap;
+
+    getLatLongAjax()
+
+    $.when(getLatLongAjax()).done(function () {
+        var myLatlngSideView
+        console.log(latLongMap)
+
+        var myOptions = {
+            zoom: 4,
+            center: new google.maps.LatLng(40.560109, -100.573589),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+
+        var map1 = new google.maps.Map(document.getElementById(div), myOptions);
 
 
 
+
+        for (let i = 0; i < latLongMap.output.length; i++) {
+            myLatlngSideView = new google.maps.LatLng(latLongMap.output[i].latitude1, latLongMap.output[i].longitude1);
+            addMarkerSideViewMap(myLatlngSideView)
+            //console.log(myLatlngSideView)
+        }
+
+        function addMarkerSideViewMap(latLongPos) {
+            const marker = new google.maps.Marker({
+                position: latLongPos,
+                map: map1
+            });
+
+        }
+
+
+        document.getElementById(div).style.display = 'block';
+
+    });
+
+    async function getLatLongAjax() {
+
+        await $.ajax({
+            'async': "false",
+            'type': "POST",
+            'global': false,
+            'url': "/categorieMap",
+            //'contentType': "text",
+            //data:'business_id'+ business_id+'categorie'+categorie+'choice'+choice,
+            'data':JSON.stringify({"business_id" : business_id, "categorie" : categorie,"choice" : choice}),
+            'contentType': "application/json; charset=utf-8",
+            //'data': JSON.stringify({business_id: businessID}),
+            //dataType: "json",
+            'success': function (data) {
+                //console.log("test")
+                //console.log(data)
+                latLongMap = data
+
+
+            }
+        });
+    }
 
 }
 
