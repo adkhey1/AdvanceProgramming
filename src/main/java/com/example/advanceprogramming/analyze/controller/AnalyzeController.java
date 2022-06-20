@@ -121,11 +121,11 @@ public class AnalyzeController {
     }
 
     @GetMapping(value = "/categorieMap")
-    public ResponseEntity<?> categorieMap(/*@RequestBody String business_id, @RequestBody String categorie, @RequestBody int choice*/) {
+    public ResponseEntity<?> categorieMap(@RequestBody String business_id, @RequestBody String categorie, @RequestBody int choice) {
 
-        String business_id = "_Gygd2tnDo3t1adE2bsUtQ";
-        String categorie = "Burgers";
-        int choice = 2;
+        //String business_id = "_Gygd2tnDo3t1adE2bsUtQ";
+        //String categorie = "Burgers";
+        //int choice = 2;
 
         Business business = businessRepository.findByBusiness_id(business_id);
         List<LongLatResult> output = new ArrayList<>();

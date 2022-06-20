@@ -3,6 +3,9 @@
 let states = null;
 var categories = null;
 let attributes = null;
+let currCoice1 = 0;
+
+
 
 async function loadStates() {
     if (states == null) {
@@ -146,6 +149,7 @@ function initMap() {
         for (let i = 0; i < json_data_LatLongArray.length; i++) {
             myLatlng = new google.maps.LatLng(json_data_LatLongArray[i].latitude, json_data_LatLongArray[i].longitude);
             addMarker(myLatlng, json_data_LatLongArray[i].business_id)
+
 
         }
 
@@ -303,6 +307,9 @@ function show3() {
 }
 
 //TODO Chart für jeden case, vom Value rausfinden welches Chart// Values aus der Hashmap Rausfiltern
+
+
+
 function updateChartbyDropdown1(){
     var hsMap;
     var values;
@@ -321,18 +328,21 @@ function updateChartbyDropdown1(){
          hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countPostalcode))
          values = Array.from(hsMap.values());
          keys = Array.from(hsMap.keys());
+        currCoice1=0
         exampleChart1('chartWindow1',values,keys)
     }
     if(valueDropdown.value==1.2){
          hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countCity))
          values = Array.from(hsMap.values());
          keys = Array.from(hsMap.keys());
+        currCoice1=1
         exampleChart1('chartWindow1',values,keys)
     }
     if(valueDropdown.value==1.3){
         hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countState))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
+        currCoice1=2
         exampleChart1('chartWindow1',values,keys)
     }
 
@@ -456,13 +466,21 @@ function exampleChart1(div, values, keys) {
     function clickHandler(click){
         const points = myChart1.getElementsAtEventForMode(click,'nearest',{
             intersect: true},true);
+
         console.log(points)
         console.log(points[0].index)
         console.log(keys[points[0].index])
+        initializeMap(json_return_markerArrTemp[0].business_id,keys[points[0].index],currCoice1)
 
+        console.log("ddddd")
+        console.log(keys[points[0].index])
+        console.log(json_return_markerArrTemp[0].business_id)
+        console.log(currCoice1)
     }
     ctx.onclick = clickHandler;
 }
+
+
 
 function exampleChart2(div, values, keys) {
 
@@ -829,6 +847,89 @@ function comparisonChartWithCategory(dataArr,label,div,position) {
 }
 
 
+
+
+//var map1;
+
+
+
+document.getElementById('map1').style.display = 'none';
+
+function initializeMap(business_id,categorie,choice) {
+
+    var latLongMap;
+
+    getLatLongAjax()
+
+    $.when(getLatLongAjax()).done(function () {
+        var myLatlngSideView
+        console.log(latLongMap)
+
+        var myOptions = {
+            zoom: 4,
+            center: new google.maps.LatLng(40.560109, -100.573589),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map1 = new google.maps.Map(document.getElementById("map1"), myOptions);
+
+
+
+
+        for (let i = 0; i < latLongMap.output.length; i++) {
+            myLatlngSideView = new google.maps.LatLng(latLongMap.output[i].latitude1, latLongMap.output[i].longitude1);
+            addMarkerSideViewMap(myLatlngSideView)
+            //console.log(myLatlngSideView)
+        }
+
+        function addMarkerSideViewMap(latLongPos) {
+            const marker = new google.maps.Marker({
+                position: latLongPos,
+                map: map1
+            });
+
+        }
+
+
+        document.getElementById('map1').style.display = 'block';
+
+    });
+
+    async function getLatLongAjax() {
+
+        await $.ajax({
+            'async': "false",
+            'type': "GET",
+            'global': false,
+            'url': "/categorieMap",
+            //'contentType': "text",
+            'data':{ business_id : business_id, categorie : categorie,choice : choice  },
+            'contentType': "application/json; charset=utf-8",
+            //'data': JSON.stringify({business_id: businessID}),
+            //dataType: "json",
+            'success': function (data) {
+                //console.log("test")
+                //console.log(data)
+                latLongMap = data
+
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -837,6 +938,13 @@ function getRandomColor() {
     }
     return color;
 }
+
+
+
+
+
+
+
 
 ///////////////////////////////////////////////////////
 

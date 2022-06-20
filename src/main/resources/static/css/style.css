@@ -132,6 +132,16 @@ h5 {
 
 }
 
+#map1 {
+
+
+    height: 500px;
+    width: 500px;
+    box-shadow: 20px 20px 20px grey;
+
+
+}
+
 
 #filterNew {
 
