@@ -4,6 +4,8 @@ let states = null;
 var categories = null;
 let attributes = null;
 let currCoice1 = 0;
+let currCoice2 = 0;
+let currCoice3 = 0;
 
 
 
@@ -361,18 +363,21 @@ function updateChartbyDropdown2(){
         hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
+        currCoice2=0
         exampleChart2('chartWindow2',values,keys)
     }
     if(valueDropdown.value==2.2){
         hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countCity))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
+        currCoice2=1
         exampleChart2('chartWindow2',values,keys)
     }
     if(valueDropdown.value==2.3){
         hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countState))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
+        currCoice2=2
         exampleChart2('chartWindow2',values,keys)
 
     }
@@ -392,18 +397,21 @@ function updateChartbyDropdown3(){
         hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
+        currCoice3=0
         exampleChart3('chartWindow3',values,keys)
     }
     if(valueDropdown.value==3.2){
         hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countCity))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
+        currCoice3=1
         exampleChart3('chartWindow3',values,keys)
     }
     if(valueDropdown.value==3.3){
         hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countState))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
+        currCoice3=2
         exampleChart3('chartWindow3',values,keys)
     }
 
@@ -472,9 +480,9 @@ function exampleChart1(div, values, keys) {
         console.log(keys[points[0].index])
         initializeMap(json_return_markerArrTemp[0].business_id,keys[points[0].index],currCoice1)
 
-        console.log("ddddd")
-        console.log(keys[points[0].index])
-        console.log(json_return_markerArrTemp[0].business_id)
+
+        //console.log(keys[points[0].index])
+        //console.log(json_return_markerArrTemp[0].business_id)
         console.log(currCoice1)
     }
     ctx.onclick = clickHandler;
@@ -493,6 +501,9 @@ function exampleChart2(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
+                options: {
+                    events: ['click']
+                },
                 backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
                 datalabels: {
                     color: 'blue',
@@ -528,10 +539,28 @@ function exampleChart2(div, values, keys) {
     if (myChart2 != null) {
         myChart2.destroy();
     }
+    const ctx = document.getElementById(div)
     myChart2 = new Chart(
         document.getElementById(div),
-        config
+        config,
+        ctx
     );
+
+    function clickHandler(click){
+        const points = myChart2.getElementsAtEventForMode(click,'nearest',{
+            intersect: true},true);
+
+        console.log(points)
+        console.log(points[0].index)
+        console.log(keys[points[0].index])
+        initializeMap(json_return_markerArrTemp[1].business_id,keys[points[0].index],currCoice2)
+
+
+        //console.log(keys[points[0].index])
+        //console.log(json_return_markerArrTemp[0].business_id)
+        console.log(currCoice2)
+    }
+    ctx.onclick = clickHandler;
 
 
 }
@@ -546,6 +575,9 @@ function exampleChart3(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
+                options: {
+                    events: ['click']
+                },
                 backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
                 datalabels: {
                     color: 'blue',
@@ -582,10 +614,28 @@ function exampleChart3(div, values, keys) {
     if (myChart3 != null) {
         myChart3.destroy();
     }
+    const ctx = document.getElementById(div)
     myChart3 = new Chart(
         document.getElementById(div),
-        config
+        config,
+        ctx
     );
+
+    function clickHandler(click){
+        const points = myChart3.getElementsAtEventForMode(click,'nearest',{
+            intersect: true},true);
+
+        console.log(points)
+        console.log(points[0].index)
+        console.log(keys[points[0].index])
+        initializeMap(json_return_markerArrTemp[2].business_id,keys[points[0].index],currCoice2)
+
+
+        //console.log(keys[points[0].index])
+        //console.log(json_return_markerArrTemp[0].business_id)
+        console.log(currCoice2)
+    }
+    ctx.onclick = clickHandler;
 
 }
 
