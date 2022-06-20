@@ -204,7 +204,7 @@ public class AnalyzeController {
         log.debug(">>>> recieved Request");
         List<BusinessDTO> businesses = analyzeService.getMarkerFromFilter(input);
 
-        //log.debug(businesses.toString());
+        log.debug(businesses.toString());
 
 
         //MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);

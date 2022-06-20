@@ -316,10 +316,29 @@ body {
 
 }
 
+
+
+
+
 /*
 * {
     box-sizing: border-box;
 }
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 
 .openBtn {
     display: flex;
@@ -336,19 +355,7 @@ body {
     position: fixed;
 }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
 
 .loginPopup {
     position: relative;
@@ -410,7 +417,7 @@ body {
 
 
 
-*/
+
 
 * {
     box-sizing: border-box;

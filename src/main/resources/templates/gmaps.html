@@ -33,9 +33,7 @@
             async></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <!--
-    <script>window.onload = closeForm();</script>
--->
+
 
 </head>
 <body>
@@ -79,13 +77,13 @@
     </div>
 </nav>
 
+<button class="openButton" id="open" onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter</button>
+<button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
 
 <form id="filterNew">
-    <button class="openButton" id="open" onclick="openForm(), hiddenOpenButton()">Open Filter</button>
 
     <div class="loginPopup">
         <div class="formPopup" id="popupForm">
-            <button class="close" id="close" onclick="showOpenButton(),closeForm()">Close Filter</button>
             <h2>Select your filter</h2>
 
             <div class="row">
@@ -208,8 +206,17 @@
 
 <script>
 
+    window.addEventListener('load', () => hiddenCloseButton())
+
+
+
     function hiddenOpenButton() {
         document.getElementById("open").style.visibility = "hidden";
+
+    }
+
+    function hiddenCloseButton() {
+        document.getElementById("close").style.visibility = "hidden";
 
     }
 
@@ -217,6 +224,21 @@
         document.getElementById("open").style.visibility = "visible";
 
     }
+    function showCloseButton() {
+        document.getElementById("close").style.visibility = "visible";
+
+    }
+
+    function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+    }
+
+
+
 
 </script>
 
