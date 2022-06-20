@@ -948,11 +948,12 @@ function initializeMap(business_id,categorie,choice) {
 
         await $.ajax({
             'async': "false",
-            'type': "GET",
+            'type': "POST",
             'global': false,
             'url': "/categorieMap",
             //'contentType': "text",
-            'data':{ business_id : business_id, categorie : categorie,choice : choice  },
+            //data:'business_id'+ business_id+'categorie'+categorie+'choice'+choice,
+            'data':JSON.stringify({"business_id" : business_id, "categorie" : categorie,"choice" : choice}),
             'contentType': "application/json; charset=utf-8",
             //'data': JSON.stringify({business_id: businessID}),
             //dataType: "json",
