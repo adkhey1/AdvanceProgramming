@@ -62,7 +62,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public BasicAnalysisDTO parseBasicAnalysisToDTO(Business input, HashMap<String, Integer> countPostalcode,
-                                                    HashMap<String, Integer> countState,  HashMap<String, Integer> countCity) {
+                                                    HashMap<String, Integer> countState, HashMap<String, Integer> countCity) {
         BasicAnalysisDTO dto = new BasicAnalysisDTO();
 
         if (input != null) {
@@ -204,8 +204,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         if (input.getName().equals("")) {
             input.setName("%");
         }
+        if(input.getStars().equals("")){
+            input.setStars("%");
+        }
 
-        List<Business> rawList = businessRepo.selectByFilter(Double.parseDouble(input.getStars()), input.getName(), input.getState(), input.getCity(), input.getPlz(), category, attribute);
+        List<Business> rawList = businessRepo.selectByFilter(input.getStars(), input.getName(), input.getState(), input.getCity(), input.getPlz(), category, attribute);
 
         List<BusinessDTO> output = new ArrayList<>();
         for (Business b : rawList) {
@@ -322,7 +325,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         List<FranchiseAnalyzeResult2> storesInCity = new ArrayList<>(10);
 
-        for(int i = 0; i<= countFranchise.size() -1 ; i++){
+        for (int i = 0; i <= countFranchise.size() - 1; i++) {
 
             String input = countFranchise.get(i).getName1();
 
@@ -391,7 +394,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             countCategorie.add(categorie);
 
 
-
             FranchiseAnalyzeResult2 test = new FranchiseAnalyzeResult2() {
                 @Override
                 public String getFranchise1() {
@@ -424,7 +426,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
             countBestReviews.add(test2);
             bestCity.add(test);
-
 
 
             FranchiseAnalyzeResult2 test3 = new FranchiseAnalyzeResult2() {
@@ -521,7 +522,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         n = allBusinesses.size();
 
-        for(int i = 0; i < allBusinesses.size(); i++){
+        for (int i = 0; i < allBusinesses.size(); i++) {
             avgAttributeCount = 0;
 
             temp = allBusinesses.get(i);
@@ -536,7 +537,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         try {
             String headline = "title,corr,";
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Ein Fehler ist aufgetreten");
         }
 

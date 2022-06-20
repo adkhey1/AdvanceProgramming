@@ -37,7 +37,7 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
     @Query(value = "SELECT * FROM Business b  LIMIT 1000",
             nativeQuery = true)
-    ArrayList<Business> selectfirst100();
+    ArrayList<Business> selectfirst1000();
 
     @Query(value = "SELECT category, count(category) as anzahl FROM categories GROUP BY category ORDER BY anzahl DESC LIMIT 200;",
     nativeQuery = true)
@@ -48,8 +48,9 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     List<String> selectStates();
 
 
-    @Query("SELECT b FROM Business b WHERE b.stars = ?1 AND b.name LIKE ?2 AND b.state LIKE ?3 AND b.city LIKE ?4 AND b.postal_code LIKE ?5 AND b.categories LIKE ?6 AND b.attributes LIKE ?7")
-    List<Business> selectByFilter(double stars, String name, String state, String city, String plz, String category, String attribute);
+    @Query(value = "SELECT * FROM Business b WHERE b.stars LIKE ?1 AND b.name LIKE ?2 AND b.state LIKE ?3 AND b.city LIKE ?4 AND b.postal_code LIKE ?5 AND b.categories LIKE ?6 AND b.attributes LIKE ?7",
+    nativeQuery = true)
+    List<Business> selectByFilter(String stars, String name, String state, String city, String plz, String category, String attribute);
 
 
 

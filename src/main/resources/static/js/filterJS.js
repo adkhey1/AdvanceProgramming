@@ -30,6 +30,7 @@ function searchText() {
         url: "http://localhost:8080/restaurant/filtered/",
         data: JSON.stringify(search), // Note it is important
         success: function (result) {
+            loadFiltered(result)
             // do what ever you want with data
         }
     });
@@ -54,7 +55,11 @@ async function fillDropdown() {
     let fruits = states;
 
     let options = fruits.map(fruit => `<option value=${fruit.toLowerCase()}>${fruit}</option>`).join('\n');
+    let optionNone = document.createElement('option');
+    optionNone.innerHTML = "all";
+    optionNone.value = "";
     document.getElementById("state").innerHTML = options;
+    document.getElementById("state").appendChild(optionNone)
 }
 
 

@@ -201,11 +201,8 @@ public class AnalyzeController {
 
     @PostMapping(value = "/restaurant/filtered/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurants(@RequestBody FilterDTO input) {
-        log.debug(">>>> recieved Request");
+
         List<BusinessDTO> businesses = analyzeService.getMarkerFromFilter(input);
-
-        log.debug(businesses.toString());
-
 
         //MarkerDTO[] output = markerList.toArray(new MarkerDTO[0]);
 
@@ -222,10 +219,10 @@ public class AnalyzeController {
     }
 
 
-    @PostMapping(value = "/100restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/map/restaurants/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listRestaurantsTemp() {
 
-        List<Business> businesses = businessRepository.selectfirst100();
+        List<Business> businesses = businessRepository.selectfirst1000();
 
         List<MarkerDTO> markerList = new ArrayList<>();
         MarkerDTO temp;
@@ -235,6 +232,7 @@ public class AnalyzeController {
             temp.setLatitude(b.getLatitude());
             temp.setLongitude(b.getLongitude());
             temp.setBusiness_id(b.getBusiness_id());
+            temp.setName(b.getName());
 
             markerList.add(temp);
         }
@@ -264,6 +262,11 @@ public class AnalyzeController {
         List<String> output = attributesRepository.selectAllAttributes("True", "False");
 
         return ResponseEntity.status(HttpStatus.OK).body(output);
+    }
+
+    @RequestMapping("/franchise")
+    private String getMap() {
+        return "franchise";
     }
 
     /**
@@ -314,10 +317,7 @@ public class AnalyzeController {
 
         return "Andistests";
     }*/
-    @RequestMapping("/franchise")
-    private String getMap() {
-        return "franchise";
-    }
+
 
     /*@GetMapping("/test/simon")
     private void testSimon(){
