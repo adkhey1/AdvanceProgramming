@@ -137,11 +137,19 @@ function barChart10() {
 
     function clickHandler(click) {
         //console.log("click")
+        const color = ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"]
+
+        myChart1.config.data.datasets[0].backgroundColor = color;
         const points = myChart1.getElementsAtEventForMode(click, 'nearest', {
             intersect: true
         }, true);
         //console.log(points)
         //console.log(points[0].index)
+
+        if (points[0]) {
+            myChart1.data.datasets[points[0].datasetIndex].backgroundColor[points[0].index] = 'Green'
+        }
+        myChart1.update();
         //console.log(franchiseList.countFranchise[points[0].index].name1)
 
         getMoreInfo(franchiseList.countFranchise[points[0].index].name1)
@@ -175,9 +183,9 @@ function getMoreInfo(restaurant) {
                 if (restaurant === franchiseList.countBestReview[j].franchise1) {
                     //console.log(franchiseList.countBestReview[j].liste[0].counter)
                     document.getElementById('inputBestReviewCount').innerHTML = "Number of Restaurants in Top 5 City: " + franchiseList.countBestReview[j].liste[0].name1 +
-                        "              Numbers of Reviews: " + franchiseList.countBestReview[j].liste[0].counter
+                        "\n Numbers of Reviews: " + franchiseList.countBestReview[j].liste[0].counter
                     document.getElementById('inputWorstReviewCount').innerHTML = "Number of Restaurants in Worst 5 City: " + franchiseList.countWorstReview[j].liste[0].name1 +
-                        "              Numbers of Reviews: " + franchiseList.countWorstReview[j].liste[0].counter
+                        "\n Numbers of Reviews: " + franchiseList.countWorstReview[j].liste[0].counter
                 }
             }
             //console.log(franchiseList.countBestReview[i].liste[0].counter) //
