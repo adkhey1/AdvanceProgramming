@@ -77,8 +77,16 @@
     </div>
 </nav>
 
+<div class="row justify-content-between">
+    <div class="col-4">
+        One of two columns
+    </div>
+    <div class="col-4">
+        One of two columns
+    </div>
+</div>
+
 <button class="openButton" id="open" onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter</button>
-<button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
 
 <form id="filterNew">
 
@@ -135,6 +143,7 @@
         </div>
     </div>
 </form>
+<button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css"/>
@@ -207,6 +216,8 @@
 <script>
 
     window.addEventListener('load', () => hiddenCloseButton())
+    window.addEventListener('load', () => closeForm())
+
 
 
 

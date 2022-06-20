@@ -493,3 +493,9 @@ input[type=submit] {
 select {
     width: 120px;
 }
+
+
+
+#close {
+    align: center;
+}
