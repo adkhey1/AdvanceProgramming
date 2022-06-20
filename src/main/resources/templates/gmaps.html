@@ -48,13 +48,14 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link text-white active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link text-white active" aria-current="page" href="index">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="franchise">Analyze</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/franchise">Analyze</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
+                    <a class="nav-link" href="about">About</a>
                 </li>
 
                 <li class="nav-item dropdown">
@@ -63,13 +64,14 @@
                         Account
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="SignUp.html">Sign Up</a></li>
-                        <li><a class="dropdown-item" href="SignIn.html">Sign In</a></li>
+                        <li><a class="dropdown-item" href="register">Sign Up</a></li>
+                        <li><a class="dropdown-item" href="signin">Sign In</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                     </ul>
                 </li>
+
                 </lo>
             </ul>
 
@@ -77,17 +79,12 @@
     </div>
 </nav>
 
-<div class="row justify-content-between">
-    <div class="col-4">
-        One of two columns
-    </div>
-    <div class="col-4">
-        One of two columns
-    </div>
-</div>
 
+<br>
+<br>
+<div class="openDiv">
 <button class="openButton" id="open" onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter</button>
-
+</div>
 <form id="filterNew">
 
     <div class="loginPopup">
@@ -143,8 +140,10 @@
         </div>
     </div>
 </form>
-<button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
 
+<div class="closeDiv">
+<button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
+</div>
 
 <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 

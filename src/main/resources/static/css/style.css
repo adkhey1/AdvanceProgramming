@@ -265,7 +265,7 @@ body {
 
 
 #container {
-    width: 100vw;
+    width: 10vw;
     height: 100vh;
 
     display: grid;
@@ -428,11 +428,12 @@ body {
 }
 
 /*the container must be positioned relative:*/
+/*
 .autocomplete {
     position: relative;
     display: inline-block;
 }
-
+*/
 input {
     border: 1px solid transparent;
     background-color: #f1f1f1;
@@ -483,6 +484,7 @@ input[type=submit] {
 
 
 .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -497,5 +499,35 @@ select {
 
 
 #close {
-    align: center;
+
+}
+.closeDiv {
+    text-align: center;
+}
+.openDiv {
+    text-align: center;
+}
+
+.nav-item{
+    position: relative;
+
+
+    height: auto;
+    width: auto;
+    background-color: #1d1d1d;
+}
+
+
+
+.nav-itemX{
+    position: relative;
+
+
+    height: auto;
+    width: auto;
+    background-color: #1d1d1d;
+}
+.collapse navbar-collapse{
+
+    background-color: #fed75a;
 }
