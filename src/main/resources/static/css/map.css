@@ -1,5 +1,5 @@
 
-#gmaps {
+body {
     background-color: lightskyblue;
 }
 
@@ -17,8 +17,8 @@
 #map1 {
 
 
-    height: 500px;
-    width: 500px;
+    height: 150px;
+    width: auto;
     box-shadow: 20px 20px 20px grey;
 
 
@@ -27,8 +27,8 @@
 #map2 {
 
 
-    height: 500px;
-    width: 500px;
+    height: 150px;
+    width: auto;
     box-shadow: 20px 20px 20px grey;
 
 
@@ -37,8 +37,8 @@
 #map3 {
 
 
-    height: 500px;
-    width: 500px;
+    height: 150px;
+    width: auto;
     box-shadow: 20px 20px 20px grey;
 
 
