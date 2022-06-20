@@ -48,7 +48,7 @@ function initMapAfterFilter() {
     })
 
 
-    function addMarker(latLongPos, businessID) {
+    function addMarker(latLongPos, businessID, name) {
         const marker = new google.maps.Marker({
             position: latLongPos,
 
@@ -58,7 +58,7 @@ function initMapAfterFilter() {
         });
 
         const detailWindow = new google.maps.InfoWindow({
-            content: businessID
+            content: name
         });
 
         marker.addListener("click", () => {
@@ -90,7 +90,7 @@ function initMapAfterFilter() {
 
     for (let i = 0; i < json_data_LatLongArray.length; i++) {
         myLatlng = new google.maps.LatLng(filteredJsonData[i].latitude, filteredJsonData[i].longitude);
-        addMarker(myLatlng, filteredJsonData[i].business_id)
+        addMarker(myLatlng, filteredJsonData[i].business_id, filteredJsonData[i].name)
 
 
     }
@@ -159,7 +159,6 @@ loadAttributes()
 loadCategories()
 
 // TODO Code mit Variabel übergabe Problem
-
 
 
 // TODO Code mit Variabel übergabe Problem END
@@ -245,13 +244,6 @@ function initMap() {
 
     }
 
-
-    //var myLatlng = new google.maps.LatLng(json_data_LatLongArray[1].latitude, json_data_LatLongArray[1].latitude);
-    //addMarker(myLatlng);
-    //addMarker({lat: 52.5200, lng: 13.4050});
-    //addMarker({lat: 51.5072, lng: 0.1276});
-    //addMarker({lat: 50.16026, lng: 8.52174});
-
     function deleteMarkers() {
         console.log("deletet")
         json_data_LatLongArray = []
@@ -272,19 +264,57 @@ var json_data_LatLongArray;
 
 //ajax call um marker zu laden
 function loadMapMarkers() {
-
-
     $.ajax({
         'async': false, 'type': "POST", 'global': false, 'url': "/map/restaurants/", 'success': function (data) {
             json_data_LatLongArray = data;
         }
     });
-
-
 }
 
 loadMapMarkers();
 
+function drawDetails(arrElement){
+
+    let div = document.createElement('div');
+    let lName = document.createElement('label');
+    lName.innerHTML = "Name of Business:"
+    let pName = document.createElement('p');
+    pName.innerHTML = "<b>" + arrElement.name + "</b>";
+    let lAddress = document.createElement('label');
+    lAddress.innerHTML = "Address of Business:"
+    let pAdress = document.createElement('p');
+    pAdress.innerHTML = arrElement.address;
+    let lCity = document.createElement('label');
+    lCity.innerHTML = "City:"
+    let pCity = document.createElement('p');
+    pCity.innerHTML = arrElement.postal_code;
+    let lState = document.createElement('label');
+    lState.innerHTML = "State:"
+    let pState = document.createElement('p');
+    pState.innerHTML = arrElement.state;
+    let lHours = document.createElement('label');
+    lHours.innerHTML = "Open hours:"
+    let pHours = document.createElement('p');
+    pHours.innerHTML = arrElement.hours;
+    let lStars = document.createElement('label');
+    lStars.innerHTML = "Rating:"
+    let pStars = document.createElement('p');
+    pStars.innerHTML = arrElement.stars;
+    div.appendChild(lName);
+    div.appendChild(pName);
+    div.appendChild(lAddress)
+    div.appendChild(pAdress);
+    div.appendChild(lCity);
+    div.appendChild(pCity);
+    div.appendChild(lState);
+    div.appendChild(pState);
+    div.appendChild(lHours);
+    div.appendChild(pHours);
+    div.appendChild(lStars);
+    div.appendChild(pStars);
+
+    return div;
+}
 
 
 var json_return_markerArrTemp = [] //
@@ -307,9 +337,12 @@ function sideView() {
     //Evtl löschen
 
 
-    console.log(json_return_markerArrTemp[0])
-    //Window1
-    document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
+    let result = drawDetails(json_return_markerArrTemp[0]);
+
+    const child = document.getElementById('sideWindow1inner').childNodes;
+    document.getElementById('sideWindow1inner').removeChild(child[0]);
+    document.getElementById('sideWindow1inner').appendChild(result);
+    //document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
 
     //transform to hashmap and get keys and values
     var hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countPostalcode))
@@ -327,7 +360,10 @@ function sideView() {
     //Window2
     if (json_return_markerArrTemp[1] != null) {
         comparisonChartWithCategory(json_return_markerArrTemp, "test", 'lineComp2', 1)
-        document.getElementById('sideWindow2inner').innerText = JSON.stringify(json_return_markerArrTemp[1]);
+        let result1 = drawDetails(json_return_markerArrTemp[1]);
+        //const child1 = document.getElementById('sideWindow2inner').childNodes;
+        //document.getElementById('sideWindow2inner').removeChild(child1[0]);
+        document.getElementById('sideWindow2inner').appendChild(result1);
         hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
@@ -339,7 +375,10 @@ function sideView() {
     //window3
     if (json_return_markerArrTemp[2] != null) {
         comparisonChartWithCategory(json_return_markerArrTemp, "test", 'lineComp3', 2)
-        document.getElementById('sideWindow3inner').innerText = JSON.stringify(json_return_markerArrTemp[2]);
+        let result2 = drawDetails(json_return_markerArrTemp[2]);
+        //const child2 = document.getElementById('sideWindow3inner').childNodes;
+        //document.getElementById('sideWindow3inner').removeChild(child2[0]);
+        document.getElementById('sideWindow3inner').appendChild(result2);
         hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());

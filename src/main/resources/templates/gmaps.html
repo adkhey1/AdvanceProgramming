@@ -83,7 +83,8 @@
 <br>
 <br>
 <div class="openDiv">
-<button class="openButton" id="open" onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter</button>
+    <button class="openButton" id="open" onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter
+    </button>
 </div>
 <form id="filterNew">
 
@@ -143,7 +144,7 @@
 </form>
 
 <div class="closeDiv">
-<button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
+    <button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
 </div>
 
 <link rel="stylesheet" type="text/css" href="/css/map.css"/>
@@ -171,22 +172,21 @@
         </select>
     </div>
     <div class="container">
-    <div class="row">
-         <div class="col order first">
-        <div id="sideWindow1inner" width="400" height="200">
-    </div>
+        <div class="row">
+            <div class="col order first">
+                <div id="sideWindow1inner" width="400" height="200">
+                </div>
 
-    <div class="col order-2" id="chartwindow11">
-        <canvas id="chartWindow1" width="400" height="200"></canvas>
-    </div>
+                <div class="col order-2" id="chartwindow11">
+                    <canvas id="chartWindow1" width="400" height="200"></canvas>
+                </div>
 
-    <div class="col order-3" id="lineComp11">
-        <canvas id="lineComp1" width="400" height="200"></canvas>
+                <div class="col order-3" id="lineComp11">
+                    <canvas id="lineComp1" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
-         </div></div>
-    </div>
-
-
 
 
     <div id="map1"></div>
@@ -235,8 +235,6 @@
     window.addEventListener('load', () => closeForm())
 
 
-
-
     function hiddenOpenButton() {
         document.getElementById("open").style.visibility = "hidden";
 
@@ -251,6 +249,7 @@
         document.getElementById("open").style.visibility = "visible";
 
     }
+
     function showCloseButton() {
         document.getElementById("close").style.visibility = "visible";
 
@@ -263,8 +262,6 @@
     function closeForm() {
         document.getElementById("popupForm").style.display = "none";
     }
-
-
 
 
 </script>
