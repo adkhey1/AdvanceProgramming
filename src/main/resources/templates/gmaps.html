@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
+    <link rel="stylesheet" type="text/css" href="/css/map.css"/>
     <!--
     <link href="{% static 'AdvanceProgramming/css/bootstrap.min.css' %}" rel="stylesheet">
 -->
@@ -36,7 +36,7 @@
 
 
 </head>
-<body>
+<body id="gmaps">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
@@ -48,12 +48,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link text-white active" aria-current="page" href="index">Home</a>
+                    <a class="nav-link" aria-current="page" href="index">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="franchise">Analyze</a>
+                    <a class="nav-link text-white active" href="map">Map</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="franchise">Franchise</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="about">About</a>
                 </li>
@@ -72,6 +77,9 @@
                     </ul>
                 </li>
 
+
+
+
                 </lo>
             </ul>
 
@@ -80,8 +88,7 @@
 </nav>
 
 
-<br>
-<br>
+
 <div class="openDiv">
     <button class="openButton" id="open" onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter
     </button>
@@ -147,7 +154,6 @@
     <button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
 </div>
 
-<link rel="stylesheet" type="text/css" href="/css/map.css"/>
 
 <div id="map"></div>
 <div id="test"></div>
@@ -159,9 +165,7 @@
 
 
 <p id="demo"></p>
-
-
-<div id="sideWindow1">
+<div class="container-fluid" id="sideWindow1">
     <div id="dropMenu1">
         <label for="AreaDropDown1"></label>
         <select id="AreaDropDown1" onchange="updateChartbyDropdown1()">
@@ -171,100 +175,109 @@
 
         </select>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col order first">
-                <div id="sideWindow1inner" width="400" height="200">
+    <div class="row">
+        <div class="col-3">
+            <div id="sideWindow1inner"></div>
+        </div>
+
+        <div class="col-3">
+            <canvas id="chartWindow1"></canvas>
+        </div>
+
+        <div class="col-3">
+            <canvas id="lineComp1"></canvas>
+        </div>
+        <div class="col-3">
+            <div id="map1" width="400" height="150"></div>
+        </div>
+
+
+        <div id="sideWindow2">
+            <div id="dropMenu2">
+                <label for="AreaDropDown2"></label>
+                <select id="AreaDropDown2" onchange="updateChartbyDropdown2()">
+                    <option value="2.1">Postal Code</option>
+                    <option value="2.2">City</option>
+                    <option value="2.3">State</option>
+
+                </select>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div id="sideWindow2inner"></div>
                 </div>
 
-                <div class="col order-2" id="chartwindow11">
-                    <canvas id="chartWindow1" width="400" height="200"></canvas>
+                <div class="col-3">
+                    <canvas id="chartWindow2"></canvas>
                 </div>
-
-                <div class="col order-3" id="lineComp11">
-                    <canvas id="lineComp1" width="400" height="200"></canvas>
+                <div class="col-3">
+                    <canvas id="lineComp2"></canvas>
+                </div>
+                <div class="col-3">
+                    <div id="map2"></div>
                 </div>
             </div>
+
+            <div id="sideWindow3">
+
+                <div id="dropMenu3">
+                    <label for="AreaDropDown3"></label>
+                    <select id="AreaDropDown3" onchange="updateChartbyDropdown3()">
+                        <option value="3.1">Postal Code</option>
+                        <option value="3.2">City</option>
+                        <option value="3.3">State</option>
+
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div id="sideWindow3inner"></div></div>
+                    <div class="col-3">
+                        <canvas id="chartWindow3"></canvas></div>
+                    <div class="col-3">
+                        <canvas id="lineComp3"></canvas></div>
+                    <div class="col-3">
+                        <div id="map3"></div></div>
+            </div>
+            </div>
         </div>
-    </div>
+    </div></div>
+    <script>
+
+        window.addEventListener('load', () => hiddenCloseButton())
+        window.addEventListener('load', () => closeForm())
 
 
-    <div id="map1"></div>
+        function hiddenOpenButton() {
+            document.getElementById("open").style.visibility = "hidden";
+
+        }
+
+        function hiddenCloseButton() {
+            document.getElementById("close").style.visibility = "hidden";
+
+        }
+
+        function showOpenButton() {
+            document.getElementById("open").style.visibility = "visible";
+
+        }
+
+        function showCloseButton() {
+            document.getElementById("close").style.visibility = "visible";
+
+        }
+
+        function openForm() {
+            document.getElementById("popupForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("popupForm").style.display = "none";
+        }
 
 
-</div>
-
-<div id="sideWindow2">
-    <div id="dropMenu2">
-        <label for="AreaDropDown2"></label>
-        <select id="AreaDropDown2" onchange="updateChartbyDropdown2()">
-            <option value="2.1">Postal Code</option>
-            <option value="2.2">City</option>
-            <option value="2.3">State</option>
-
-        </select>
-    </div>
-    <div id="sideWindow2inner"></div>
-    <canvas id="chartWindow2"></canvas>
-    <canvas id="lineComp2"></canvas>
-    <div id="map2"></div>
-</div>
-
-<div id="sideWindow3">
-
-    <div id="dropMenu3">
-        <label for="AreaDropDown3"></label>
-        <select id="AreaDropDown3" onchange="updateChartbyDropdown3()">
-            <option value="3.1">Postal Code</option>
-            <option value="3.2">City</option>
-            <option value="3.3">State</option>
-
-        </select>
-    </div>
-
-    <div id="sideWindow3inner"></div>
-    <canvas id="chartWindow3"></canvas>
-    <canvas id="lineComp3"></canvas>
-    <div id="map3"></div>
-</div>
-
-
-<script>
-
-    window.addEventListener('load', () => hiddenCloseButton())
-    window.addEventListener('load', () => closeForm())
-
-
-    function hiddenOpenButton() {
-        document.getElementById("open").style.visibility = "hidden";
-
-    }
-
-    function hiddenCloseButton() {
-        document.getElementById("close").style.visibility = "hidden";
-
-    }
-
-    function showOpenButton() {
-        document.getElementById("open").style.visibility = "visible";
-
-    }
-
-    function showCloseButton() {
-        document.getElementById("close").style.visibility = "visible";
-
-    }
-
-    function openForm() {
-        document.getElementById("popupForm").style.display = "block";
-    }
-
-    function closeForm() {
-        document.getElementById("popupForm").style.display = "none";
-    }
-
-
-</script>
+    </script>
 
 </body>
 </html>

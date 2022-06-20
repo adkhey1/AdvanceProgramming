@@ -5,7 +5,8 @@
  */
 /* Set the size of the div element that contains the map */
 
-
+#index { background-color: lightskyblue;
+}
 h1 {
     margin-left: 10%;
 }
@@ -131,7 +132,7 @@ h5 {
 
 
 }
-
+/*
 #map1 {
 
 
@@ -162,7 +163,7 @@ h5 {
 
 }
 
-
+*/
 #filterNew {
 
     position: relative;
@@ -221,10 +222,8 @@ h5 {
     width: 100px;
 }
 */
-.navbar,
-.carousel {
-    border-bottom: 3px solid blue;
-}
+
+
 
 #Formular, #signin {
     padding-left: 200px;
@@ -265,25 +264,10 @@ body {
 }
 
 
-#container {
-    width: 10vw;
-    height: 100vh;
 
-    display: grid;
 
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 5px 1fr 300px;
-    gap: 20px;
 
-    padding: 10px;
-    box-sizing: border-box;
 
-}
-
-#container {
-    padding: 10px;
-    border: 1px solid black;
-}
 
 
 .choose {

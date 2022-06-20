@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:text-align="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -162,43 +162,65 @@
 
     <div id="sub-page" class="container" hidden>
 
-        <label for="inputEachScore" class="form-label" id="inputEachScoreLbl">Average Star Rating: </label>
-        <input type="range" class="form-range" id="inputEachScore" min="1" max="5" step="0.0001" disabled>
+        <table class="table">
 
-        <label for="inputEachScoreSent" class="form-label" id="inputEachScoreSentLbl">Average sentient Rating: </label>
-        <input type="range" class="form-range" id="inputEachScoreSent" min="0" max="1" step="0.0001" width="200" disabled>
+            <thead>
+            <tr>
+                <th scope="col" style="width: 58%">Basic</th>
+                <th scope="col" style="width: 4%"> </th>
+                <th scope="col" style="width: 38%">Best/Worst</th>
+            </tr>
+            </thead>
 
+            <tbody>
 
-        <div id="inputBestCity"></div>
+            <td class="align-middle">
 
+                <label for="inputEachScore" class="form-label" id="inputEachScoreLbl">Average Star Rating: </label>
+                <input type="range" class="form-range" id="inputEachScore" orient="vertical" min="1" max="5" step="0.0001" disabled>
 
-        <div class="col order-2" id="mostrating1">
-            <canvas id="catChart" width="400" height="200"></canvas>
-        </div>
+                <label for="inputEachScoreSent" class="form-label" id="inputEachScoreSentLbl">Average sentient
+                    Rating: </label>
+                <input type="range" class="form-range" id="inputEachScoreSent" orient="vertical" min="0" max="1" step="0.0001"
+                       disabled>
 
+                <div id="inputBestCity"></div>
 
-        <div class="col order-2" id="mostrating2">
-            <canvas id="clickChart" width="400" height="200"></canvas>
-        </div>
-
-
-        <div class="col order-2" id="mostrating3">
-            <!-- Worst Restaurant Chart-->
-            <canvas id="clickChart1" width="400" height="200"></canvas>
-        </div>
-
-
-        <div id="inputWorstReviewCount"></div>
-
-
-        <div class="col order-2" id="mostrating4">
-            <!-- Best Restaurant Chart-->
-            <canvas id="clickChart2" width="400" height="200"></canvas>
-        </div>
+                <div class="col order-2" id="mostrating1">
+                    <canvas id="catChart" width="400" height="200"></canvas>
+                </div>
 
 
-        <div id="inputBestReviewCount"></div>
+                <div class="col order-2" id="mostrating2">
+                    <canvas id="clickChart" width="400" height="200"></canvas>
+                </div>
 
+            </td>
+
+            <td class="align-middle"></td>
+
+            <td class="align-middle">
+
+                <div class="col order-2" id="mostrating3">
+                    <!-- Worst Restaurant Chart-->
+                    <canvas id="clickChart1" width="400" height="200"></canvas>
+                </div>
+
+                <div id="inputWorstReviewCount"></div>
+
+                <br><br><br><br>
+
+                <div class="col order-2" id="mostrating4">
+                    <!-- Best Restaurant Chart-->
+                    <canvas id="clickChart2" width="400" height="200"></canvas>
+                </div>
+
+
+                <div id="inputBestReviewCount"></div>
+
+            </td>
+            </tbody>
+        </table>
     </div>
 </div>
 
