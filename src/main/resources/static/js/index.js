@@ -1,4 +1,5 @@
-// TODO Patryk Filter START
+// TODO beim filter abschicken --> was kommt im frontend an ? --> falls array liste mit markern --> Methoden kopieren --> Marker einfügen
+
 
 let states = null;
 var categories = null;
@@ -6,6 +7,102 @@ let attributes = null;
 let currCoice1 = 0;
 let currCoice2 = 0;
 let currCoice3 = 0;
+
+var filteredJsonData;
+
+
+
+function searchText() {
+    console.log("erfolg funktion ausgeloest")
+
+    var search = {
+        stars: document.getElementById("stars").value,
+        name: document.getElementById("name").value,
+        state: document.getElementById("state").value,
+        city: document.getElementById("City").value,
+        plz: document.getElementById("PLZ").value,
+        category: document.getElementById("category").value,
+        attribute: document.getElementById("attribute").value
+
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        url: "/restaurant/filtered/",
+        data: JSON.stringify(search), // Note it is important
+        success: function (result) {
+            filteredJsonData=result
+            console.log(filteredJsonData)
+            initMapAfterFilter()
+        }
+    });
+
+
+}
+
+
+function initMapAfterFilter() {
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 4,
+        center: {lat: 40.560109, lng: -100.573589}
+    })
+
+
+    function addMarker(latLongPos, businessID) {
+        const marker = new google.maps.Marker({
+            position: latLongPos,
+
+            map: map
+
+
+        });
+
+        const detailWindow = new google.maps.InfoWindow({
+            content: businessID
+        });
+
+        marker.addListener("click", () => {
+            detailWindow.open(map, marker);
+
+
+            getInfoOnClick()
+
+            function getInfoOnClick() {
+                $.ajax({
+                    'async': "true", 'type': "POST",
+                    'global': false,
+                    'url': "/map/viewMarker/",
+                    //'contentType': "text",
+                    //'data':businessID.toString(),
+                    'contentType': "application/json; charset=utf-8",
+                    'data': JSON.stringify({business_id: businessID}),
+                    //dataType: "json",
+                    'success': function (data) {
+                        //console.log("test")
+                        //console.log(data)
+                        json_return_marker = data
+                        console.log(businessID)
+                        sideView()
+                    }
+                });
+            }
+
+        })
+
+    }
+
+    var myLatlng;
+
+    for (let i = 0; i < json_data_LatLongArray.length; i++) {
+        myLatlng = new google.maps.LatLng(filteredJsonData[i].latitude, filteredJsonData[i].longitude);
+        addMarker(myLatlng, filteredJsonData[i].business_id)
+
+
+    }
+}
+
 
 
 

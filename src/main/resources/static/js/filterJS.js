@@ -8,7 +8,7 @@ function rescticteAlphabet(e) {
         return false;
 }
 
-
+/*
 function searchText() {
     console.log("erfolg funktion ausgeloest")
 
@@ -36,6 +36,8 @@ function searchText() {
 }
 
 
+
+ */
 function display() {
     console.log(states);
 }
