@@ -1,4 +1,4 @@
-// TODO beim filter abschicken --> was kommt im frontend an ? --> falls array liste mit markern --> Methoden kopieren --> Marker einfügen
+
 
 
 let states = null;
@@ -339,8 +339,8 @@ function sideView() {
 
     let result = drawDetails(json_return_markerArrTemp[0]);
 
-    const child = document.getElementById('sideWindow1inner').childNodes;
-    document.getElementById('sideWindow1inner').removeChild(child[0]);
+   // const child = document.getElementById('sideWindow1inner').childNodes;
+   // document.getElementById('sideWindow1inner').removeChild(child[0]);
     document.getElementById('sideWindow1inner').appendChild(result);
     //document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
 
