@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
 
 
 </head>
@@ -29,11 +28,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link text-white active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link text-white active" aria-current="page" href="index">Home</a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/map}">Analyze</a>
+                    <a class="nav-link" href="map">Map</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="franchise">Franchise</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="about">About</a>
                 </li>
@@ -75,19 +80,20 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="3000">
-            <img src="https://www.collinsdictionary.com/images/full/potato_113134582_1000.jpg?version=4.0.263" class="d-block img-fluid mx-auto">
+            <img src="../static/pht/graph1.png"
+                 class="d-block img-fluid mx-auto">
             <div class="carousel-caption d-none d-md-block">
                 <p>Look the restaurants on maps</p>
             </div>
         </div>
         <div class="carousel-item" data-bs-interval="3000">
-            <img src="AdvanceProgramming\src\main\resources\static\pht" class="d-block img-fluid mx-auto">
+            <img src="../static/pht/rest.jpg" class="d-block img-fluid mx-auto">
             <div class="carousel-caption d-none d-md-block">
                 <p>Analyze data.</p>
             </div>
         </div>
         <div class="carousel-item" data-bs-interval="3000">
-            <img src="../static/pht/rest.jpg" class="d-block img-fluid mx-auto">
+            <img src="../static/pht/maps.jpg" class="d-block img-fluid mx-auto">
             <div class="carousel-caption d-none d-md-block">
                 <p>Filter and look at restaurants</p>
             </div>

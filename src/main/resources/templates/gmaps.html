@@ -76,17 +76,12 @@
                         </li>
                     </ul>
                 </li>
-
-
-
-
                 </lo>
             </ul>
 
         </div>
     </div>
 </nav>
-
 
 
 <div class="openDiv">
@@ -231,53 +226,58 @@
                 </div>
                 <div class="row">
                     <div class="col-3">
-                        <div id="sideWindow3inner"></div></div>
+                        <div id="sideWindow3inner"></div>
+                    </div>
                     <div class="col-3">
-                        <canvas id="chartWindow3"></canvas></div>
+                        <canvas id="chartWindow3"></canvas>
+                    </div>
                     <div class="col-3">
-                        <canvas id="lineComp3"></canvas></div>
+                        <canvas id="lineComp3"></canvas>
+                    </div>
                     <div class="col-3">
-                        <div id="map3"></div></div>
-            </div>
+                        <div id="map3"></div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div></div>
-    <script>
+    </div>
+</div>
+<script>
 
-        window.addEventListener('load', () => hiddenCloseButton())
-        window.addEventListener('load', () => closeForm())
-
-
-        function hiddenOpenButton() {
-            document.getElementById("open").style.visibility = "hidden";
-
-        }
-
-        function hiddenCloseButton() {
-            document.getElementById("close").style.visibility = "hidden";
-
-        }
-
-        function showOpenButton() {
-            document.getElementById("open").style.visibility = "visible";
-
-        }
-
-        function showCloseButton() {
-            document.getElementById("close").style.visibility = "visible";
-
-        }
-
-        function openForm() {
-            document.getElementById("popupForm").style.display = "block";
-        }
-
-        function closeForm() {
-            document.getElementById("popupForm").style.display = "none";
-        }
+    window.addEventListener('load', () => hiddenCloseButton())
+    window.addEventListener('load', () => closeForm())
 
 
-    </script>
+    function hiddenOpenButton() {
+        document.getElementById("open").style.visibility = "hidden";
+
+    }
+
+    function hiddenCloseButton() {
+        document.getElementById("close").style.visibility = "hidden";
+
+    }
+
+    function showOpenButton() {
+        document.getElementById("open").style.visibility = "visible";
+
+    }
+
+    function showCloseButton() {
+        document.getElementById("close").style.visibility = "visible";
+
+    }
+
+    function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+    }
+
+
+</script>
 
 </body>
 </html>
