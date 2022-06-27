@@ -123,7 +123,7 @@ h5 {
 }
 
 #map {
-    height: 500px;
+    height: auto;
     width: auto;
 
     margin-left: 24px;

@@ -88,63 +88,66 @@
     <button class="openButton" id="open" onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter
     </button>
 </div>
-<form id="filterNew">
+<div class="container">
+    <form id="filterNew">
 
-    <div class="loginPopup">
-        <div class="formPopup" id="popupForm">
-            <h2>Select your filter</h2>
+        <div class="loginPopup">
+            <div class="formPopup" id="popupForm">
+                <h2>Select your filter</h2>
 
-            <div class="row">
-                <div class="col">
+                <div class="row">
+                    <div class="col">
 
-                    <input class="form-control" type="text" placeholder="Name" id="name" name="name">
-                </div>
-                <div class="col">
-                    <input type="text" id="City" name="City" class="form-control" placeholder="City">
-                </div>
-                <div class="col">
-                    <input type="text" id="PLZ" name="PLZ" maxlength="6" onkeypress="return rescticteAlphabet(event)"
-                           class="form-control" placeholder="Postal code">
-                </div>
-                <div class="col">
-                    <input type="text" name="category" id="category" class="form-control" placeholder="Category">
-                    <ul id="suggestionsKa"></ul>
-                </div>
-                <div class="col">
-                    <input type="text" name="attribute" id="attribute" class="form-control" placeholder="Attribute">
-                    <ul id="suggestionsAt"></ul>
+                        <input class="form-control" type="text" placeholder="Name" id="name" name="name">
+                    </div>
+                    <div class="col">
+                        <input type="text" id="City" name="City" class="form-control" placeholder="City">
+                    </div>
+                    <div class="col">
+                        <input type="text" id="PLZ" name="PLZ" maxlength="6"
+                               onkeypress="return rescticteAlphabet(event)"
+                               class="form-control" placeholder="Postal code">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="category" id="category" class="form-control" placeholder="Category">
+                        <ul id="suggestionsKa"></ul>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="attribute" id="attribute" class="form-control" placeholder="Attribute">
+                        <ul id="suggestionsAt"></ul>
+
+                    </div>
+
+                    <div class="col">
+                        <label for="stars" id="starss">Stars:</label>
+                        <select name="stars" id="stars">
+                            <option value="">all</option>
+                            <option value="1.0">1.0</option>
+                            <option value="1.5">1.5</option>
+                            <option value="2.0">2.0</option>
+                            <option value="2.5">2.5</option>
+                            <option value="3.0">3.0</option>
+                            <option value="3.5">3.5</option>
+                            <option value="4.0">4.0</option>
+                            <option value="4.5">4.5</option>
+                            <option value="5.0">5.0</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="State" id="states">State:</label>
+                        <select name="State" id="state">
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="button" onclick="searchText()">Search</button>
+                    </div>
 
                 </div>
-
-                <div class="col">
-                    <label for="stars" id="starss">Stars:</label>
-                    <select name="stars" id="stars">
-                        <option value="">all</option>
-                        <option value="1.0">1.0</option>
-                        <option value="1.5">1.5</option>
-                        <option value="2.0">2.0</option>
-                        <option value="2.5">2.5</option>
-                        <option value="3.0">3.0</option>
-                        <option value="3.5">3.5</option>
-                        <option value="4.0">4.0</option>
-                        <option value="4.5">4.5</option>
-                        <option value="5.0">5.0</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label for="State" id="states">State:</label>
-                    <select name="State" id="state">
-                    </select>
-                </div>
-                <div class="col">
-                    <button type="button" onclick="searchText()">Search</button>
-                </div>
-
             </div>
         </div>
-    </div>
 </form>
 
+</div>
 <div class="closeDiv">
     <button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
 </div>
@@ -171,18 +174,18 @@
         </select>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-md-3">
             <div id="sideWindow1inner"></div>
         </div>
 
-        <div class="col-3">
+        <div class="col-md-3">
             <canvas id="chartWindow1"></canvas>
         </div>
 
-        <div class="col-3">
+        <div class="col-md-3">
             <canvas id="lineComp1"></canvas>
         </div>
-        <div class="col-3">
+        <div class="col-md-3">
             <div id="map1" width="400" height="150"></div>
         </div>
 
@@ -198,17 +201,17 @@
                 </select>
             </div>
             <div class="row">
-                <div class="col-3">
+                <div class="col-md-3">
                     <div id="sideWindow2inner"></div>
                 </div>
 
-                <div class="col-3">
+                <div class="col-md-3">
                     <canvas id="chartWindow2"></canvas>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <canvas id="lineComp2"></canvas>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3">
                     <div id="map2"></div>
                 </div>
             </div>
@@ -225,16 +228,16 @@
                     </select>
                 </div>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div id="sideWindow3inner"></div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <canvas id="chartWindow3"></canvas>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <canvas id="lineComp3"></canvas>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <div id="map3"></div>
                     </div>
                 </div>
