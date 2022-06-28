@@ -1,6 +1,6 @@
 
 #gmaps {
-    background-color: lightskyblue;
+    background-color: ghostwhite;
 }
 
 #map {
@@ -9,10 +9,10 @@
 
     margin-left: 24px;
     margin-right: 24px;
-    box-shadow: 20px 20px 20px grey; }
+     }
 
 #sideWindow1inner {
-    border: 2px solid black;
+    border: 2px red;
     border-radius: 5px;
     display: flex;
 }
@@ -56,10 +56,10 @@
     height: auto;
     width: auto;
 
-    background-color: lightgrey;
+    background-color: ghostwhite;
     font-size: 16px;
-    border: 2px solid black;
-    box-shadow: 20px 20px 20px grey;
+    /*border: 2px solid black*/;
+    /*box-shadow: 20px 20px 20px grey*/;
 
 
 }

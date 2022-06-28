@@ -82,19 +82,21 @@
         </div>
     </div>
 </nav>
-
+<!--
+<br style="line-height:5px;">
 
 <div class="openDiv" style="text-align:center;">
     <button class="openButton btn btn-outline-dark btn-sm" id="open"
             onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter
     </button>
 </div>
-<div class="container">
-    <form id="filterNew">
+-->
+<div class="container" >
+    <form id="filterNew" >
 
-        <div class="loginPopup">
-            <div class="formPopup" id="popupForm">
-                <h2 style="text-align:center">Select your filter</h2>
+        <div class="loginPopup" >
+            <div class="formPopup" id="popupForm" >
+                <h3 style="text-align:center" >Select your filter</h3>
 
                 <div class="row">
                     <div class="col">
@@ -147,11 +149,13 @@
                 </div>
 
             </div>
-            <div class="closeDiv" style="text-align:center;">
+            <!--
+            <div class="closeDiv" style="text-align:center;" >
                 <button type="button" class="close btn btn-outline-dark btn-sm" id="close"
                         onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter
                 </button>
             </div>
+            -->
         </div>
 
     </form>
@@ -159,7 +163,7 @@
 </div>
 
 
-<div id="map"></div>
+<div  id="map"></div>
 <div id="test"></div>
 
 
@@ -168,8 +172,8 @@
 <canvas id="testBar"></canvas>
 
 
-<p id="demo"></p>
-<div class="container-fluid" id="sideWindow1">
+<p id="demo" class=""></p>
+<div class="container-fluid " id="sideWindow1">
     <div id="dropMenu1">
         <label for="AreaDropDown1"></label>
         <select id="AreaDropDown1" onchange="updateChartbyDropdown1()">
@@ -181,15 +185,20 @@
     </div>
     <div class="row">
         <div class="col-md-3">
+
             <div id="sideWindow1inner"></div>
+
+            Test1
         </div>
 
         <div class="col-md-3">
             <canvas id="chartWindow1"></canvas>
+            test2
         </div>
 
         <div class="col-md-3">
             <canvas id="lineComp1"></canvas>
+            test3
         </div>
         <div class="col-md-3">
             <div id="map1" width="400" height="150"></div>
@@ -253,8 +262,8 @@
 </div>
 <script>
 
-    window.addEventListener('load', () => hiddenCloseButton())
-    window.addEventListener('load', () => closeForm())
+    //window.addEventListener('load', () => hiddenCloseButton())
+    //window.addEventListener('load', () => closeForm())
 
 
     function hiddenOpenButton() {

@@ -44,16 +44,11 @@ function display() {
 }
 
 
-
-
 async function fillDropdown() {
     console.log("Check1");
 
-    //let btnPopulate = document.querySelector('button');
     let select = document.querySelector('select');
-    //let fruits = ['Banana', 'Grapes', 'Kiwi', 'Mango', 'Orange'];
     let fruits = states;
-
     let options = fruits.map(fruit => `<option value=${fruit.toLowerCase()}>${fruit}</option>`).join('\n');
     let optionNone = document.createElement('option');
     optionNone.innerHTML = "all";

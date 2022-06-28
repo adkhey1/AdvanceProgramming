@@ -17,11 +17,15 @@
     }
 
     function autoComplete(inputValue) {
-        // let destination = ["Italy", "Spain", "Portugal", "Brazil"];
         let destination = categories;
-        return destination.filter(
+        let test = destination.filter(
+
             (value) => value.toLowerCase().includes(inputValue.toLowerCase())
+
         );
+
+        const slicedArray = test.slice(0, 5);
+         return slicedArray;
     }
 
     function addItem(value) {
@@ -58,9 +62,13 @@
     function autoComplete(inputValue) {
         // let destination = ["Italy", "Spain", "Portugal", "Brazil"];
         let destination = attributes;
-        return destination.filter(
+        let test = destination.filter(
             (value) => value.toLowerCase().includes(inputValue.toLowerCase())
         );
+
+
+        const slicedArray = test.slice(0, 5);
+        return slicedArray;
     }
 
     function addItem(value) {
