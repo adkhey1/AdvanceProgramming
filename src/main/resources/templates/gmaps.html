@@ -84,8 +84,9 @@
 </nav>
 
 
-<div class="openDiv">
-    <button class="openButton" id="open" onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter
+<div class="openDiv" style="text-align:center;">
+    <button class="openButton btn btn-outline-dark btn-sm" id="open"
+            onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter
     </button>
 </div>
 <div class="container">
@@ -93,7 +94,7 @@
 
         <div class="loginPopup">
             <div class="formPopup" id="popupForm">
-                <h2>Select your filter</h2>
+                <h2 style="text-align:center">Select your filter</h2>
 
                 <div class="row">
                     <div class="col">
@@ -119,9 +120,8 @@
                     </div>
 
                     <div class="col">
-                        <label for="stars" id="starss">Stars:</label>
-                        <select name="stars" id="stars">
-                            <option value="">all</option>
+                        <select class="form-select" placeholder="Stars" name="stars" id="stars">
+                            <option value="" disabled selected hidden>Stars</option>
                             <option value="1.0">1.0</option>
                             <option value="1.5">1.5</option>
                             <option value="2.0">2.0</option>
@@ -134,22 +134,28 @@
                         </select>
                     </div>
                     <div class="col">
+                        <!--
                         <label for="State" id="states">State:</label>
-                        <select name="State" id="state">
+                        -->
+                        <select class="form-select" placeholder="Stars" name="State" id="state" display="sss">
                         </select>
                     </div>
                     <div class="col">
-                        <button type="button" onclick="searchText()">Search</button>
+                        <button class="btn btn-outline-success" type="button" onclick="searchText()">Search</button>
                     </div>
 
                 </div>
+
+            </div>
+            <div class="closeDiv" style="text-align:center;">
+                <button type="button" class="close btn btn-outline-dark btn-sm" id="close"
+                        onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter
+                </button>
             </div>
         </div>
-</form>
 
-</div>
-<div class="closeDiv">
-    <button class="close" id="close" onclick="closeForm(), showOpenButton(), hiddenCloseButton()">Close Filter</button>
+    </form>
+
 </div>
 
 
