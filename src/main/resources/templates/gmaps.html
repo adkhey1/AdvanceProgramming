@@ -38,9 +38,9 @@
 </head>
 <body id="gmaps">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-sm navbar-custom">
     <div class="container">
-        <a class="navbar-brand fs-1" href="index">MyFood:)</a>
+        <a class="navbar-brand fs-1" href="index"><font color=#f5f5f5>MyFood</font></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -48,35 +48,34 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="index">Home</a>
+                    <a class="nav-link" aria-current="page" href="index"> <font color=#f5f5f5>Home</font></a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link " href="map"> Map</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-white active" href="map">Map</a>
+                    <a class="nav-link" href="franchise"><font color=#f5f5f5>Franchise</font></a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="franchise">Franchise</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="about">About</a>
+                    <a class="nav-link" href="about"><font color=#f5f5f5>About</font></a>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Account
+                        <font color=#f5f5f5>Account</font>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="register">Sign Up</a></li>
-                        <li><a class="dropdown-item" href="signin">Sign In</a></li>
+                        <li><a class="dropdown-item" href="singnin">Sign In</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                     </ul>
                 </li>
-                </lo>
             </ul>
 
         </div>
@@ -91,12 +90,12 @@
     </button>
 </div>
 -->
-<div class="container" >
-    <form id="filterNew" >
+<div class="container">
+    <form id="filterNew">
 
-        <div class="loginPopup" >
-            <div class="formPopup" id="popupForm" >
-                <h3 style="text-align:center" >Select your filter</h3>
+        <div class="loginPopup">
+            <div class="formPopup" id="popupForm">
+                <h3 style="text-align:center">Select your filter</h3>
 
                 <div class="row">
                     <div class="col">
@@ -143,7 +142,7 @@
                         </select>
                     </div>
                     <div class="col">
-                        <button class="btn btn-outline-success" type="button" onclick="searchText()">Search</button>
+                        <button class="btn btn-outline-primary" type="button" onclick="searchText()">Search</button>
                     </div>
 
                 </div>
@@ -163,103 +162,191 @@
 </div>
 
 
-<div  id="map"></div>
+<div id="map"></div>
 <div id="test"></div>
 
 
 <div id="input"></div>
-<canvas id="testChart"></canvas>
+
+<br><br>
+
+<!--<canvas id="testChart"></canvas>
 <canvas id="testBar"></canvas>
+-->
 
+<div id="main_page1" class="container" hidden>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div id="sideWindow1inner"></div>
+                <canvas id="lineComp1"></canvas>
+            </div>
+            <div class="col-sm">
+                <div id="dropMenu1">
+                    <label for="AreaDropDown1"></label>
+                    <select id="AreaDropDown1" onchange="updateChartbyDropdown1()">
+                        <option value="1.1">Postal Code</option>
+                        <option value="1.2">City</option>
+                        <option value="1.3">State</option>
+                    </select>
+                </div>
+                <br>
 
-<p id="demo" class=""></p>
-<div class="container-fluid " id="sideWindow1">
-    <div id="dropMenu1">
-        <label for="AreaDropDown1"></label>
-        <select id="AreaDropDown1" onchange="updateChartbyDropdown1()">
-            <option value="1.1">Postal Code</option>
-            <option value="1.2">City</option>
-            <option value="1.3">State</option>
-
-        </select>
+                <canvas id="chartWindow1"></canvas>
+                <br>
+                <p>Select a category from the diagram above to see the locations on the map</p>
+                <br>
+                <div id="map1"></div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-md-3">
-
-            <div id="sideWindow1inner"></div>
-
-            Test1
-        </div>
-
-        <div class="col-md-3">
-            <canvas id="chartWindow1"></canvas>
-            test2
-        </div>
-
-        <div class="col-md-3">
-            <canvas id="lineComp1"></canvas>
-            test3
-        </div>
-        <div class="col-md-3">
-            <div id="map1" width="400" height="150"></div>
-        </div>
+    <br><br><hr><br><br>
+</div>
 
 
-        <div id="sideWindow2">
-            <div id="dropMenu2">
-                <label for="AreaDropDown2"></label>
-                <select id="AreaDropDown2" onchange="updateChartbyDropdown2()">
-                    <option value="2.1">Postal Code</option>
-                    <option value="2.2">City</option>
-                    <option value="2.3">State</option>
-
-                </select>
+<div id="main_page2" class="container" hidden>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div id="sideWindow2inner"></div>
+                <canvas id="lineComp2"></canvas>
             </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div id="sideWindow2inner"></div>
-                </div>
+            <div class="col-sm">
+                <div id="dropMenu2">
+                    <label for="AreaDropDown2"></label>
+                    <select id="AreaDropDown2" onchange="updateChartbyDropdown2()">
+                        <option value="2.1">Postal Code</option>
+                        <option value="2.2">City</option>
+                        <option value="2.3">State</option>
 
-                <div class="col-md-3">
-                    <canvas id="chartWindow2"></canvas>
+                    </select>
                 </div>
-                <div class="col-md-3">
-                    <canvas id="lineComp2"></canvas>
-                </div>
-                <div class="col-md-3">
-                    <div id="map2"></div>
-                </div>
+                <br>
+                <canvas id="chartWindow2"></canvas>
+                <br>
+                <p>Select a category from the diagram above to see the locations on the map</p>
+                <br>
+                <div id="map2"></div>
             </div>
+        </div>
+    </div>
+    <br><br><hr><br><br>
+</div>
 
-            <div id="sideWindow3">
-
+<div id="main_page3" class="container" hidden>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div id="sideWindow3inner"></div>
+                <canvas id="lineComp3"></canvas>
+            </div>
+            <div class="col-sm">
                 <div id="dropMenu3">
                     <label for="AreaDropDown3"></label>
-                    <select id="AreaDropDown3" onchange="updateChartbyDropdown3()">
+                    <select id="AreaDropDown3" onchange="updateChartbyDropdown2()">
                         <option value="3.1">Postal Code</option>
                         <option value="3.2">City</option>
                         <option value="3.3">State</option>
 
                     </select>
                 </div>
+                <br>
+                <canvas id="chartWindow3"></canvas>
+                <br>
+                <p>Select a category from the diagram above to see the locations on the map</p>
+                <br>
+                <div id="map3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!--
+    <p id="demo" class=""></p>
+    <div class="container-fluid " id="sideWindow1">
+        <div id="dropMenu1">
+            <label for="AreaDropDown1"></label>
+            <select id="AreaDropDown1" onchange="updateChartbyDropdown1()">
+                <option value="1.1">Postal Code</option>
+                <option value="1.2">City</option>
+                <option value="1.3">State</option>
+
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+
+                <div id="sideWindow1inner"></div>
+            </div>
+
+            <div class="col-md-3">
+                <canvas id="chartWindow1"></canvas>
+            </div>
+
+            <div class="col-md-3">
+                <canvas id="lineComp1"></canvas>
+            </div>
+            <div class="col-md-3">
+                <div id="map1" width="400" height="150"></div>
+            </div>
+
+
+            <div id="sideWindow2">
+                <div id="dropMenu2">
+                    <label for="AreaDropDown2"></label>
+                    <select id="AreaDropDown2" onchange="updateChartbyDropdown2()">
+                        <option value="2.1">Postal Code</option>
+                        <option value="2.2">City</option>
+                        <option value="2.3">State</option>
+
+                    </select>
+                </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <div id="sideWindow3inner"></div>
+                        <div id="sideWindow2inner"></div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <canvas id="chartWindow2"></canvas>
                     </div>
                     <div class="col-md-3">
-                        <canvas id="chartWindow3"></canvas>
+                        <canvas id="lineComp2"></canvas>
                     </div>
                     <div class="col-md-3">
-                        <canvas id="lineComp3"></canvas>
+                        <div id="map2"></div>
                     </div>
-                    <div class="col-md-3">
-                        <div id="map3"></div>
+                </div>
+
+                <div id="sideWindow3">
+
+                    <div id="dropMenu3">
+                        <label for="AreaDropDown3"></label>
+                        <select id="AreaDropDown3" onchange="updateChartbyDropdown3()">
+                            <option value="3.1">Postal Code</option>
+                            <option value="3.2">City</option>
+                            <option value="3.3">State</option>
+
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div id="sideWindow3inner"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <canvas id="chartWindow3"></canvas>
+                        </div>
+                        <div class="col-md-3">
+                            <canvas id="lineComp3"></canvas>
+                        </div>
+                        <div class="col-md-3">
+                            <div id="map3"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    -->
+
 <script>
 
     //window.addEventListener('load', () => hiddenCloseButton())

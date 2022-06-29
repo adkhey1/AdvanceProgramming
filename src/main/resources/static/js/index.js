@@ -1,6 +1,3 @@
-
-
-
 let states = null;
 var categories = null;
 let attributes = null;
@@ -273,7 +270,7 @@ function loadMapMarkers() {
 
 loadMapMarkers();
 
-function drawDetails(arrElement){
+function drawDetails(arrElement) {
 
     let div = document.createElement('div');
     let lName = document.createElement('label');
@@ -339,8 +336,8 @@ function sideView() {
 
     let result = drawDetails(json_return_markerArrTemp[0]);
 
-   // const child = document.getElementById('sideWindow1inner').childNodes;
-   // document.getElementById('sideWindow1inner').removeChild(child[0]);
+    // const child = document.getElementById('sideWindow1inner').childNodes;
+    // document.getElementById('sideWindow1inner').removeChild(child[0]);
     document.getElementById('sideWindow1inner').appendChild(result);
     //document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
 
@@ -537,9 +534,9 @@ function exampleChart1(div, values, keys) {
                 options: {
                     events: ['click']
                 },
-                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                backgroundColor: ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3'],
                 datalabels: {
-                    color: 'blue', anchor: 'end', align: 'top'
+                    color: 'BB86FC', anchor: 'end', align: 'top'
                 }
             }]
         }, plugins: [ChartDataLabels], options: {
@@ -584,6 +581,8 @@ function exampleChart1(div, values, keys) {
     }
 
     ctx.onclick = clickHandler;
+
+    document.getElementById('main_page1').hidden = false;
 }
 
 
@@ -599,9 +598,9 @@ function exampleChart2(div, values, keys) {
                 options: {
                     events: ['click']
                 },
-                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                backgroundColor: ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3'],
                 datalabels: {
-                    color: 'blue', anchor: 'end', align: 'top'
+                    color: 'BB86FC', anchor: 'end', align: 'top'
                 }
             }]
         }, plugins: [ChartDataLabels], options: {
@@ -643,11 +642,12 @@ function exampleChart2(div, values, keys) {
         //console.log(keys[points[0].index])
         //console.log(json_return_markerArrTemp[0].business_id)
         console.log(currCoice2)
+
     }
 
     ctx.onclick = clickHandler;
 
-
+    document.getElementById('main_page2').hidden = false;
 }
 
 function exampleChart3(div, values, keys) {
@@ -661,9 +661,9 @@ function exampleChart3(div, values, keys) {
                 options: {
                     events: ['click']
                 },
-                backgroundColor: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
+                backgroundColor: ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3'],
                 datalabels: {
-                    color: 'blue', anchor: 'end', align: 'top'
+                    color: 'BB86FC', anchor: 'end', align: 'top'
                 }
             }]
         }, plugins: [ChartDataLabels], options: {
@@ -707,6 +707,7 @@ function exampleChart3(div, values, keys) {
 
     ctx.onclick = clickHandler;
 
+    document.getElementById('main_page3').hidden = false;
 }
 
 
@@ -735,10 +736,15 @@ function comparisonChart(dataArr) {
         datasets: [
 
             {
-                label: 'Dataset 1', backgroundColor: getRandomColor(), borderColor: getRandomColor(), //data: [20,30,60,10],
+                label: 'Dataset 1', backgroundColor: '#3700B3', borderColor: '#3700B3', //data: [20,30,60,10],
                 data: [dataArr[0].spring, dataArr[0].summer, dataArr[0].fall, dataArr[0].winter] //0 durch die jeweiliges side view window nummer erstzen
 
-            },], plugins: [ChartDataLabels]
+            },], scales: {
+            y: {
+                suggestedMin: 0,
+                suggestedMax: 5
+            }
+        }, plugins: [ChartDataLabels]
     };
 
 
@@ -766,13 +772,13 @@ function comparisonChartWithCategory(dataArr, label, div, position) {
         datasets: [
 
             {
-                label: 'Score by stars', backgroundColor: 'rgb(255, 99, 132)', borderColor: 'rgb(255, 99, 132)', //data: [20,30,60,10],
+                label: 'Score by stars', backgroundColor: '#BB86FC', borderColor: '#BB86FC', //data: [20,30,60,10],
                 data: [dataArr[position].spring, dataArr[position].summer, dataArr[position].fall, dataArr[position].winter]
 
             }, {
                 label: 'Score by Sentiment Analysis',
-                backgroundColor: 'rgb(54, 162, 235)',
-                borderColor: 'rgb(54, 162, 235)', //data: [20,30,60,10],
+                backgroundColor: '#6200EE',
+                borderColor: '#6200EE', //data: [20,30,60,10],
                 data: [dataArr[position].sentSpring, dataArr[position].sentSummer, dataArr[position].sentFall, dataArr[position].sentWinter]
 
 

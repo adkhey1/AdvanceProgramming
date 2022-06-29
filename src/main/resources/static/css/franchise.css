@@ -1,3 +1,20 @@
 #franchise {
-    background-color: lightskyblue;
+    background-color: ghostwhite;
+}
+
+.navbar-custom {
+    background-color: #6200EE;
+}
+
+.navbar-nav > .active > a {
+    color: #BB86FC;
+}
+
+.center{
+    text-align: center;
+}
+
+.btn-outline-primary{
+    border-bottom-color: #BB86FC;
+    color: #BB86FC;
 }

@@ -26,9 +26,9 @@
 <body id="franchise">
 
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-sm navbar-custom">
     <div class="container">
-        <a class="navbar-brand fs-1" href="index">MyFood:)</a>
+        <a class="navbar-brand fs-1" href="index"><font color=#f5f5f5>MyFood</font></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -36,25 +36,25 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="index">Home</a>
+                    <a class="nav-link" aria-current="page" href="index"> <font color=#f5f5f5>Home</font></a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " href="map">Map</a>
+                    <a class="nav-link " href="map"> <font color=#f5f5f5>Map</font></a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="franchise">Franchise</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-white active" href="franchise">Franchise</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="about">About</a>
+                    <a class="nav-link" href="about"><font color=#f5f5f5>About</font></a>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Account
+                        <font color=#f5f5f5>Account</font>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="register">Sign Up</a></li>
@@ -168,65 +168,59 @@
 
     <div id="sub-page" class="container" hidden>
 
-        <table class="table">
+        <br><br>
 
-            <thead>
-            <tr>
-                <th scope="col" style="width: 58%">Basic</th>
-                <th scope="col" style="width: 4%"> </th>
-                <th scope="col" style="width: 38%">Best/Worst</th>
-            </tr>
-            </thead>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <label for="inputEachScore" class="form-label" id="inputEachScoreLbl">Average Star Rating: </label>
+                    <input type="range" class="form-range" id="inputEachScore" orient="vertical" min="1" max="5"
+                           step="0.0001" disabled>
 
-            <tbody>
+                    <label for="inputEachScoreSent" class="form-label" id="inputEachScoreSentLbl">Average sentient
+                        Rating: </label>
+                    <input type="range" class="form-range" id="inputEachScoreSent" orient="vertical" min="0" max="1"
+                           step="0.0001"
+                           disabled>
 
-            <td class="align-middle">
+                    <div class="center" id="inputBestCity"></div>
 
-                <label for="inputEachScore" class="form-label" id="inputEachScoreLbl">Average Star Rating: </label>
-                <input type="range" class="form-range" id="inputEachScore" orient="vertical" min="1" max="5" step="0.0001" disabled>
+                    <div class="col order-2" id="mostrating1">
+                        <canvas class="center " id="catChart"></canvas>
+                    </div>
 
-                <label for="inputEachScoreSent" class="form-label" id="inputEachScoreSentLbl">Average sentient
-                    Rating: </label>
-                <input type="range" class="form-range" id="inputEachScoreSent" orient="vertical" min="0" max="1" step="0.0001"
-                       disabled>
 
-                <div id="inputBestCity"></div>
+                    <div class="col order-2" id="mostrating2">
+                        <canvas id="clickChart"></canvas>
+                    </div>
 
-                <div class="col order-2" id="mostrating1">
-                    <canvas id="catChart" width="400" height="200"></canvas>
                 </div>
+                <div class="col-sm">
+
+                    <div class="col order-2" id="mostrating3">
+
+                        <canvas id="clickChart1"></canvas>
+                    </div>
+
+                    <div class="center" id="inputWorstReviewCount"></div>
+                    <div class="center" id="inputWorstReviewCount2"></div>
+
+                    <br><br>
+
+                    <div class="col order-2" id="mostrating4">
+
+                        <canvas id="clickChart2"></canvas>
+                    </div>
 
 
-                <div class="col order-2" id="mostrating2">
-                    <canvas id="clickChart" width="400" height="200"></canvas>
+                    <div class="center" id="inputBestReviewCount"></div>
+                    <div class="center" id="inputBestReviewCount2"></div>
+
                 </div>
-
-            </td>
-
-            <td class="align-middle"></td>
-
-            <td class="align-middle">
-
-                <div class="col order-2" id="mostrating3">
-                    <!-- Worst Restaurant Chart-->
-                    <canvas id="clickChart1" width="400" height="200"></canvas>
-                </div>
-
-                <div id="inputWorstReviewCount"></div>
-
-                <br><br><br><br>
-
-                <div class="col order-2" id="mostrating4">
-                    <!-- Best Restaurant Chart-->
-                    <canvas id="clickChart2" width="400" height="200"></canvas>
-                </div>
+            </div>
+        </div>
 
 
-                <div id="inputBestReviewCount"></div>
-
-            </td>
-            </tbody>
-        </table>
     </div>
 </div>
 

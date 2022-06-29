@@ -3,6 +3,14 @@
     background-color: ghostwhite;
 }
 
+.navbar-custom {
+    background-color: #6200EE;
+}
+
+.navbar-nav > .active > a {
+    color: #BB86FC;
+}
+
 #map {
     height: 500px;
     width: auto;
@@ -12,50 +20,30 @@
      }
 
 #sideWindow1inner {
-    border: 2px red;
+    border: 2px #BB86FC;
     border-radius: 5px;
     display: flex;
 }
 
 #map1 {
-
-
-    height: 150px;
+    height: 200px;
     width: auto;
-    box-shadow: 20px 20px 20px grey;
-
-
 }
 
 #map2 {
-
-
-    height: 150px;
+    height: 200px;
     width: auto;
-    box-shadow: 20px 20px 20px grey;
-
-
 }
 
 #map3 {
-
-
-    height: 150px;
+    height: 200px;
     width: auto;
-    box-shadow: 20px 20px 20px grey;
-
-
 }
 
-
 #filterNew {
-
     position: relative;
-
-
     height: auto;
     width: auto;
-
     background-color: ghostwhite;
     font-size: 16px;
     /*border: 2px solid black*/;
@@ -64,3 +52,7 @@
 
 }
 
+.btn-outline-primary{
+    border-bottom-color: #BB86FC;
+    color: #BB86FC;
+}

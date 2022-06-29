@@ -59,7 +59,7 @@ function getTop10Data() {
 
 function barChart10() {
 
-    let backgroundColor = ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"]
+    let backgroundColor = ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3','#3700B3']
 
     var config = {
         type: "bar",
@@ -79,7 +79,7 @@ function barChart10() {
                 borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
                 borderWidth: 1,
                 datalabels: {
-                    color: 'blue',
+                    color: 'BB86FC',
                     anchor: 'end',
                     align: 'top'
                 }
@@ -137,7 +137,7 @@ function barChart10() {
 
     function clickHandler(click) {
         //console.log("click")
-        const color = ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"]
+        const color = ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3','#3700B3']
 
         myChart1.config.data.datasets[0].backgroundColor = color;
         const points = myChart1.getElementsAtEventForMode(click, 'nearest', {
@@ -147,7 +147,7 @@ function barChart10() {
         //console.log(points[0].index)
 
         if (points[0]) {
-            myChart1.data.datasets[points[0].datasetIndex].backgroundColor[points[0].index] = 'Green'
+            myChart1.data.datasets[points[0].datasetIndex].backgroundColor[points[0].index] = '#BB86FC'
         }
         myChart1.update();
         //console.log(franchiseList.countFranchise[points[0].index].name1)
@@ -178,14 +178,16 @@ function getMoreInfo(restaurant) {
             document.getElementById('inputEachScoreSentLbl').innerText = "Average sentient Rating: " + franchiseList.avgSentiment[i].counter.toFixed(4)
 
             document.getElementById('inputBestReviewCount').innerHTML = "Anzahl der besten Reviews: " + franchiseList.countBestReview
+            document.getElementById('inputBestReviewCount2').innerHTML = "Anzahl der besten Reviews: " + franchiseList.countBestReview
+
 
             for (let j = 0; j < 10; j++) {
                 if (restaurant === franchiseList.countBestReview[j].franchise1) {
                     //console.log(franchiseList.countBestReview[j].liste[0].counter)
-                    document.getElementById('inputBestReviewCount').innerHTML = "Number of Restaurants in Top 5 City: " + franchiseList.countBestReview[j].liste[0].name1 +
-                        "\n Numbers of Reviews: " + franchiseList.countBestReview[j].liste[0].counter
-                    document.getElementById('inputWorstReviewCount').innerHTML = "Number of Restaurants in Worst 5 City: " + franchiseList.countWorstReview[j].liste[0].name1 +
-                        "\n Numbers of Reviews: " + franchiseList.countWorstReview[j].liste[0].counter
+                    document.getElementById('inputBestReviewCount').innerHTML = "Number of Restaurants in Top 5 City: " + franchiseList.countBestReview[j].liste[0].name1
+                    document.getElementById('inputBestReviewCount2').innerHTML = "Numbers of Reviews: " + franchiseList.countBestReview[j].liste[0].counter
+                    document.getElementById('inputWorstReviewCount').innerHTML = "Number of Restaurants in Worst 5 City: " + franchiseList.countWorstReview[j].liste[0].name1
+                    document.getElementById('inputWorstReviewCount2').innerHTML = "Numbers of Reviews: " + franchiseList.countWorstReview[j].liste[0].counter
                 }
             }
             //console.log(franchiseList.countBestReview[i].liste[0].counter) //
@@ -313,11 +315,11 @@ function exampleChart2(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
-                backgroundColor: ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"],
+                backgroundColor: ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3','#3700B3'],
                 borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
                 borderWidth: 1,
                 datalabels: {
-                    color: 'blue',
+                    color: 'BB86FC',
                     anchor: 'end',
                     align: 'top'
                 }
@@ -372,11 +374,11 @@ function exampleChart3(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
-                backgroundColor: ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"],
+                backgroundColor: ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3','#3700B3'],
                 borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
                 borderWidth: 1,
                 datalabels: {
-                    color: 'blue',
+                    color: 'BB86FC',
                     anchor: 'end',
                     align: 'top'
                 }
@@ -436,11 +438,11 @@ function exampleChart4(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
-                backgroundColor: ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"],
+                backgroundColor: ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3','#3700B3'],
                 borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
                 borderWidth: 1,
                 datalabels: {
-                    color: 'blue',
+                    color: 'BB86FC',
                     anchor: 'end',
                     align: 'top'
                 }
@@ -472,7 +474,6 @@ function exampleChart4(div, values, keys) {
             }
         },
 
-
     }
 
     if (myChart4 != null) {
@@ -501,11 +502,11 @@ function exampleChart5(div, values, keys) {
             datasets: [{
                 label: 'count',
                 data: values,
-                backgroundColor: ["darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey", "darkgrey"],
+                backgroundColor: ['#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3', '#3700B3','#3700B3'],
                 borderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"],
                 borderWidth: 1,
                 datalabels: {
-                    color: 'blue',
+                    color: 'BB86FC',
                     anchor: 'end',
                     align: 'top'
                 }
