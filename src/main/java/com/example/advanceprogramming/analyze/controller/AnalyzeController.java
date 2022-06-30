@@ -169,10 +169,10 @@ public class AnalyzeController {
 
 
         List<String> testData = new ArrayList<>();
-        testData.add("LHSTtnW3YHCeUkRDGyJOyw");
-        testData.add("gebiRewfieSdtt17PTW6Zg");
-        testData.add("_BHoE-gDzOeT2fa8pjQy9g");
-        testData.add("lj-E32x9_FA7GmUrBGBEWg");
+        testData.add("__rP5Fy4peONwyjcmbFfwg");
+        testData.add("__dp19BldlU5bGy87LJ0KA");
+        testData.add("_CAtatmn5FKtMFXcyQyWdQ");
+        testData.add("_-e1OGfmj4ttIEunYzgLGA");
         testData.add("RZtGWDLCAtuipwaZ-UfjmQ");
 
         List<Business> allBusinesses = businessRepository.findByBusinessIdInList(testData);

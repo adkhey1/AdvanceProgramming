@@ -38,7 +38,7 @@
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="franchise">History</a>
+                    <a class="nav-link" href="history">History</a>
                 </li>
 
                 <li class="nav-item">
@@ -64,47 +64,83 @@
     </div>
 </nav>
 
-<br>
-<h1>Your History</h1>
-<br>
+<div class="container">
+    <div class="row">
+        <div class="col">
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Address</th>
-        <th scope="col">Stars</th>
-        <th scope="col">Categories</th>
-        <th scope="col">Hours</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="getCalledBusiness : ${businesses}">
-        <td>
-            <span th:text="${getCalledBusiness.name}"></span>
-        </td>
-        <td>
-            <span th:text="${getCalledBusiness.address}"></span>
             <br>
-            <span th:text="${getCalledBusiness.city}"></span>
-            <span th:text="${getCalledBusiness.postal_code}"></span>
-        </td>
-        <td>
-            <span th:text="${getCalledBusiness.stars}"></span>
-        </td>
-        <td>
-            <span th:text="${getCalledBusiness.categories}"></span>
-        </td>
-        <td>
-            <span th:text="${getCalledBusiness.hours}"></span>
-        </td>
-    </tr>
-    </tbody>
-</table>
+            <h2 class="text-center">Your History</h2>
+            <br>
 
-<form th:action="@{/delete/history}" method="post">
-    <input type="submit" value="Delete History ">
-</form>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Stars</th>
+                    <th scope="col">Categories</th>
+                    <th scope="col">Hours</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="getCalledBusiness : ${businesses}">
+                    <td>
+                        <span th:text="${getCalledBusiness.name}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${getCalledBusiness.address}"></span>
+                        <br>
+                        <span th:text="${getCalledBusiness.city}"></span>
+                        <span th:text="${getCalledBusiness.postal_code}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${getCalledBusiness.stars}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${getCalledBusiness.categories}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${getCalledBusiness.hours}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<br><br>
+<hr>
+<br><br>
+
+
+<div class="container">
+    <div class="row">
+
+        <h2 class="text-center">You might also like this</h2>
+        <br><br><br>
+
+        <tr th:each="getCalledBusiness : ${suggestList}">
+            <div class="col-sm">
+                <span class="text-center" th:text="${getCalledBusiness.name}"></span>
+                <br>
+                <span class="text-center" th:text="${getCalledBusiness.address}"></span>
+                <span class="text-center" th:text="${getCalledBusiness.state}"></span>
+                <br>
+                <span class="text-center" th:text="${getCalledBusiness.categories}"></span>
+            </div>
+    </div>
+</div>
+
+<br><br>
+<hr>
+<br><br>
+
+    <!--
+    <form th:action="@{/delete/history}" method="post">
+        <input type="submit" value="Delete History ">
+    </form>
+    -->
 
 </body>
 </html>
