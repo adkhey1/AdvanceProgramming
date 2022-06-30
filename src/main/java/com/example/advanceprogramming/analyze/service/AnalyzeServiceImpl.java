@@ -110,70 +110,22 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         return dto;
     }
 
-    public UserBusinessRelation createUserBusinessRelation(long userId, String bId, boolean isFavorite) {
+    public UserBusinessRelation createUserBusinessRelation(long userId, String bId) {
 
         UserBusinessRelation input = new UserBusinessRelation();
 
         input.setUserId(userId);
         input.setBusinessId(bId);
-        input.setFavorite(isFavorite);
         userBizRepo.save(input);
 
         return input;
     }
 
-    public ResponseEntity<?> addBusinessToList(String bId, long userId, int change) {
-/*      0 = Im Verlauf -> Existiert nicht -> erzeugen mit "isfavorite" false
-                          existiert -> an "isfavorite" nicht ändern
-        1 = In Favoriten -> Exisiter nicht -> mit "isfavorite" 'true' erzeugen
-                            Exisitert -> "isfavorite" auf 'true' setzen
-        2 = Aus Favoriten löschen -> "isfavorite" auf 'false' setzen
-  */
-
-
-        //andi das existiert braucht man doch eigentlich gar nicht, weil es wird ja sowieso in dem Verlauf
-        //gespeichert und falls man es in die Favoriten speichert möchte, müssen sie bereits existieren, da
-        //man sie vorher mit getBusinessById aufgerufen hat. Also habe ich nur geschaut, ob sie als Favorit
-        //gespeichert sind oder nicht.
+    public ResponseEntity<?> addBusinessToList(String bId, long userId) {
 
         UserBusinessRelation user = userBizRepo.findByNameAndBusinessId(userId, bId);
+        userBizRepo.save(user);
 
-        switch (change) {
-            case 0:
-
-                createUserBusinessRelation(userId, bId, false);
-                break;
-
-            case 1:
-                //falls es true ist, passiert nichts
-                //falls es false ist, wird es überschrieben
-
-                if (user.isFavorite()) {
-                    //nothing
-                } else {
-                    user.setFavorite(true);
-                    userBizRepo.save(user);
-                }
-
-                break;
-            case 2:
-                if (user.isFavorite()) {
-                    user.setFavorite(false);
-                    userBizRepo.save(user);
-                } else {
-                    //nothing
-                }
-                break;
-        }
-
-        /*
-            if (isFavorite){
-                return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to favorites!");
-            }
-            return ResponseEntity.status(HttpStatus.OK).body("Business successfully added to history!");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body("This business is already selected as favorite!");
-         */
         return null;
     }
 
@@ -204,7 +156,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         if (input.getName().equals("")) {
             input.setName("%");
         }
-        if(input.getStars().equals("")){
+        if (input.getStars().equals("")) {
             input.setStars("%");
         }
 

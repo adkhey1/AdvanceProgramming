@@ -24,7 +24,4 @@ public class UserBusinessRelation {
     @Column(name = "business_id")
     private String businessId;
 
-    @Column(name = "isFavorite")
-    private boolean isFavorite;
-
 }

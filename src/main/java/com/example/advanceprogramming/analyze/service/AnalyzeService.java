@@ -23,7 +23,7 @@ public interface AnalyzeService {
 
     BasicAnalysisDTO getAverageScorePerSeason(BasicAnalysisDTO inputDTO,String bID);
 
-    ResponseEntity<?> addBusinessToList(String bId, long userId, int change);
+    ResponseEntity<?> addBusinessToList(String bId, long userId);
 
     List<String> getPopularCategories();
 

@@ -66,9 +66,22 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
             nativeQuery = true)
     List<LongLatResult> selectBusinessState(String categorie, String state);
 
+    @Query(value = "SELECT * FROM Business b WHERE b.name LIKE %?1% and b.state LIKE %?2% order by b.stars DESC LIMIT 1",
+            nativeQuery = true)
+    Business suggestBusinessFranchise(String name, String state);
+
+    @Query(value = "SELECT * FROM Business b WHERE b.categories LIKE %?1% and b.state LIKE %?2% order by b.stars DESC LIMIT 1",
+            nativeQuery = true)
+    Business suggestBusinessCategorie(String categorie, String state);
+
+    @Query(value = "SELECT * FROM Business b WHERE b.state LIKE %?1% order by b.stars DESC LIMIT 1",
+            nativeQuery = true)
+    Business suggestBusinessReview(String state);
 
     //TODO  Create View hier in Java mit allen Restaurantes in der Postleitzahl mit dem den folgenden Attributen
     //TODO  und dem Namen der Postleitzahl und lösche es am Ende
+
+
 
     /*
     @Query(value = "CREATE VIEW ?1 AS SELECT b.business_id, b.postal_code, b.categories, b.attributes " +

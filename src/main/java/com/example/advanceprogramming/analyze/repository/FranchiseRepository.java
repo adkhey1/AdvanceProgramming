@@ -1,5 +1,6 @@
 package com.example.advanceprogramming.analyze.repository;
 
+import com.example.advanceprogramming.analyze.model.Business;
 import com.example.advanceprogramming.analyze.model.Franchise;
 import com.example.advanceprogramming.analyze.model.FranchiseAnalyzeResult;
 import com.example.advanceprogramming.analyze.model.FranchiseAnalyzeResult2;
@@ -47,5 +48,6 @@ public interface FranchiseRepository extends JpaRepository<Franchise, Long> {
     @Query(value = "SELECT f.name as name1, avg(f.stars) as counter FROM franchise f group by name1",
             nativeQuery = true)
     List<FranchiseAnalyzeResult> eachAverage();
+
 
 }
