@@ -91,7 +91,8 @@
                         <span th:text="${getCalledBusiness.address}"></span>
                         <br>
                         <span th:text="${getCalledBusiness.city}"></span>
-                        <span th:text="${getCalledBusiness.postal_code}"></span>
+                        <span class="text-center" >, </span>
+                        <span th:text="${getCalledBusiness.state}"></span>
                     </td>
                     <td>
                         <span th:text="${getCalledBusiness.stars}"></span>
@@ -125,9 +126,16 @@
                 <span class="text-center" th:text="${getCalledBusiness.name}"></span>
                 <br>
                 <span class="text-center" th:text="${getCalledBusiness.address}"></span>
+                <br>
+                <span th:text="${getCalledBusiness.city}"></span>
+                <span class="text-center">, </span>
                 <span class="text-center" th:text="${getCalledBusiness.state}"></span>
                 <br>
                 <span class="text-center" th:text="${getCalledBusiness.categories}"></span>
+                <br>
+                <span class="text-center">Stars: </span>
+                <span class="text-center" th:text="${getCalledBusiness.stars}"></span>
+
             </div>
     </div>
 </div>
