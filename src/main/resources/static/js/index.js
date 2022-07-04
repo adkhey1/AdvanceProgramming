@@ -582,7 +582,7 @@ function exampleChart1(div, values, keys) {
 
     ctx.onclick = clickHandler;
 
-    document.getElementById('main_page1').hidden = false;
+    //document.getElementById('main_page1').hidden = false;
 }
 
 
@@ -647,7 +647,7 @@ function exampleChart2(div, values, keys) {
 
     ctx.onclick = clickHandler;
 
-    document.getElementById('main_page2').hidden = false;
+    //document.getElementById('main_page2').hidden = false;
 }
 
 function exampleChart3(div, values, keys) {
@@ -707,7 +707,7 @@ function exampleChart3(div, values, keys) {
 
     ctx.onclick = clickHandler;
 
-    document.getElementById('main_page3').hidden = false;
+    //document.getElementById('main_page3').hidden = false;
 }
 
 
