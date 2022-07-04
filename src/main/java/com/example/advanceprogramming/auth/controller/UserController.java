@@ -77,7 +77,7 @@ public class UserController {
         return "test";
     }
 
-    @GetMapping({"/signin",})
+    @GetMapping({"/singnin",})
     public String signin() {
         return "SignIn";
     }
