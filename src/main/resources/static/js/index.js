@@ -44,10 +44,16 @@ function initMapAfterFilter() {
     let centerLong = 0.0;
     let coordiCounter = 0;
 
-    for (let i = 0; i < json_data_LatLongArray.length; i++) {
+    console.log(filteredJsonData[0].latitude)
+    console.log(filteredJsonData.length)
+
+    for (let i = 0; i < filteredJsonData.length; i++) {
+
         centerLat += filteredJsonData[i].latitude
         centerLong += filteredJsonData[i].longitude
-
+        console.log(centerLat)
+        console.log(filteredJsonData[i].latitude)
+        console.log(i)
         coordiCounter++;
     }
 
