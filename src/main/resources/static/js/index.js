@@ -460,6 +460,8 @@ function updateChartbyDropdown2() {
     console.log(valueDropdown.value)
 
     if (valueDropdown.value == 2.1) {
+        console.log("!!!!!")
+        console.log(json_return_markerArrTemp[1])
         hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countPostalcode))
         values = Array.from(hsMap.values());
         keys = Array.from(hsMap.keys());
