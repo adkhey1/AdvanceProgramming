@@ -102,6 +102,11 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping({"/logout",})
+    public String logout() {
+        return "logout";
+    }
+
 }
 
 
