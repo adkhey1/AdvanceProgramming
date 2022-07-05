@@ -435,7 +435,9 @@ function sideView() {
 
     // const child = document.getElementById('sideWindow1inner').childNodes;
     // document.getElementById('sideWindow1inner').removeChild(child[0]);
+    document.getElementById('sideWindow1inner').innerHTML=""
     document.getElementById('sideWindow1inner').appendChild(result);
+    //document.getElementById('sideWindow1inner').innerHTML = result
     //document.getElementById('sideWindow1inner').innerText = JSON.stringify(json_return_markerArrTemp[0]);
 
     //transform to hashmap and get keys and values
@@ -455,6 +457,7 @@ function sideView() {
         let result1 = drawDetails(json_return_markerArrTemp[1]);
         //const child1 = document.getElementById('sideWindow2inner').childNodes;
         //document.getElementById('sideWindow2inner').removeChild(child1[0]);
+        document.getElementById('sideWindow2inner').innerHTML=""
         document.getElementById('sideWindow2inner').appendChild(result1);
         hsMap = new Map(Object.entries(json_return_markerArrTemp[1].countPostalcode))
         values = Array.from(hsMap.values());
@@ -470,6 +473,7 @@ function sideView() {
         let result2 = drawDetails(json_return_markerArrTemp[2]);
         //const child2 = document.getElementById('sideWindow3inner').childNodes;
         //document.getElementById('sideWindow3inner').removeChild(child2[0]);
+        document.getElementById('sideWindow3inner').innerHTML=""
         document.getElementById('sideWindow3inner').appendChild(result2);
         hsMap = new Map(Object.entries(json_return_markerArrTemp[2].countPostalcode))
         values = Array.from(hsMap.values());
