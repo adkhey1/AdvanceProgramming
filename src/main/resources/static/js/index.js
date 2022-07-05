@@ -40,8 +40,25 @@ function searchText() {
 
 
 function initMapAfterFilter() {
+    let centerLat = 0.0;
+    let centerLong = 0.0;
+    let coordiCounter = 0;
+
+    for (let i = 0; i < json_data_LatLongArray.length; i++) {
+        centerLat += filteredJsonData[i].latitude
+        centerLong += filteredJsonData[i].longitude
+
+        coordiCounter++;
+    }
+
+    centerLat = centerLat / coordiCounter;
+    centerLong = centerLong / coordiCounter;
+
+
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 4, center: {lat: 40.560109, lng: -100.573589}
+        //zoom: 4, center: {lat: 40.560109, lng: -100.573589}
+        zoom: 4, center: {lat: centerLat, lng: centerLong}
+
     })
 
 
@@ -111,7 +128,6 @@ async function loadStates() {
         }
     }
 
-    console.log(states);
     fillDropdown()
 }
 
@@ -171,8 +187,24 @@ var json_return_marker;
 
 // map
 function initMap() {
+
+    let centerLat = 0.0;
+    let centerLong = 0.0;
+    let coordiCounter = 0;
+
+    for (let i = 0; i < json_data_LatLongArray.length; i++) {
+        centerLat += json_data_LatLongArray[i].latitude
+        centerLong += json_data_LatLongArray[i].longitude
+
+        coordiCounter++;
+    }
+
+    centerLat = centerLat / coordiCounter;
+    centerLong = centerLong / coordiCounter;
+
+
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 4, center: {lat: 40.560109, lng: -100.573589}
+        zoom: 4, center: {lat: centerLat, lng: centerLong}
     })
 
 
@@ -205,7 +237,6 @@ function initMap() {
                         //console.log("test")
                         //console.log(data)
                         json_return_marker = data
-                        console.log(businessID)
                         sideView()
                     }
                 });
@@ -229,7 +260,6 @@ function initMap() {
 
     }
 
-    console.log(json_data_LatLongArray)
 
     //add all marker
     var myLatlng;
@@ -289,14 +319,77 @@ function drawDetails(arrElement) {
     lState.innerHTML = "State:"
     let pState = document.createElement('p');
     pState.innerHTML = arrElement.state;
-    let lHours = document.createElement('label');
-    lHours.innerHTML = "Open hours:"
-    let pHours = document.createElement('p');
-    pHours.innerHTML = arrElement.hours;
+
     let lStars = document.createElement('label');
     lStars.innerHTML = "Rating:"
     let pStars = document.createElement('p');
     pStars.innerHTML = arrElement.stars;
+
+
+    let lHours = document.createElement('label');
+    lHours.innerHTML = "Open hours:"
+
+    let times = arrElement.hours;
+    for (let i = 0; i < times.length; i++) {
+        times = times.replace("'", '"');
+    }
+    times = JSON.parse(times);
+
+    function replaceNull(input) {
+        let output;
+        if (input == null) {
+            output = "closed"
+        } else {
+            output = input
+        }
+        return output;
+    }
+
+    let mond, tue, wed, thur, fri, sat, sun;
+    //mond = times.Monday;
+    mond = replaceNull(times.Monday);
+    tue = replaceNull(times.Tuesday);
+    wed = replaceNull(times.Wednesday);
+    thur = replaceNull(times.Thursday);
+    fri = replaceNull(times.Friday);
+    sat = replaceNull(times.Saturday);
+    sun = replaceNull(times.Sunday);
+
+    let divTable = document.createElement("div");
+
+    let tableTemplate = "<table class='table table-bordered table-sm'>\n" +
+        "                        <thead class='table-dark'>\n" +
+        "                        <tr>\n" +
+        "                            <th>Monday</th>\n" +
+        "                            <th>Tuesday</th>\n" +
+        "                            <th>Wednesday</th>\n" +
+        "                            <th>Thursday</th>\n" +
+        "                            <th>Friday</th>\n" +
+        "                            <th>Saturday</th>\n" +
+        "                            <th>Sunday</th>\n" +
+        "                        </tr>\n" +
+        "                        </thead>\n" +
+        "                        <tbody>\n" +
+        "                        <tr>\n" +
+        "                            <td name=\"monday\">" + mond + "</td>\n" +
+        "                            <td name=\"tuesday\">" + tue + "</td>\n" +
+        "                            <td name=\"wednesday\">" + wed + "</td>\n" +
+        "                            <td name=\"thursday\">" + thur + "</td>\n" +
+        "                            <td name=\"friday\">" + fri + "</td>\n" +
+        "                            <td name=\"saturday\">" + sat + "</td>\n" +
+        "                            <td name=\"sunday\">" + sun + "</td>\n" +
+        "                        </tr>\n" +
+        "                        </tbody>\n" +
+        "                    </table>"
+
+    if (arrElement.hours == 0) {
+        let p = document.createElement("p").innerHTML = "no information provided";
+        divTable.innerHTML = p;
+
+    } else {
+        divTable.innerHTML = tableTemplate;
+    }
+
     div.appendChild(lName);
     div.appendChild(pName);
     div.appendChild(lAddress)
@@ -306,7 +399,8 @@ function drawDetails(arrElement) {
     div.appendChild(lState);
     div.appendChild(pState);
     div.appendChild(lHours);
-    div.appendChild(pHours);
+    div.appendChild(divTable);
+    //div.appendChild(pHours); //_---------------------------------------
     div.appendChild(lStars);
     div.appendChild(pStars);
 
@@ -316,8 +410,6 @@ function drawDetails(arrElement) {
 
 var json_return_markerArrTemp = [] //
 
-
-console.log(json_return_markerArrTemp)
 
 //konzept für 3 Fenster
 function sideView() {
@@ -329,7 +421,6 @@ function sideView() {
         json_return_markerArrTemp.pop()
         json_return_markerArrTemp.unshift(json_return_marker)
     }
-    console.log(json_return_markerArrTemp)
 
     //Evtl löschen
 
@@ -345,8 +436,6 @@ function sideView() {
     var hsMap = new Map(Object.entries(json_return_markerArrTemp[0].countPostalcode))
     var values = Array.from(hsMap.values());
     var keys = Array.from(hsMap.keys());
-    console.log(values) //33,33,2
-    console.log(keys) //chinese etc.
     //console.log(chart);
 
     exampleChart1('chartWindow1', values, keys);
@@ -584,7 +673,7 @@ function exampleChart1(div, values, keys) {
 
     ctx.onclick = clickHandler;
 
-    document.getElementById('main_page1').hidden = false;
+    //document.getElementById('main_page1').hidden = false;
 }
 
 
@@ -649,7 +738,7 @@ function exampleChart2(div, values, keys) {
 
     ctx.onclick = clickHandler;
 
-    document.getElementById('main_page2').hidden = false;
+    //document.getElementById('main_page2').hidden = false;
 }
 
 function exampleChart3(div, values, keys) {
@@ -709,7 +798,7 @@ function exampleChart3(div, values, keys) {
 
     ctx.onclick = clickHandler;
 
-    document.getElementById('main_page3').hidden = false;
+    //document.getElementById('main_page3').hidden = false;
 }
 
 
@@ -844,8 +933,23 @@ function initializeMap1(business_id, categorie, choice, div) {
         var myLatlngSideView
         console.log(latLongMap)
 
+        let centerLat = 0.0;
+        let centerLong = 0.0;
+        let coordiCounter = 0;
+
+        for (let i = 0; i < latLongMap.output.length; i++) {
+            centerLat += latLongMap.output[i].latitude1
+            centerLong += latLongMap.output[i].longitude1
+
+            coordiCounter++;
+        }
+
+        centerLat = centerLat / coordiCounter;
+        centerLong = centerLong / coordiCounter;
+
         var myOptions = {
-            zoom: 4, center: new google.maps.LatLng(40.560109, -100.573589), mapTypeId: google.maps.MapTypeId.ROADMAP
+            //zoom: 4, center: new google.maps.LatLng(40.560109, -100.573589), mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 10, center: new google.maps.LatLng(centerLat, centerLong), mapTypeId: google.maps.MapTypeId.ROADMAP
         }
 
 
@@ -903,8 +1007,23 @@ function initializeMap2(business_id, categorie, choice, div) {
         var myLatlngSideView
         console.log(latLongMap)
 
+        let centerLat = 0.0;
+        let centerLong = 0.0;
+        let coordiCounter = 0;
+
+        for (let i = 0; i < latLongMap.output.length; i++) {
+            centerLat += latLongMap.output[i].latitude1
+            centerLong += latLongMap.output[i].longitude1
+
+            coordiCounter++;
+        }
+
+        centerLat = centerLat / coordiCounter;
+        centerLong = centerLong / coordiCounter;
+
         var myOptions = {
-            zoom: 4, center: new google.maps.LatLng(40.560109, -100.573589), mapTypeId: google.maps.MapTypeId.ROADMAP
+            //zoom: 4, center: new google.maps.LatLng(40.560109, -100.573589), mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 10, center: new google.maps.LatLng(centerLat, centerLong), mapTypeId: google.maps.MapTypeId.ROADMAP
         }
 
 
@@ -958,12 +1077,28 @@ function initializeMap3(business_id, categorie, choice, div) {
 
     getLatLongAjax()
 
+
     $.when(getLatLongAjax()).done(function () {
         var myLatlngSideView
         console.log(latLongMap)
 
+        let centerLat = 0.0;
+        let centerLong = 0.0;
+        let coordiCounter = 0;
+
+        for (let i = 0; i < latLongMap.output.length; i++) {
+            centerLat += latLongMap.output[i].latitude1
+            centerLong += latLongMap.output[i].longitude1
+
+            coordiCounter++;
+        }
+
+        centerLat = centerLat / coordiCounter;
+        centerLong = centerLong / coordiCounter;
+
         var myOptions = {
-            zoom: 4, center: new google.maps.LatLng(40.560109, -100.573589), mapTypeId: google.maps.MapTypeId.ROADMAP
+            //zoom: 4, center: new google.maps.LatLng(40.560109, -100.573589), mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 10, center: new google.maps.LatLng(centerLat, centerLong), mapTypeId: google.maps.MapTypeId.ROADMAP
         }
 
 

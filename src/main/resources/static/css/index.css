@@ -1,0 +1,41 @@
+.navbar-custom {
+    background-color: #6200EE;
+}
+
+.navbar-nav > .active > a {
+    color: #BB86FC;
+}
+h1 {
+    margin-left: 5%;
+
+    color: black;
+    text-shadow:
+            1px 1px blue,
+            2px 2px blue,
+            3px 3px blue;
+    transition: all .12s ease-out;
+}
+
+
+
+.headl {
+
+    display: flex;
+    justify-content: space-around;
+
+
+}
+
+
+#carouselExampleDark {
+    position: sticky;
+    background-color: rgba(3, 93, 147, 0.07);
+
+}
+
+.speech {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(3, 93, 147, 0.07);
+}

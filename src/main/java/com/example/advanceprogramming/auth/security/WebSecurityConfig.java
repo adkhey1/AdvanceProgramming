@@ -45,8 +45,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //Configuration of the allowed Mappings after Login
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests().antMatchers("/js/**","/css/**").permitAll().antMatchers("/user_dashboard").authenticated().anyRequest().permitAll().and()
-                .formLogin().usernameParameter("email").defaultSuccessUrl("/user_dashboard").permitAll()
-                .and().logout().logoutSuccessUrl("/logout").permitAll().and().csrf().disable().cors().disable();
+        http.authorizeRequests()
+                .antMatchers("/js/**","/css/**","/","/pht/**","/register","/registering").permitAll().
+                antMatchers("/user_dashboard","/map","/map/**","/franchise","/about","/categorieMap","/restaurant/**","/analyze/**","/list/**","/history").authenticated().anyRequest().permitAll()
+                .and()
+                .formLogin()
+                .usernameParameter("email")
+                .defaultSuccessUrl("/map")
+                .permitAll()
+                .and().logout().logoutSuccessUrl("/logoutdone").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll()
+        .and().csrf().disable().cors().disable();
     }
 }

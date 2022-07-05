@@ -1,56 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <script th:src="@{/js/filterJS.js}"></script>
-    <script type="module" th:src="@{/js/filterJS.js}"></script>
 
-    <script th:src="@{/js/index.js}"></script>
-    <script type="module" th:src="@{/js/index.js}"></script>
+    <meta charset="ISO-8859-1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script th:src="@{/js/suggestions.js}"></script>
-    <script type="module" th:src="@{/js/suggestions.js}"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/popup.css"/>
+
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
 
 </head>
 <body>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.8.2.js"></script>
 
-<div class="container">
-    <button onclick="fillDropdown()">Test</button>
-
-    <button onclick="fillDropdown()" id="XXX">Populate</button>
-    <button onclick="fillDropdown()">Test</button>
-
-    <select id="1"></select>
-    <select id="2"></select>
-
+<div class='popup'>
+    <div class='cnt223'>
+        <h1>Important Notice</h1>
+        <p>
+            We were affected by the fire next door and will remain closed until further notice.
+            <br/>
+            <br/>
+            <a href='' class='close'>Close</a>
+        </p>
+    </div>
 </div>
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-<script>
-
-    function fillDropdown() {
-        console.log("Check1")
-        //let btnPopulate = document.querySelector('button');
-        let select = document.querySelector('select');
-        //let fruits = ['Banana', 'Grapes', 'Kiwi', 'Mango', 'Orange'];
-        let fruits = states;
-
-        let options = fruits.map(fruit => `<option value=${fruit.toLowerCase()}>${fruit}</option>`).join('\n');
-        document.getElementById("2").innerHTML = options;
 
 
-    }
+<script type='text/javascript'>
+    $(function(){
+        var overlay = $('<div id="overlay"></div>');
+        overlay.show();
+        overlay.appendTo(document.body);
+        $('.popup').show();
+        $('.close').click(function(){
+            $('.popup').hide();
+            overlay.appendTo(document.body).remove();
+            return false;
+        });
 
 
-    data(SaratogaHouses, package="mosaicData")
 
-    # select numeric variables
-    df <- dplyr::select_if(SaratogaHouses, is.numeric)
 
-    # calulate the correlations
-    r <- cor(df, use="complete.obs")
-    round(r,2)
+        $('.x').click(function(){
+            $('.popup').hide();
+            overlay.appendTo(document.body).remove();
+            return false;
+        });
+    });
 </script>
 
 

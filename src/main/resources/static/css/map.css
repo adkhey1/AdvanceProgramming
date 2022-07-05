@@ -17,13 +17,9 @@
 
     margin-left: 24px;
     margin-right: 24px;
+
      }
 
-#sideWindow1inner {
-    border: 2px #BB86FC;
-    border-radius: 5px;
-    display: flex;
-}
 
 #map1 {
     height: 200px;

@@ -52,7 +52,7 @@
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link " href="map"> Map</a>
+                    <a class="nav-link " href="map">Map</a>
                 </li>
 
                 <li class="nav-item">
@@ -77,7 +77,9 @@
                         <li><a class="dropdown-item" href="singnin">Sign In</a></li>
                         <li>
                             <hr class="dropdown-divider">
+                        <li><a class="dropdown-item" href="logout">Log out</a></li>
                         </li>
+
                     </ul>
                 </li>
             </ul>
@@ -85,6 +87,8 @@
         </div>
     </div>
 </nav>
+
+
 <!--
 <br style="line-height:5px;">
 
@@ -127,6 +131,7 @@
                     <div class="col">
                         <select class="form-select" placeholder="Stars" name="stars" id="stars">
                             <option value="" disabled selected hidden>Stars</option>
+                            <option value="">all</option>
                             <option value="1.0">1.0</option>
                             <option value="1.5">1.5</option>
                             <option value="2.0">2.0</option>
@@ -178,11 +183,12 @@
 <canvas id="testBar"></canvas>
 -->
 
-<div id="main_page1" class="container" hidden>
+<div id="main_page1" class="container">
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                <div id="sideWindow1inner"></div>
+                <div id="sideWindow1inner">
+                </div>
                 <canvas id="lineComp1"></canvas>
             </div>
             <div class="col-sm">
@@ -198,7 +204,7 @@
 
                 <canvas id="chartWindow1"></canvas>
                 <br>
-                <p>Select a category from the diagram above to see the locations on the map</p>
+                <p>Select a category from the diagram above to see the locations on the mapX</p>
                 <br>
                 <div id="map1"></div>
             </div>
@@ -208,7 +214,7 @@
 </div>
 
 
-<div id="main_page2" class="container" hidden>
+<div id="main_page2" class="container">
     <div class="container">
         <div class="row">
             <div class="col-sm">
@@ -237,7 +243,7 @@
     <br><br><hr><br><br>
 </div>
 
-<div id="main_page3" class="container" hidden>
+<div id="main_page3" class="container">
     <div class="container">
         <div class="row">
             <div class="col-sm">
