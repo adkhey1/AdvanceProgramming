@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .defaultSuccessUrl("/map")
                 .permitAll()
-                .and().logout().logoutSuccessUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll()
+                .and().logout().logoutSuccessUrl("/logoutdone").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll()
         .and().csrf().disable().cors().disable();
     }
 }

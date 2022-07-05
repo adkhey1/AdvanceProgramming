@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/popup.css"/>
 
 
     <script type="module" th:src="@{/js/franchise.js}"></script>
@@ -20,6 +21,55 @@
             crossorigin="anonymous"></script>
 
 </head>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.8.2.js"></script>
+
+<div class='popup'>
+    <div class='cnt223' style="text-align:center">
+        <h3>You have been successfully logged out</h3>
+        <p>
+<br>
+            <a href='' class="close" >Close</a>
+        </p>
+    </div>
+</div>
+
+
+<script type='text/javascript'>
+    $(function(){
+        var overlay = $('<div id="overlay"></div>');
+        overlay.show();
+        overlay.appendTo(document.body);
+        $('.popup').show();
+        $('.close').click(function(){
+            $('.popup').hide();
+            overlay.appendTo(document.body).remove();
+            return false;
+        });
+
+
+
+
+        $('.x').click(function(){
+            $('.popup').hide();
+            overlay.appendTo(document.body).remove();
+            return false;
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <body id="index">
 
 <nav class="navbar navbar-expand-sm navbar-custom">
@@ -72,14 +122,10 @@
 
 
 
-<div class="speech">
-    <h1 class="headline">
-        JOIN US<br> and analyze data
+<div style="text-align:center">
+    <h1 class="headline" style="text-align:center">
+        Join us and analyze data
     </h1>
-    <div class="ref">
-        <a class="btn btn-primary" th:href="@{/register}" role="button">Join Us</a>
-        <a class="btn btn-secondary" th:href="@{/login}" role="button">Sign In</a>
-    </div>
 </div>
 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
     <div class="carousel-indicators">

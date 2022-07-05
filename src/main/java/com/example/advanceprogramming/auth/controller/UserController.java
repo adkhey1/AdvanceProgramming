@@ -11,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Controller
 public class UserController {
 
@@ -102,9 +100,9 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping({"/logout",})
-    public String logout() {
-        return "logout";
+    @GetMapping({"/logoutdone",})
+    public String logoutdone() {
+        return "logoutdone";
     }
 
 }
