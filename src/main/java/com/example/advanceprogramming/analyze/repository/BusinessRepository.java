@@ -70,9 +70,9 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
             nativeQuery = true)
     Business suggestBusinessFranchise(String name, String state);
 
-    @Query(value = "SELECT * FROM Business b WHERE b.categories LIKE %?1% and b.state LIKE %?2% order by b.stars DESC LIMIT 1",
+    @Query(value = "SELECT * FROM Business b WHERE b.categories LIKE %?1% and b.state LIKE %?2% and b.name not in (?3) order by b.stars DESC LIMIT 1",
             nativeQuery = true)
-    Business suggestBusinessCategorie(String categorie, String state);
+    Business suggestBusinessCategorie(String categorie, String state, List<String> allNames);
 
     @Query(value = "SELECT * FROM Business b WHERE b.state LIKE %?1% order by b.stars DESC LIMIT 1",
             nativeQuery = true)

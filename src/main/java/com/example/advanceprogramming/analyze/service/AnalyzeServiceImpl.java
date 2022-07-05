@@ -123,7 +123,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     public ResponseEntity<?> addBusinessToList(String bId, long userId) {
 
-        UserBusinessRelation user = userBizRepo.findByNameAndBusinessId(userId, bId);
+        //UserBusinessRelation user = userBizRepo.findByNameAndBusinessId(userId, bId);
+
+        UserBusinessRelation user = new UserBusinessRelation();
+        user.setUserId(userId);
+        user.setBusinessId(bId);
         userBizRepo.save(user);
 
         return null;

@@ -59,11 +59,9 @@ public class AnalyzeController {
 
     @PostMapping(value = "/map/viewMarker/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBusinessById(@RequestBody IdDTO input, HttpServletRequest request) {
-        //Principal principal = request.getUserPrincipal();
-        //User user = userRepository.findByEmail(principal.getName());
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByEmail(principal.getName());
 
-
-        //analyzeService.addBusinessToList(input.getBusiness_id(),user.getId(),0);
 
         log.debug(">>>> Anfrage 'viewMarker' angefangen");
 
@@ -85,6 +83,8 @@ public class AnalyzeController {
         log.debug(">>>> Service 'Average Reviews started");
         output = analyzeService.getAverageScorePerSeason(output, input.getBusiness_id());
         log.debug(">>>> Service-Method 'Average Reviews finished'");
+
+        analyzeService.addBusinessToList(input.getBusiness_id(),user.getId());
 
         log.debug(">>>> Anfrage 'viewMarker' beendet");
         return ResponseEntity.status(HttpStatus.OK).body(output);
@@ -155,35 +155,63 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.OK).body(output2);
     }
 
+    /*
+
+    @PostMapping("/delete/history")
+    public String deleteHistoryFromUser(Model model, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByEmail(principal.getName());
+
+        userBusinessRelationRepository.deleteAllByUserId(user.getId());
+
+        model.addAttribute("message", "Delete successful!");
+
+        return "history";
+    }
+
+     */
+
     @GetMapping(value = "/history")
     public String getCalledBusiness(Model model, HttpServletRequest request) {
 
         //todo erst weiter machen, wenn gracjan security fertig hat
-        //Principal principal = request.getUserPrincipal();
-        //User user = userRepository.findByEmail(principal.getName());
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByEmail(principal.getName());
 
-        //List<String> allBusinessesIds = userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
-        //List<Business> allBusinesses = businessRepository.findByBusinessIdInList(allBusinessIds);
+
+        List<String> allBusinessesIds = userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
+
+        if(allBusinessesIds.isEmpty()){
+            model.addAttribute("businesses", null);
+            model.addAttribute("suggestList", null);
+
+            return "history";
+        }
+
+        List<Business> allBusinesses = businessRepository.findByBusinessIdInList(allBusinessesIds);
 
         List<Business> suggestList = new ArrayList<>();
 
 
-        List<String> testData = new ArrayList<>();
-        testData.add("__rP5Fy4peONwyjcmbFfwg");
-        testData.add("__dp19BldlU5bGy87LJ0KA");
-        testData.add("_CAtatmn5FKtMFXcyQyWdQ");
-        testData.add("_-e1OGfmj4ttIEunYzgLGA");
-        testData.add("RZtGWDLCAtuipwaZ-UfjmQ");
+        //List<String> testData = new ArrayList<>();
+        //testData.add("__rP5Fy4peONwyjcmbFfwg");
+        //testData.add("__dp19BldlU5bGy87LJ0KA");
+        //testData.add("_CAtatmn5FKtMFXcyQyWdQ");
+        //testData.add("_-e1OGfmj4ttIEunYzgLGA");
+        //testData.add("RZtGWDLCAtuipwaZ-UfjmQ");
 
-        List<Business> allBusinesses = businessRepository.findByBusinessIdInList(testData);
+        //List<Business> allBusinesses = businessRepository.findByBusinessIdInList(testData);
 
+
+        List<String> allNames = new ArrayList<>();
         List<String> allCategories = new ArrayList<>();
         List<String> allStates = new ArrayList<>();
 
         String[] franchise = {"Starbucks", "McDonald's", "Burger King", "Walgreens", "CVS Pharmacy", "Subway",
                 "Dunkin'", "Taco Bell", "Wawa", "Wendy's"};
 
-        String franchiseName = null;
+        String franchiseName = "null";
         int index = 0;
 
         for (Business b : allBusinesses) {
@@ -195,6 +223,7 @@ public class AnalyzeController {
 
             b.setHours(d);
 
+            allNames.add(b.getName());
 
             String[] categories = analyzeServiceImpl.splitCategorie(b);
             for (String cat : categories) {
@@ -211,7 +240,7 @@ public class AnalyzeController {
             }
         }
 
-        if (!franchiseName.isEmpty()) {
+        if (!franchiseName.equals("null")) {
             Business franchiseBusiness = allBusinesses.get(index);
             suggestList.add(businessRepository.suggestBusinessFranchise(franchiseBusiness.getName(), franchiseBusiness.getState()));
         }
@@ -263,25 +292,28 @@ public class AnalyzeController {
             }
         }
 
-        repeatationMap.remove("Restaurants");
-        String maxCategorie = Collections.max(repeatationMap.entrySet(), Map.Entry.comparingByValue()).getKey();
-        repeatationMap.remove(maxCategorie);
-        String maxCategorie2 = Collections.max(repeatationMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+        String maxCategorie = "";
+        String maxCategorie2 = "";
 
+        repeatationMap.remove("Restaurants");
+        repeatationMap.remove("Food");
+        if(!repeatationMap.isEmpty()){
+            maxCategorie = Collections.max(repeatationMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+            repeatationMap.remove(maxCategorie);
+        }
+
+        if(repeatationMap.size() > 0){
+            maxCategorie2 = Collections.max(repeatationMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+        }
 
         String maxState = Collections.max(repeatationMap2.entrySet(), Map.Entry.comparingByValue()).getKey();
 
         if (!suggestList.isEmpty()) {
-            //Business suggestByCategorie1 = businessRepository.suggestBusinessCategorie(maxCategorie, maxState);
-            //Business suggestByCategorie2 = businessRepository.suggestBusinessCategorie(maxCategorie2, maxState);
-            suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie, maxState));
-            suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie2, maxState));
-        }else {
-            //Business suggestByCategorie1 = businessRepository.suggestBusinessCategorie(maxCategorie, maxState);
-            //Business suggestByCategorie2 = businessRepository.suggestBusinessCategorie(maxCategorie2, maxState);
-            //Business suggestByReview = businessRepository.suggestBusinessReview(maxState);
-            suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie, maxState));
-            suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie2, maxState));
+            suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie, maxState, allNames));
+            suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie2, maxState, allNames));
+        }else {;
+            suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie, maxState, allNames));
+            suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie2, maxState, allNames));
             suggestList.add(businessRepository.suggestBusinessReview(maxState));
         }
 
