@@ -44,75 +44,87 @@ function initMapAfterFilter() {
     let centerLong = 0.0;
     let coordiCounter = 0;
 
-    console.log(filteredJsonData[0].latitude)
-    console.log(filteredJsonData.length)
 
-    for (let i = 0; i < filteredJsonData.length; i++) {
-
-        centerLat += filteredJsonData[i].latitude
-        centerLong += filteredJsonData[i].longitude
-        console.log(centerLat)
-        console.log(filteredJsonData[i].latitude)
-        console.log(i)
-        coordiCounter++;
-    }
-
-    centerLat = centerLat / coordiCounter;
-    centerLong = centerLong / coordiCounter;
+    if(filteredJsonData.length === 0){
+        console.log("asdasd")
+        document.getElementById('noResult').style.display = 'inline';
+        document.getElementById('noResult').innerHTML="No result matching your criteria :("
+    } else {
+        document.getElementById('noResult').style.display = 'none';
+        console.log("else schleife")
 
 
-    const map = new google.maps.Map(document.getElementById("map"), {
-        //zoom: 4, center: {lat: 40.560109, lng: -100.573589}
-        zoom: 4, center: {lat: centerLat, lng: centerLong}
+        for (let i = 0; i < filteredJsonData.length; i++) {
 
-    })
+            centerLat += filteredJsonData[i].latitude
+            centerLong += filteredJsonData[i].longitude
+            console.log(centerLat)
+            console.log(filteredJsonData[i].latitude)
+            console.log(i)
+            coordiCounter++;
+        }
 
-
-    function addMarker(latLongPos, businessID, name) {
-        const marker = new google.maps.Marker({
-            position: latLongPos,
-
-            map: map
-
-
-        });
-
-        const detailWindow = new google.maps.InfoWindow({
-            content: name
-        });
-
-        marker.addListener("click", () => {
-            detailWindow.open(map, marker);
+        centerLat = centerLat / coordiCounter;
+        centerLong = centerLong / coordiCounter;
 
 
-            getInfoOnClick()
-
-            function getInfoOnClick() {
-                $.ajax({
-                    'async': "true", 'type': "POST", 'global': false, 'url': "/map/viewMarker/", //'contentType': "text",
-                    //'data':businessID.toString(),
-                    'contentType': "application/json; charset=utf-8", 'data': JSON.stringify({business_id: businessID}), //dataType: "json",
-                    'success': function (data) {
-                        //console.log("test")
-                        //console.log(data)
-                        json_return_marker = data
-                        console.log(businessID)
-                        sideView()
-                    }
-                });
-            }
+        const map = new google.maps.Map(document.getElementById("map"), {
+            //zoom: 4, center: {lat: 40.560109, lng: -100.573589}
+            zoom: 4, center: {lat: centerLat, lng: centerLong}
 
         })
 
-    }
 
-    var myLatlng;
+        function addMarker(latLongPos, businessID, name) {
+            const marker = new google.maps.Marker({
+                position: latLongPos,
 
-    for (let i = 0; i < json_data_LatLongArray.length; i++) {
-        myLatlng = new google.maps.LatLng(filteredJsonData[i].latitude, filteredJsonData[i].longitude);
-        addMarker(myLatlng, filteredJsonData[i].business_id, filteredJsonData[i].name)
+                map: map
 
 
+            });
+
+            const detailWindow = new google.maps.InfoWindow({
+                content: name
+            });
+
+            marker.addListener("click", () => {
+                detailWindow.open(map, marker);
+
+
+                getInfoOnClick()
+
+                function getInfoOnClick() {
+                    $.ajax({
+                        'async': "true",
+                        'type': "POST",
+                        'global': false,
+                        'url': "/map/viewMarker/", //'contentType': "text",
+                        //'data':businessID.toString(),
+                        'contentType': "application/json; charset=utf-8",
+                        'data': JSON.stringify({business_id: businessID}), //dataType: "json",
+                        'success': function (data) {
+                            //console.log("test")
+                            //console.log(data)
+                            json_return_marker = data
+                            console.log(businessID)
+                            sideView()
+                        }
+                    });
+                }
+
+            })
+
+        }
+
+        var myLatlng;
+
+        for (let i = 0; i < json_data_LatLongArray.length; i++) {
+            myLatlng = new google.maps.LatLng(filteredJsonData[i].latitude, filteredJsonData[i].longitude);
+            addMarker(myLatlng, filteredJsonData[i].business_id, filteredJsonData[i].name)
+
+
+        }
     }
 }
 
