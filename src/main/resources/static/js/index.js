@@ -900,6 +900,13 @@ function comparisonChartWithCategory(dataArr, label, div, position) {
     const config = {
         type: 'line', data: data, options: {
 
+            scales: {
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 1
+                }
+            },
+
 
             responsive: true, interaction: {
                 mode: 'index', intersect: false,
