@@ -84,7 +84,7 @@ public class AnalyzeController {
         output = analyzeService.getAverageScorePerSeason(output, input.getBusiness_id());
         log.debug(">>>> Service-Method 'Average Reviews finished'");
 
-        analyzeService.addBusinessToList(input.getBusiness_id(),user.getId());
+        analyzeService.addBusinessToList(input.getBusiness_id(), user.getId());
 
         log.debug(">>>> Anfrage 'viewMarker' beendet");
         return ResponseEntity.status(HttpStatus.OK).body(output);
@@ -182,7 +182,7 @@ public class AnalyzeController {
 
         List<String> allBusinessesIds = userBusinessRelationRepository.selectAllBusinessIDFromUser(user.getId());
 
-        if(allBusinessesIds.isEmpty()){
+        if (allBusinessesIds.isEmpty()) {
             model.addAttribute("businesses", null);
             model.addAttribute("suggestList", null);
 
@@ -297,12 +297,12 @@ public class AnalyzeController {
 
         repeatationMap.remove("Restaurants");
         repeatationMap.remove("Food");
-        if(!repeatationMap.isEmpty()){
+        if (!repeatationMap.isEmpty()) {
             maxCategorie = Collections.max(repeatationMap.entrySet(), Map.Entry.comparingByValue()).getKey();
             repeatationMap.remove(maxCategorie);
         }
 
-        if(repeatationMap.size() > 0){
+        if (repeatationMap.size() > 0) {
             maxCategorie2 = Collections.max(repeatationMap.entrySet(), Map.Entry.comparingByValue()).getKey();
         }
 
@@ -311,12 +311,12 @@ public class AnalyzeController {
         if (!suggestList.isEmpty()) {
             suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie, maxState, allNames));
             suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie2, maxState, allNames));
-        }else {;
+        } else {
+            ;
             suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie, maxState, allNames));
             suggestList.add(businessRepository.suggestBusinessCategorie(maxCategorie2, maxState, allNames));
             suggestList.add(businessRepository.suggestBusinessReview(maxState));
         }
-
 
         //List<Business> allBusinesses = businessRepository.findByBusinessIdInList(allBusinessesIds);
 

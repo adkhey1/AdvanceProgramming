@@ -172,8 +172,13 @@ function getMoreInfo(restaurant) {
         if (restaurant === franchiseList.eachAverage[i].name1) {
             //console.log(franchiseList.eachAverage[i].counter)   // Die folge von top Franchise und review count ist unterschiedlich deswegen rausfinden welches restaurant angedrückt wurde und dieses finden
 
-            document.getElementById('inputEachScore').value = franchiseList.eachAverage[i].counter.toFixed(4)
-            document.getElementById('inputEachScoreLbl').innerText = "Average star Rating: " + franchiseList.eachAverage[i].counter.toFixed(4)
+            let normalizedScore = franchiseList.eachAverage[i].counter.toFixed(4) / 5;
+            normalizedScore = normalizedScore.toFixed(4);
+
+            //document.getElementById('inputEachScore').value = franchiseList.eachAverage[i].counter.toFixed(4)
+            document.getElementById('inputEachScore').value = normalizedScore;
+            //document.getElementById('inputEachScoreLbl').innerText = "Average star Rating: " + franchiseList.eachAverage[i].counter.toFixed(4)
+            document.getElementById('inputEachScoreLbl').innerText = "Average star Rating: " + normalizedScore;
             document.getElementById('inputEachScoreSent').value = franchiseList.avgSentiment[i].counter.toFixed(4)
             document.getElementById('inputEachScoreSentLbl').innerText = "Average sentient Rating: " + franchiseList.avgSentiment[i].counter.toFixed(4)
 
@@ -184,9 +189,9 @@ function getMoreInfo(restaurant) {
             for (let j = 0; j < 10; j++) {
                 if (restaurant === franchiseList.countBestReview[j].franchise1) {
                     //console.log(franchiseList.countBestReview[j].liste[0].counter)
-                    document.getElementById('inputBestReviewCount').innerHTML = "Number of Restaurants in Top 5 City: " + franchiseList.countBestReview[j].liste[0].name1
+                    document.getElementById('inputBestReviewCount').innerHTML = "Number of Businesses in Top five Cities: " + franchiseList.countBestReview[j].liste[0].name1
                     document.getElementById('inputBestReviewCount2').innerHTML = "Numbers of Reviews: " + franchiseList.countBestReview[j].liste[0].counter
-                    document.getElementById('inputWorstReviewCount').innerHTML = "Number of Restaurants in Worst 5 City: " + franchiseList.countWorstReview[j].liste[0].name1
+                    document.getElementById('inputWorstReviewCount').innerHTML = "Number of Businesses in Worst five Cities: " + franchiseList.countWorstReview[j].liste[0].name1
                     document.getElementById('inputWorstReviewCount2').innerHTML = "Numbers of Reviews: " + franchiseList.countWorstReview[j].liste[0].counter
                 }
             }

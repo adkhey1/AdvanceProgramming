@@ -154,12 +154,14 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         if (input.getPlz().equals("")) {
             input.setPlz("%");
         }
+        input.setState("%"+input.getState()+"%");
         if (input.getState().equals("")) {
             input.setState("%");
         }
-        if (input.getName().equals("")) {
+        input.setName("%"+input.getName()+"%");
+        /*if (input.getName().equals("")) {
             input.setName("%");
-        }
+        }*/
         if (input.getStars().equals("")) {
             input.setStars("%");
         }
