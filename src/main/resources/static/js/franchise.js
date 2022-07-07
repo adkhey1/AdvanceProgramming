@@ -189,9 +189,9 @@ function getMoreInfo(restaurant) {
             for (let j = 0; j < 10; j++) {
                 if (restaurant === franchiseList.countBestReview[j].franchise1) {
                     //console.log(franchiseList.countBestReview[j].liste[0].counter)
-                    document.getElementById('inputBestReviewCount').innerHTML = "Number of Restaurants in Top five Cities: " + franchiseList.countBestReview[j].liste[0].name1
+                    document.getElementById('inputBestReviewCount').innerHTML = "Number of Businesses in Top five Cities: " + franchiseList.countBestReview[j].liste[0].name1
                     document.getElementById('inputBestReviewCount2').innerHTML = "Numbers of Reviews: " + franchiseList.countBestReview[j].liste[0].counter
-                    document.getElementById('inputWorstReviewCount').innerHTML = "Number of Restaurants in Worst five Cities: " + franchiseList.countWorstReview[j].liste[0].name1
+                    document.getElementById('inputWorstReviewCount').innerHTML = "Number of Businesses in Worst five Cities: " + franchiseList.countWorstReview[j].liste[0].name1
                     document.getElementById('inputWorstReviewCount2').innerHTML = "Numbers of Reviews: " + franchiseList.countWorstReview[j].liste[0].counter
                 }
             }
