@@ -8,6 +8,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/popup.css"/>
+
+
     <link rel="stylesheet" type="text/css" href="/css/map.css"/>
     <!--
     <link href="{% static 'AdvanceProgramming/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -38,12 +42,11 @@
 </head>
 <body id="gmaps">
 
-<br><br>
 
 
 <nav class="navbar navbar-expand-sm navbar-custom">
     <div class="container">
-        <a class="navbar-brand fs-1" href="index"><font color=#f5f5f5>MyFood</font></a>
+        <a class="navbar-brand fs-1" href="index"><font color=#f5f5f5>Regiotamus</font></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -91,17 +94,7 @@
     </div>
 </nav>
 
-<div id="noResult"></div>
 
-<!--
-<br style="line-height:5px;">
-
-<div class="openDiv" style="text-align:center;">
-    <button class="openButton btn btn-outline-dark btn-sm" id="open"
-            onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter
-    </button>
-</div>
--->
 <div id="map"></div>
 
 <div class="container">

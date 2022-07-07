@@ -46,13 +46,13 @@ function initMapAfterFilter() {
 
 
     if(filteredJsonData.length === 0){
-        console.log("asdasd")
-        document.getElementById('noResult').style.display = 'inline';
-        document.getElementById('noResult').innerHTML="No result matching your criteria :("
-    } else {
-        document.getElementById('noResult').style.display = 'none';
-        console.log("else schleife")
 
+        console.log("asdasd")
+        alert("No result matching your criteria :(");
+
+    } else {
+
+        console.log("else schleife")
 
         for (let i = 0; i < filteredJsonData.length; i++) {
 
