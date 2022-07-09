@@ -8,10 +8,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/popup.css"/>
-
-
     <link rel="stylesheet" type="text/css" href="/css/map.css"/>
     <!--
     <link href="{% static 'AdvanceProgramming/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -42,6 +38,7 @@
 </head>
 <body id="gmaps">
 
+<br><br>
 
 
 <nav class="navbar navbar-expand-sm navbar-custom">
@@ -94,7 +91,17 @@
     </div>
 </nav>
 
+<div id="noResult"></div>
 
+<!--
+<br style="line-height:5px;">
+
+<div class="openDiv" style="text-align:center;">
+    <button class="openButton btn btn-outline-dark btn-sm" id="open"
+            onclick="openForm(), hiddenOpenButton(), showCloseButton()">Open Filter
+    </button>
+</div>
+-->
 <div id="map"></div>
 
 <div class="container">
@@ -206,7 +213,7 @@
 
                 <canvas id="chartWindow1"></canvas>
                 <br>
-                <p>Select a category from the diagram above to see the locations on the mapX</p>
+                <div id="sentence1" hidden><p>Select a category from the diagram above to see the locations on the map</p></div>
                 <br>
                 <div id="map1"></div>
             </div>
@@ -236,7 +243,7 @@
                 <br>
                 <canvas id="chartWindow2"></canvas>
                 <br>
-                <p>Select a category from the diagram above to see the locations on the map</p>
+                <div id="sentence2" hidden><p>Select a category from the diagram above to see the locations on the map</p></div>
                 <br>
                 <div id="map2"></div>
             </div>
@@ -264,7 +271,7 @@
                 <br>
                 <canvas id="chartWindow3"></canvas>
                 <br>
-                <p>Select a category from the diagram above to see the locations on the map</p>
+                <div id="sentence3" hidden><p>Select a category from the diagram above to see the locations on the map</p></div>
                 <br>
                 <div id="map3"></div>
             </div>
